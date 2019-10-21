@@ -46,7 +46,7 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ["Dialog", "Notify"],
+      plugins: ["Dialog", "Notify", "Cookies"],
       config: {
         notify: {
           /* Notify defaults */
@@ -84,13 +84,13 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       // https: true,
-      // port: 8080,
+      port: 8081,
       open: true // opens browser window automatically
     },
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: 'all',
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
