@@ -8,7 +8,7 @@
     >
       <q-input
         filled
-        v-model="name"
+        v-model="username"
         label="Username"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Enter username']"
@@ -34,14 +34,15 @@
   export default {
     data () {
       return {
-        name: null,
-        age: null,
+        username: null,
+        password: null,
 
         accept: false
       }
     },
 
     methods: {
+
       onSubmit () {
         // if (this.accept !== true) {
         //   this.$q.notify({
@@ -64,12 +65,15 @@
           textColor: 'white',
           icon: 'warning',
           message: 'Success'
+        });
+        //this.$store.dispatch('requestToken');
+
+        this.$store.dispatch('retrieveToken',{
+          username: this.username,
+          password: this.password,
         })
       },
       onReset () {
-        this.name = null
-        this.age = null
-        this.accept = false
       }
     }
   }
