@@ -2,6 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 
 // import example from './module-example'
+import user from './user';
+import registration from './registration';
+
 
 Vue.use(Vuex);
 
@@ -13,7 +16,8 @@ Vue.use(Vuex);
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      user: user,
+      registration: registration
     },
 
     // enable strict mode (adds overhead!)
