@@ -46,10 +46,13 @@ module.exports = function (ctx) {
       directives: [],
 
       // Quasar plugins
-      plugins: ["Dialog", "Notify", "Cookies"],
+      plugins: ["Dialog", "Notify", "Cookies", "Loading"],
       config: {
         notify: {
           /* Notify defaults */
+        },
+        loading: {
+          /* Loading defaults */
         }
       }
     },
@@ -86,7 +89,7 @@ module.exports = function (ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         '/api': {
-          target: 'http://192.168.99.100:8080',
+          target: 'http://localhost:8080',
           changeOrigin: true,
           pathRewrite: {
             '^/api': ''
