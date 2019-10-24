@@ -2,15 +2,21 @@ import axios from "axios";
 import { Notify } from "quasar";
 
 export default {
-  state: {},
+  state: {
+    //TODO: cookies
+    loggedIn: false
+  },
   mutations: {},
-  getters: {},
+  getters: {
+    loggedIn: state => {
+      return state.loggedIn;
+    }
+  },
   actions: {
     retrieveToken: function(context, credentials) {
-      // TODO: obsługa .env
       const auth = {
-        username: "web",
-        password: "password"
+        username: process.env.API_USERNAME,
+        password: process.env.API_PASSWORD
       };
 
       credentials.quasar.loading.show();
@@ -32,8 +38,11 @@ export default {
               textColor: "white",
               icon: "done",
               message: "Successfully logged in!",
-              timeout: 1500
+              timeout: 1500,
+              position: "bottom-right"
             });
+            this.$router.push("/home");
+            context.state.loggedIn = true;
           }
         })
         .catch(error => {
@@ -43,9 +52,11 @@ export default {
             textColor: "white",
             icon: "error",
             message: "Could not log in",
-            timeout: 1500
+            timeout: 1500,
+            position: "bottom-right"
           });
         });
+
       credentials.quasar.loading.hide();
     },
     register(context, credentials) {

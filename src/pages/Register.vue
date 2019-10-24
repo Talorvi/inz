@@ -2,18 +2,18 @@
   <div class="q-pa-md form">
     <div class="row justify-center">
       <div class="col-12 col-md-8 ">
-        <LoginForm />
+        <RegisterForm />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import LoginForm from "../components/auth/LoginForm.vue";
+import RegisterForm from "../components/auth/RegisterForm.vue";
 export default {
-  name: "Login",
+  name: "Register",
   components: {
-    LoginForm
+    RegisterForm
   }
 };
 </script>
