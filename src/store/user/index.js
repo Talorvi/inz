@@ -41,7 +41,7 @@ export default {
               timeout: 1500,
               position: "bottom-right"
             });
-            this.$router.push("/home");
+            this.$router.push("/");
             context.state.loggedIn = true;
           }
         })
@@ -62,19 +62,38 @@ export default {
     register(context, credentials) {
       axios
         .post(
-          "/register",
-          null,
-          {
-            params: {
-              grant_type: "password",
-              username: credentials.username,
-              password: credentials.password
-            }
+          "/api/register", {
+            username: credentials.username,
+            password: credentials.password,
+            email: credentials.email
           }
           // { headers: headers }
         )
-        .then(response => console.log(response))
-        .catch(console.error);
+        .then(response => {
+          if (response.status === 200) {
+            Notify.create({
+              color: "green-5",
+              textColor: "white",
+              icon: "done",
+              message: "Successfully registered!",
+              timeout: 1500,
+              position: "bottom-right"
+            });
+            this.$router.push("/");
+          }
+          console.log(response)
+        })
+        .catch(error => {
+          console.log(error);
+          Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "error",
+            message: error.response.data,
+            timeout: 1500,
+            position: "bottom-right"
+          });
+        });
       console.log(credentials.username);
     }
   }

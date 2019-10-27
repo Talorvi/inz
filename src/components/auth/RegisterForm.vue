@@ -103,7 +103,7 @@ export default {
     onSubmit() {
       this.$store.dispatch("register", {
         username: this.username,
-        password1: this.password,
+        password: this.password1,
         email: this.email,
         quasar: this.$q
       });
