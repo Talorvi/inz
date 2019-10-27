@@ -1,15 +1,25 @@
 import axios from "axios";
 import { Notify } from "quasar";
+import Vue from 'vue';
+import VueCookies from 'vue-cookies';
+
+Vue.use(VueCookies);
+VueCookies.config('12h');
+
 
 export default {
   state: {
-    //TODO: cookies
-    loggedIn: false
+    accessToken: null,
   },
-  mutations: {},
   getters: {
     loggedIn: state => {
-      return state.loggedIn;
+      return state.accessToken;
+    }
+
+  },
+  mutations:{
+    updateAccessToken: (state, accessToken) => {
+      state.accessToken = accessToken;
     }
   },
   actions: {
@@ -41,8 +51,10 @@ export default {
               timeout: 1500,
               position: "bottom-right"
             });
+            console.log(response.data);
+            VueCookies.set("token",response.data.access_token,"12h");
+            this.commit('updateAccessToken', response.data.access_token);
             this.$router.push("/");
-            context.state.loggedIn = true;
           }
         })
         .catch(error => {
@@ -51,7 +63,8 @@ export default {
             color: "red-5",
             textColor: "white",
             icon: "error",
-            message: "Could not log in",
+            message: "",
+            //"Could not log in"
             timeout: 1500,
             position: "bottom-right"
           });
@@ -95,6 +108,9 @@ export default {
           });
         });
       console.log(credentials.username);
+    },
+    fetchAccessToken({ commit }) {
+      commit('updateAccessToken', VueCookies.get('token'));
     }
   }
 };

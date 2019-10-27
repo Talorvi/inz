@@ -40,6 +40,7 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
 export default {
   name: "MyLayout",
 
@@ -59,6 +60,14 @@ export default {
     isLoggedIn() {
       return this.$store.getters.loggedIn;
     }
+  },
+  methods:{
+    ...mapActions([
+      'fetchAccessToken'
+    ]),
+  },
+  created() {
+    this.fetchAccessToken();
   }
 };
 </script>
