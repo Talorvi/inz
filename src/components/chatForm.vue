@@ -13,6 +13,8 @@
 <script>
   import VueChatScroll from "vue-chat-scroll";
   import Vue from "vue";
+  import SockJS from "sockjs-client";
+  import Stomp from "webstomp-client";
   Vue.use(VueChatScroll);
 
   export default {
@@ -22,6 +24,9 @@
         chosenSender: "me",
       };
     },
+    mounted(){
+      this.connect();
+    },
 
     methods: {
       submit(){
@@ -30,6 +35,7 @@
           id: this.messages.length +1,
           sender: this.chosenSender,
           text: this.text,
+          messageType: "all",
           type: "sent",
         });
         //removing first message if above 50
@@ -38,11 +44,32 @@
         }
         this.text = "";
       },
+      connect() {
+        var stompClient = Stomp.over(new SockJS('http://192.168.99.100:8080/rpg-server'));
+        stompClient.connect({}, function () {
+          console.log("elo");
+          stompClient.subscribe('/ws/scenario/TESTSCEN', function (message) {
+            console.log(message);
+          });
+          stompClient.subscribe('/ws/scenario/TESTSCEN/player/test', function (message) {
+            console.log(message);
+          });
+          // stompClient.subscribe('/ws/message', function (message) {
+          //   console.log(message);
+          // });
+        });
+      },
       loadOldMessages(){
 
       },
       changeSender(sender){
         this.chosenSender = sender;
+      },
+      checkMessageType(message){
+        if(/^\/w\s+\w+\s+\w+/.test(message)){
+          this.messageType = "whisper";
+          //wyciągnij cel docelowy
+        }
       }
     }
   };
