@@ -1,89 +1,145 @@
 <template>
   <div class="q-pa-md row justify-center">
-    <div v-chat-scroll="{always: true, smooth: true}" id="chat-messages-form" class="scroll-here">
+    <div
+      v-chat-scroll="{ always: true, smooth: true }"
+      id="chat-messages-form"
+      class="scroll-here"
+    >
       <div v-for="message in messages" :key="message.id">
-        <span>{{message.sender}}: </span>
-        <span>{{message.text}} </span>
+        <span>{{ message.sender }}: </span>
+        <span>{{ message.text }} </span>
       </div>
     </div>
-    <q-input outlined v-model="text" v-on:keyup.enter="submit()" label="Outlined" id="chat-message-input"/>
+    <q-input
+      outlined
+      v-model="text"
+      v-on:keyup.enter="submit()"
+      label="Outlined"
+      id="chat-message-input"
+    />
   </div>
 </template>
 
 <script>
-  import VueChatScroll from "vue-chat-scroll";
-  import Vue from "vue";
-  import SockJS from "sockjs-client";
-  import Stomp from "webstomp-client";
-  Vue.use(VueChatScroll);
+import VueChatScroll from "vue-chat-scroll";
+import Vue from "vue";
+import SockJS from "sockjs-client";
+import Stomp from "webstomp-client";
+import axios from "axios";
+import { Notify } from "quasar";
 
-  export default {
-    data() {
-      return {
-        messages: [],
-        chosenSender: "me",
+Vue.use(VueChatScroll);
+
+export default {
+  data() {
+    return {
+      messages: [],
+      chosenSender: "me",
+      stompClient: null
+    };
+  },
+  mounted() {
+    this.connect();
+  },
+  methods: {
+    submit() {
+      let message = {
+        id: this.messages.length + 1,
+        sender: this.chosenSender,
+        text: this.text,
+        messageType: "all"
       };
-    },
-    mounted(){
-      this.connect();
-    },
-
-    methods: {
-      submit(){
-        //message type logic(whisp/ooc)
-        this.messages.push({
-          id: this.messages.length +1,
-          sender: this.chosenSender,
-          text: this.text,
-          messageType: "all",
-          type: "sent",
-        });
-        //removing first message if above 50
-        if(this.messages.length === 50){
-          this.messages.shift();
-        }
+      if (this.checkMessageCorrectness(message)) {
+        this.postMessage(message.text);
         this.text = "";
-      },
-      connect() {
-        var stompClient = Stomp.over(new SockJS('http://192.168.99.100:8080/rpg-server'));
-        stompClient.connect({}, function () {
-          console.log("elo");
-          stompClient.subscribe('/ws/scenario/TESTSCEN', function (message) {
-            console.log(message);
-          });
-          stompClient.subscribe('/ws/scenario/TESTSCEN/player/test', function (message) {
-            console.log(message);
-          });
-          // stompClient.subscribe('/ws/message', function (message) {
-          //   console.log(message);
-          // });
-        });
-      },
-      loadOldMessages(){
+      }
+    },
+    subscribeToScenarioMessages(scenarioID) {
+      console.log("Scenario messages:" + scenarioID);
+      this.stompClient.subscribe("/ws/scenario/TESTSCEN", this.displayMessage);
+    },
+    subscribeToPlayerMessages(playerName) {
+      console.log("Player messages: " + playerName);
+    },
+    displayMessage: function(response) {
+      let responseBody = JSON.parse(response.body);
+      let message = {
+        id: this.messages.length + 1,
+        sender: responseBody.body.sender,
+        text: responseBody.body.content,
+        messageType: "all"
+      };
 
-      },
-      changeSender(sender){
-        this.chosenSender = sender;
-      },
-      checkMessageType(message){
-        if(/^\/w\s+\w+\s+\w+/.test(message)){
-          this.messageType = "whisper";
-          //wyciągnij cel docelowy
+      this.messages.push(message);
+      if (this.messages.length === 50) {
+        this.messages.shift();
+      }
+    },
+    connect(event) {
+      var socket = new SockJS("http://192.168.99.100:8080/rpg-server");
+      this.stompClient = Stomp.over(socket);
+
+      this.stompClient.connect({}, this.onConnected, this.onError);
+
+      event.preventDefault();
+    },
+    onConnected() {
+      this.subscribeToScenarioMessages("TESTSCEN");
+      this.subscribeToPlayerMessages("test");
+    },
+    onError() {
+      console.log("Connection Error x");
+    },
+    loadOldMessages() {},
+    changeSender(sender) {
+      this.chosenSender = sender;
+    },
+    checkMessageCorrectness(message) {
+      //If message starts with /w
+      if (/^\//.test(message.text)) {
+        if (/^\/w\s+\w+\s+\w+/.test(message.text)) {
+          message.type = "whisper";
+          return true;
+        } else if (/^\/ooc\s\w+/.test(message.text)) {
+          message.type = "ooc";
+          return true;
+        } else {
+          Notify.create({
+            color: "red-5",
+            textColor: "white",
+            icon: "error",
+            message: "Incorrect command",
+            timeout: 1500,
+            position: "bottom-right"
+          });
+          return false;
         }
       }
+      return true;
+    },
+    postMessage(text) {
+      console.log("test");
+      axios.post(
+        "ms/message/scenario/TESTSCEN",
+        {
+          characterName: "Robert",
+          content: text
+        },
+        {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        }
+      );
     }
-  };
+  }
+};
 </script>
 
-
-
 <style scoped>
-  /*creating special classes*/
-  .scroll-here {
-    overflow: auto;
-    height: 650px;
-    width: 100%;
-    max-width: 450px;
-  }
-
+/*creating special classes*/
+.scroll-here {
+  overflow: auto;
+  height: 650px;
+  width: 100%;
+  max-width: 450px;
+}
 </style>
