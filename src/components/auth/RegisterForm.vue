@@ -22,7 +22,8 @@
           :rules="[
             val => !!val || 'Email is required',
             val => val.match(emailRegex) || 'Invalid email address'
-          ]">
+          ]"
+        >
           <template v-slot:prepend>
             <q-icon name="email" />
           </template>
@@ -33,7 +34,8 @@
           v-model="username"
           label="Username"
           lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Enter username']">
+          :rules="[val => (val && val.length > 0) || 'Enter username']"
+        >
           <template v-slot:prepend>
             <q-icon name="person" />
           </template>
@@ -44,7 +46,8 @@
           filled
           type="password"
           label="Password"
-          :rules="[val => (val && val.length > 0) || 'Enter password']">
+          :rules="[val => (val && val.length > 0) || 'Enter password']"
+        >
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>
@@ -58,7 +61,8 @@
           :rules="[
             val => (val && val.length > 0) || 'Enter password',
             val => val === password1 || 'Passwords must be the same'
-          ]">
+          ]"
+        >
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>

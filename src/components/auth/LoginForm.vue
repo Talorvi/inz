@@ -18,7 +18,8 @@
           label="Username"
           lazy-rules
           :rules="[val => (val && val.length > 0) || 'Enter username']"
-          class="q-pb-lg">
+          class="q-pb-lg"
+        >
           <template v-slot:prepend>
             <q-icon name="person" />
           </template>
@@ -29,7 +30,8 @@
           type="password"
           label="Password"
           :rules="[val => (val && val.length > 0) || 'Enter password']"
-          class="q-pb-lg">
+          class="q-pb-lg"
+        >
           <template v-slot:prepend>
             <q-icon name="lock" />
           </template>
@@ -73,6 +75,9 @@ export default {
 
   methods: {
     onSubmit() {
+      // eslint-disable-next-line no-undef
+      this.$root.$emit("noAuth");
+
       this.$store.dispatch("retrieveToken", {
         username: this.username,
         password: this.password,
