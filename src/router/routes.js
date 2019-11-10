@@ -40,6 +40,14 @@ const routes = [
     beforeEnter: (to, from, next) => {
       loggedRequired(to, from, next);
     }
+  },
+  {
+    path: "/profile",
+    component: () => import("layouts/MyLayout.vue"),
+    children: [{ path: "", component: () => import("pages/Profile.vue") }],
+    beforeEnter: (to, from, next) => {
+      loggedRequired(to, from, next);
+    }
   }
 ];
 

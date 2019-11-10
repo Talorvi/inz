@@ -34,8 +34,8 @@
             <q-icon size="sm" name="logout"></q-icon>
           </q-btn>
         </div>
-        <div class="absolute-center bg-transparent">
-          <div>
+        <div class="absolute-center bg-transparent" @click="goToProfile">
+          <q-btn class="cursor-pointer">
             <q-avatar
               size="56px"
               class="q-mb-sm"
@@ -45,7 +45,7 @@
               {{ getUserName[0].toUpperCase() }}
             </q-avatar>
             <div class="text-weight-bold text-center">{{ getUserName }}</div>
-          </div>
+          </q-btn>
         </div>
       </q-img>
 
@@ -94,7 +94,7 @@ export default {
   data() {
     return {
       right: true,
-      appName: process.env.APP_NAME,
+      appName: process.env.APP_NAME
     };
   },
 
@@ -110,6 +110,9 @@ export default {
     ...mapActions(["fetchAccessToken"]),
     logout() {
       this.$store.dispatch("logout", {});
+    },
+    goToProfile() {
+      this.$router.push("profile", () => {});
     }
   },
   created() {

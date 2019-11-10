@@ -54,7 +54,7 @@ export default {
             VueCookies.set("token", response.data.access_token, "12h");
             VueCookies.set("refreshToken", response.data.refresh_token, "12h");
             this.commit("updateAccessToken", response.data.access_token);
-            this.$router.push('/home', () => {});
+            this.$router.push("/home", () => {});
           }
         })
         // eslint-disable-next-line no-unused-vars
@@ -92,7 +92,7 @@ export default {
               timeout: 1500,
               position: "bottom-right"
             });
-            this.$router.push('/', () => {});
+            this.$router.push("/", () => {});
           }
           //console.log(response);
         })
@@ -126,7 +126,7 @@ export default {
         timeout: 1500,
         position: "bottom-right"
       });
-      this.$router.push('/', () => {});
+      this.$router.push("/", () => {});
     }
   }
 };
