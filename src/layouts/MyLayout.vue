@@ -16,19 +16,52 @@
         </div>
         <div v-else>
           <q-btn flat @click="$router.push('login', () => {})">Log in</q-btn>
-          <q-btn flat @click="$router.push('register', () => {})">Sign up</q-btn>
+          <q-btn flat @click="$router.push('register', () => {})"
+            >Sign up</q-btn
+          >
         </div>
       </q-toolbar>
     </q-header>
 
-    <q-drawer
-      v-if="isLoggedIn"
-      v-model="right"
-      side="right"
-      overlay
-      bordered
-    >
+    <q-drawer v-if="isLoggedIn" v-model="right" side="right" overlay bordered>
       <!-- drawer content -->
+      <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+        <div class="absolute-top-right bg-transparent">
+          <q-btn round>
+            <q-icon size="sm" name="settings"></q-icon>
+          </q-btn>
+        </div>
+        <div class="absolute-center bg-transparent">
+          <div>
+            <q-avatar size="56px" class="q-mb-sm" color="accent" text-color="white">
+              {{ username[0].toUpperCase() }}
+            </q-avatar>
+            <div class="text-weight-bold text-center">{{ username }}</div>
+          </div>
+        </div>
+      </q-img>
+
+      <q-list>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon color="primary" name="logout" />
+          </q-item-section>
+          <q-item-section>Logout</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon color="primary" name="person" />
+          </q-item-section>
+          <q-item-section>Account</q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon color="primary" name="list" />
+          </q-item-section>
+          <q-item-section>Games</q-item-section>
+        </q-item>
+      </q-list>
     </q-drawer>
 
     <q-page-container>
@@ -40,20 +73,22 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex';
+import { mapActions } from "vuex";
+import VueCookies from "vue-cookies";
+
 export default {
   name: "MyLayout",
 
   mounted() {
-    console.log(JSON.stringify(process.env));
-    this.$q.addressbarColor.set("#027BE3");
+    //this.$q.addressbarColor.set("#027BE3");
   },
 
   data() {
     return {
       right: false,
-      appName: process.env.APP_NAME
-    };
+      appName: process.env.APP_NAME,
+      username: VueCookies.get("username")
+    }
   },
 
   computed: {
@@ -61,10 +96,8 @@ export default {
       return this.$store.getters.loggedIn;
     }
   },
-  methods:{
-    ...mapActions([
-      'fetchAccessToken'
-    ]),
+  methods: {
+    ...mapActions(["fetchAccessToken"])
   },
   created() {
     this.fetchAccessToken();

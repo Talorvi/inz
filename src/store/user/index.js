@@ -1,23 +1,21 @@
 import axios from "axios";
 import { Notify } from "quasar";
-import Vue from 'vue';
-import VueCookies from 'vue-cookies';
+import Vue from "vue";
+import VueCookies from "vue-cookies";
 
 Vue.use(VueCookies);
-VueCookies.config('12h');
-
+VueCookies.config("12h");
 
 export default {
   state: {
-    accessToken: null,
+    accessToken: null
   },
   getters: {
     loggedIn: state => {
       return state.accessToken;
     }
-
   },
-  mutations:{
+  mutations: {
     updateAccessToken: (state, accessToken) => {
       state.accessToken = accessToken;
     }
@@ -41,7 +39,7 @@ export default {
           auth: auth
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           if (response.status === 200) {
             Notify.create({
               color: "green-5",
@@ -51,10 +49,12 @@ export default {
               timeout: 1500,
               position: "bottom-right"
             });
-            console.log(response.data);
-            VueCookies.set("token",response.data.access_token,"12h");
-            this.commit('updateAccessToken', response.data.access_token);
-            this.$router.push("/");
+            //console.log(response.data);
+            VueCookies.set("username", credentials.username, "12h");
+            VueCookies.set("token", response.data.access_token, "12h");
+            VueCookies.set("refreshToken", response.data.refresh_token, "12h");
+            this.commit("updateAccessToken", response.data.access_token);
+            this.$router.push("/home");
           }
         })
         .catch(error => {
@@ -64,7 +64,6 @@ export default {
             textColor: "white",
             icon: "error",
             message: "",
-            //"Could not log in"
             timeout: 1500,
             position: "bottom-right"
           });
@@ -75,7 +74,8 @@ export default {
     register(context, credentials) {
       axios
         .post(
-          "/api/register", {
+          "/api/register",
+          {
             username: credentials.username,
             password: credentials.password,
             email: credentials.email
@@ -94,10 +94,10 @@ export default {
             });
             this.$router.push("/");
           }
-          console.log(response)
+          //console.log(response);
         })
         .catch(error => {
-          console.log(error);
+          //console.log(error);
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -107,10 +107,10 @@ export default {
             position: "bottom-right"
           });
         });
-      console.log(credentials.username);
+      //console.log(credentials.username);
     },
     fetchAccessToken({ commit }) {
-      commit('updateAccessToken', VueCookies.get('token'));
+      commit("updateAccessToken", VueCookies.get("token"));
     }
   }
 };
