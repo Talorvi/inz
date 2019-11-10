@@ -9,17 +9,17 @@
 </template>
 
 <script>
-  import chatForm from "../components/chatForm.vue";
-  export default {
-    name: "Chat",
-    components: {
-      chatForm
-    }
-  };
+import chatForm from "../components/chatForm.vue";
+export default {
+  name: "Chat",
+  components: {
+    chatForm
+  }
+};
 </script>
 
 <style scoped>
-  .form {
-    margin-top: 2em;
-  }
+.form {
+  margin-top: 2em;
+}
 </style>

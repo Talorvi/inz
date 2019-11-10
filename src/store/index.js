@@ -4,6 +4,7 @@ import VueCookies from "vue-cookies";
 
 import user from "./user";
 import registration from "./registration";
+import game from "./game";
 
 Vue.use(Vuex);
 Vue.use(VueCookies);
@@ -11,6 +12,7 @@ Vue.use(VueCookies);
 export default new Vuex.Store({
   modules: {
     user: user,
-    registration: registration
+    registration: registration,
+    game: game
   }
 });

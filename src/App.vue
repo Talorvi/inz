@@ -13,6 +13,7 @@ export default {
   methods: {
     tryToRefreshToken(msg) {
       console.log(msg);
+      // alert('a');
     }
   }
 };

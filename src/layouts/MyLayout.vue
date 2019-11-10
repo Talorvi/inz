@@ -23,26 +23,34 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-if="isLoggedIn" v-model="right" side="right" overlay bordered>
+    <q-drawer v-if="isLoggedIn" v-model="right" side="right" bordered>
       <!-- drawer content -->
-      <q-img src="https://cdn.quasar.dev/img/material.png" style="height: 150px">
+      <q-img
+        src="https://cdn.quasar.dev/img/material.png"
+        style="height: 150px"
+      >
         <div class="absolute-top-right bg-transparent">
-          <q-btn round>
-            <q-icon size="sm" name="settings"></q-icon>
+          <q-btn round color="primary" @click="logout">
+            <q-icon size="sm" name="logout"></q-icon>
           </q-btn>
         </div>
         <div class="absolute-center bg-transparent">
           <div>
-            <q-avatar size="56px" class="q-mb-sm" color="accent" text-color="white">
-              {{ username[0].toUpperCase() }}
+            <q-avatar
+              size="56px"
+              class="q-mb-sm"
+              color="accent"
+              text-color="white"
+            >
+              {{ getUserName[0].toUpperCase() }}
             </q-avatar>
-            <div class="text-weight-bold text-center">{{ username }}</div>
+            <div class="text-weight-bold text-center">{{ getUserName }}</div>
           </div>
         </div>
       </q-img>
 
       <q-list>
-        <q-item clickable v-ripple>
+        <q-item clickable v-ripple @click="logout()">
           <q-item-section avatar>
             <q-icon color="primary" name="logout" />
           </q-item-section>
@@ -85,19 +93,24 @@ export default {
 
   data() {
     return {
-      right: false,
+      right: true,
       appName: process.env.APP_NAME,
-      username: VueCookies.get("username")
-    }
+    };
   },
 
   computed: {
     isLoggedIn() {
       return this.$store.getters.loggedIn;
+    },
+    getUserName() {
+      return VueCookies.get("username");
     }
   },
   methods: {
-    ...mapActions(["fetchAccessToken"])
+    ...mapActions(["fetchAccessToken"]),
+    logout() {
+      this.$store.dispatch("logout", {});
+    }
   },
   created() {
     this.fetchAccessToken();

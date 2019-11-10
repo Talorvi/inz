@@ -54,11 +54,11 @@ export default {
             VueCookies.set("token", response.data.access_token, "12h");
             VueCookies.set("refreshToken", response.data.refresh_token, "12h");
             this.commit("updateAccessToken", response.data.access_token);
-            this.$router.push("/home");
+            this.$router.push('/home', () => {});
           }
         })
+        // eslint-disable-next-line no-unused-vars
         .catch(error => {
-          console.log(error);
           Notify.create({
             color: "red-5",
             textColor: "white",
@@ -92,7 +92,7 @@ export default {
               timeout: 1500,
               position: "bottom-right"
             });
-            this.$router.push("/");
+            this.$router.push('/', () => {});
           }
           //console.log(response);
         })
@@ -111,6 +111,22 @@ export default {
     },
     fetchAccessToken({ commit }) {
       commit("updateAccessToken", VueCookies.get("token"));
+    },
+    // eslint-disable-next-line no-unused-vars
+    logout: function(context) {
+      VueCookies.remove("token");
+      VueCookies.remove("username");
+      VueCookies.remove("refreshToken");
+      this.commit("updateAccessToken", VueCookies.get("token"));
+      Notify.create({
+        color: "green-5",
+        textColor: "white",
+        icon: "done",
+        message: "Successfully logged out!",
+        timeout: 1500,
+        position: "bottom-right"
+      });
+      this.$router.push('/', () => {});
     }
   }
 };

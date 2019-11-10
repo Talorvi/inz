@@ -1,10 +1,6 @@
-export default{
-  state: {
-  },
-  mutations: {
-  },
-  getters: {
-  },
-  actions: {
-  }
+export default {
+  state: {},
+  mutations: {},
+  getters: {},
+  actions: {}
 };
