@@ -3,51 +3,52 @@ import VueCookies from "vue-cookies";
 const routes = [
   {
     path: "/",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Index.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedDisallowed(to, from, next);
-    }
-  },
-  {
-    path: "/login",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Login.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedDisallowed(to, from, next);
-    }
-  },
-  {
-    path: "/register",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Register.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedDisallowed(to, from, next);
-    }
-  },
-  {
-    path: "/home",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Home.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedRequired(to, from, next);
-    }
-  },
-  {
-    path: "/chat",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/ChatPage.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedRequired(to, from, next);
-    }
-  },
-  {
-    path: "/profile",
-    component: () => import("layouts/MyLayout.vue"),
-    children: [{ path: "", component: () => import("pages/Profile.vue") }],
-    beforeEnter: (to, from, next) => {
-      loggedRequired(to, from, next);
-    }
+    component: () => import("layouts/MyLayout"),
+
+    children: [
+      {
+        path: "",
+        component: () => import("pages/Index.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedDisallowed(to, from, next);
+        }
+      },
+      {
+        path: "login",
+        component: () => import("pages/Login.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedDisallowed(to, from, next);
+        }
+      },
+      {
+        path: "register",
+        component: () => import("pages/Register.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedDisallowed(to, from, next);
+        }
+      },
+      {
+        path: "home",
+        component: () => import("pages/Home.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      {
+        path: "chat",
+        component: () => import("pages/ChatPage.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      {
+        path: "profile",
+        component: () => import("pages/Profile.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      }
+    ]
   }
 ];
 
