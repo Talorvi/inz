@@ -15,21 +15,21 @@ const routes = [
       },
       {
         path: "login",
-        component: () => import("pages/Login.vue"),
+        component: () => import("pages/Auth/Login.vue"),
         beforeEnter: (to, from, next) => {
           loggedDisallowed(to, from, next);
         }
       },
       {
         path: "register",
-        component: () => import("pages/Register.vue"),
+        component: () => import("pages/Auth/Register.vue"),
         beforeEnter: (to, from, next) => {
           loggedDisallowed(to, from, next);
         }
       },
       {
         path: "home",
-        component: () => import("pages/Home.vue"),
+        component: () => import("pages/User/Home.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         }
@@ -43,7 +43,7 @@ const routes = [
       },
       {
         path: "profile",
-        component: () => import("pages/Profile.vue"),
+        component: () => import("pages/User/Profile.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         }
@@ -56,7 +56,7 @@ const routes = [
 if (process.env.MODE !== "ssr") {
   routes.push({
     path: "*",
-    component: () => import("pages/Error404.vue")
+    component: () => import("pages/Others/Error404.vue")
   });
 }
 

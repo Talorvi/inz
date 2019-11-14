@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import RegisterForm from "../components/auth/RegisterForm.vue";
+import RegisterForm from "../../components/auth/RegisterForm.vue";
 export default {
   name: "Register",
   components: {
