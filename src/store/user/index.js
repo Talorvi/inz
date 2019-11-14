@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Notify } from "quasar";
 import Vue from "vue";
 import VueCookies from "vue-cookies";
+import notifications from "../../functions/notifications";
 
 Vue.use(VueCookies);
 VueCookies.config("12h");
@@ -38,74 +38,64 @@ export default {
           },
           auth: auth
         })
+
         .then(response => {
-          //console.log(response);
           if (response.status === 200) {
-            Notify.create({
-              color: "green-5",
-              textColor: "white",
-              icon: "done",
-              message: "Successfully logged in!",
-              timeout: 1500,
-              position: "bottom-right"
-            });
-            //console.log(response.data);
+            notifications.methods.sendSuccessNotification(
+              "Successfully logged in!"
+            );
+
             VueCookies.set("username", credentials.username, "12h");
             VueCookies.set("token", response.data.access_token, "12h");
             VueCookies.set("refreshToken", response.data.refresh_token, "12h");
+
             this.commit("updateAccessToken", response.data.access_token);
             this.$router.push("/home", () => {});
           }
         })
+
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
-          Notify.create({
-            color: "red-5",
-            textColor: "white",
-            icon: "error",
-            message: "",
-            timeout: 1500,
-            position: "bottom-right"
-          });
-        });
+          notifications.methods.sendErrorNotification(
+            "There was an error. Couldn't log in."
+          );
+        })
 
-      credentials.quasar.loading.hide();
+        .finally(() => {
+          credentials.quasar.loading.hide();
+        });
     },
     register(context, credentials) {
+      credentials.quasar.loading.show();
+
       axios
-        .post(
-          "/api/register",
-          {
-            username: credentials.username,
-            password: credentials.password,
-            email: credentials.email
-          }
-          // { headers: headers }
-        )
+        .post("/api/register", {
+          username: credentials.username,
+          password: credentials.password,
+          email: credentials.email
+        })
+
         .then(response => {
           if (response.status === 200) {
-            Notify.create({
-              color: "green-5",
-              textColor: "white",
-              icon: "done",
-              message: "Successfully registered!",
-              timeout: 1500,
-              position: "bottom-right"
-            });
+            notifications.methods.sendSuccessNotification(
+              "Successfully registered!"
+            );
             this.$router.push("/", () => {});
           }
+
           //console.log(response);
         })
+
+        // eslint-disable-next-line no-unused-vars
         .catch(error => {
           //console.log(error);
-          Notify.create({
-            color: "red-5",
-            textColor: "white",
-            icon: "error",
-            message: error.response.data,
-            timeout: 1500,
-            position: "bottom-right"
-          });
+          notifications.methods.sendErrorNotification(
+            "There was an error. Couldn't log in."
+          );
+        })
+
+        .finally(() => {
+          credentials.quasar.loading.hide();
         });
       //console.log(credentials.username);
     },
@@ -118,14 +108,8 @@ export default {
       VueCookies.remove("username");
       VueCookies.remove("refreshToken");
       this.commit("updateAccessToken", VueCookies.get("token"));
-      Notify.create({
-        color: "green-5",
-        textColor: "white",
-        icon: "done",
-        message: "Successfully logged out!",
-        timeout: 1500,
-        position: "bottom-right"
-      });
+
+      notifications.methods.sendSuccessNotification("Successfully logged out!");
       this.$router.push("/", () => {});
     }
   }

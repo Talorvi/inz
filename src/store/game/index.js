@@ -1,6 +1,5 @@
 import axios from "axios";
-import { Notify } from "quasar";
-//import Vue from "vue";
+import functions from "../../functions/notifications";
 import VueCookies from "vue-cookies";
 export default {
   state: {
@@ -23,7 +22,6 @@ export default {
       var config = {
         headers: {
           Authorization: "Bearer " + VueCookies.get("token"),
-          accept: "*/*"
         }
       };
 
@@ -36,14 +34,7 @@ export default {
         .catch(error => {
           console.log(error);
           data.data.loading.hide();
-          Notify.create({
-            color: "red-5",
-            textColor: "white",
-            icon: "error",
-            message: "Oops, there was an error!",
-            timeout: 1500,
-            position: "bottom-right"
-          });
+          functions.methods.sendErrorNotification();
         });
     }
   }
