@@ -10,13 +10,16 @@
         <span>{{ message.text }} </span>
       </div>
     </div>
+
     <q-input
       outlined
       v-model="text"
       v-on:keyup.enter="submit()"
-      label="Outlined"
+      v-bind:label="chosenSender"
       id="chat-message-input"
-    />
+    >
+      <q-btn round dense flat icon="send" v-on:click="submit()" />
+    </q-input>
   </div>
 </template>
 
@@ -27,14 +30,14 @@ import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import axios from "axios";
 import { Notify } from "quasar";
-
 Vue.use(VueChatScroll);
 export default {
   data() {
     return {
       messages: [],
-      chosenSender: "me",
-      stompClient: null
+      chosenSender: "Robert",
+      stompClient: null,
+      scenarioKey: "TESTSCEN"
     };
   },
   mounted() {
@@ -95,6 +98,9 @@ export default {
     },
     checkMessageCorrectness(message) {
       //If message starts with /w
+      if (message.text.trim() === "") {
+        return false;
+      }
       if (/^\//.test(message.text)) {
         if (/^\/w\s+\w+\s+\w+/.test(message.text)) {
           message.type = "whisper";
@@ -118,10 +124,11 @@ export default {
     },
     postMessage(text) {
       console.log("test");
+      var targetURL = "ms/message/scenario/" + this.scenarioKey;
       axios.post(
-        "ms/message/scenario/TESTSCEN",
+        targetURL,
         {
-          characterName: "Robert",
+          characterName: this.chosenSender,
           content: text
         },
         {
