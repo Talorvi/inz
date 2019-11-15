@@ -2,20 +2,14 @@
   <div class="q-pa-md form">
     <div class="row justify-center">
       <div class="col-12 col-md-8 ">
-        <chatForm />
+        <router-view />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import chatForm from "../components/chatForm.vue";
-export default {
-  name: "Chat",
-  components: {
-    chatForm
-  }
-};
+export default {};
 </script>
 
 <style scoped>
