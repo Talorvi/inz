@@ -1,8 +1,8 @@
 import axios from "axios";
-import { Notify } from "quasar";
-//import Vue from "vue";
+import Vue from "vue";
 import VueCookies from "vue-cookies";
-import notifications from "../../functions/notifications";
+Vue.use(VueCookies);
+//import notifications from "../../functions/notifications";
 export default {
   state: {
     characters: [],
@@ -10,31 +10,51 @@ export default {
     scenarioKey: null,
     messages: [],
     gameMaster: null,
-    selectedCharacter: null
+    selectedCharacter: null,
+    characterSelectionList: []
   },
   mutations: {
-    // updateCharacterList: (state, characterList) => {
-    // },
-    // updatePlayerList: (state, playerList) =>{
-    // },
-    // updateMessages: (state, messages) =>{
-    //   }
-    selectFirstAvailableCharacter(state) {
-      if (state.characters.length > 0) {
-        state.selectedCharacter = state.characters[0].name;
-      } else {
-        notifications.methods.sendErrorNotification(
-          "Create your first character"
-        );
+    updateCharacterList(state, characterList) {
+      state.characterNameList = [];
+      for (var i = 0; i < characterList.length; i++) {
+        if (
+          state.selectedCharacter !== null &&
+          state.selectedCharacter.name === characterList.name
+        ) {
+          state.characterSelectionList.push({
+            name: characterList[i].name,
+            index: i,
+            selected: true
+          });
+        } else {
+          state.characterSelectionList.push({
+            name: characterList[i].name,
+            index: i,
+            selected: false
+          });
+        }
+        if (state.selectedCharacter === null && characterList.length > 0) {
+          state.characterSelectionList[0].selected = true;
+          state.selectedCharacter = characterList[0];
+        }
       }
+      state.characters = characterList;
     },
-    changeSelectedCharacter(state, index){
-      state.selectedCharacter = state.characters[index];
+    unselectCharacter(state, payload) {
+      state.characterSelectionList[payload.prevIndex].selected = false;
+      state.selectedCharacter = state.characters[payload.index];
+      state.characterSelectionList[payload.index].selected = true;
     }
   },
   getters: {
     getCharacterList: state => {
       return state.characters;
+    },
+    getCharacterNameList: state => {
+      return state.characterSelectionList;
+    },
+    getSelectedCharacter: state => {
+      return state.selectedCharacter;
     },
     getPlayerList: state => {
       return state.players;
@@ -51,6 +71,36 @@ export default {
     }
   },
   actions: {
+    reloadCharacters(context, data) {
+      data.data.loading.show();
+      var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
+      axios
+        .get(targetURL, {
+          headers: {
+            Authorization: "Bearer " + VueCookies.get("token")
+          }
+        })
+        .then(response => {
+          this.commit("updateCharacterList", response.data);
+          data.data.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          data.data.loading.hide();
+        });
+    },
+    requestDeleteCharacter(context, payload) {
+      var targetURL =
+        "api/action/remove/character/scenario/" + payload.scenarioKey;
+      axios.delete(targetURL, {
+        params: {
+          character: payload.characterName
+        },
+        headers: {
+          Authorization: "Bearer " + VueCookies.get("token")
+        }
+      });
+    }
     //request for messages
     //request for session info
   }
