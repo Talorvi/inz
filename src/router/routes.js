@@ -35,18 +35,30 @@ const routes = [
         }
       },
       {
-        path: "chat",
-        component: () => import("pages/ChatPage.vue"),
-        beforeEnter: (to, from, next) => {
-          loggedRequired(to, from, next);
-        }
-      },
-      {
         path: "profile",
         component: () => import("pages/User/Profile.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         }
+      },
+      //testing routes to delete
+      {
+        path: "test",
+        component: () => import("pages/ComponentTester.vue"),
+
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        },
+        children: [
+          {
+            path: "picker",
+            component: () => import("components/characterPicker.vue")
+          },
+          {
+            path: "chat",
+            component: () => import("components/chatForm.vue")
+          }
+        ]
       }
     ]
   }
