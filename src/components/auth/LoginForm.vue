@@ -1,9 +1,7 @@
 <template>
   <q-card class="login-form">
     <q-form @submit="onSubmit">
-      <q-card-section
-        style="background: radial-gradient(at bottom left, #35a2ff 0%, #014a88 100%)"
-      >
+      <q-card-section class="bg-primary">
         <div class="text-white text-h6">
           Log in
         </div>
@@ -55,7 +53,7 @@
           flat
           size="medium"
           label="Log in"
-          color="primary"
+          color="accent"
         />
       </q-card-actions>
     </q-form>
