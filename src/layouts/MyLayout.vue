@@ -1,16 +1,13 @@
 <template>
   <q-layout view="hHh lpr fFf">
-    <q-header reveal elevated class="bg-primary text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <div class="title" @click="$router.push('/', () => {})">
-            <q-avatar>
-              <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
-            </q-avatar>
-            {{ appName }}
-          </div>
+    <q-header reveal elevated class="bg-primary text-white q-pt-md">
+      <q-toolbar inset>
+        <q-toolbar-title class="title" @click="$router.push('/', () => {})">
+          WAS <strong>RPG</strong>
         </q-toolbar-title>
-
+      </q-toolbar>
+      <q-toolbar>
+        <q-space></q-space>
         <div v-if="isLoggedIn">
           <q-btn dense flat round icon="menu" @click="right = !right" />
         </div>
@@ -133,8 +130,14 @@ export default {
   opacity: 0;
 }
 
+.header {
+  font-size: 2em;
+}
+
 .title {
   cursor: pointer;
   display: inline-block;
+  font-size: 2rem;
+  size: auto;
 }
 </style>
