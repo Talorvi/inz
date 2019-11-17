@@ -79,7 +79,7 @@
         <q-btn
           type="submit"
           flat
-          size="medium"
+          size="lg"
           label="Sign up"
           color="accent"
         />

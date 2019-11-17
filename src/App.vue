@@ -9,6 +9,7 @@ export default {
   name: "App",
   mounted() {
     this.$root.$on("noAuth", msg => this.tryToRefreshToken(msg));
+    //this.$q.dark.set(true);
   },
   methods: {
     tryToRefreshToken(msg) {
