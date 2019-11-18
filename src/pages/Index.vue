@@ -4,7 +4,7 @@
       <div class="col-12 bg-primary q-pa-sm">
         <div class="row justify-center">
           <div class="col-xs-12 col-sm-8">
-            <p class="text-accent text-h3 q-pl-lg q-pt-lg">Test</p>
+            <p class="text-accent text-h3 q-pl-lg q-pt-lg text-weight-bold">Test</p>
             <p class="text-secondary q-pa-lg text-justify">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus cursus, urna et semper imperdiet, tortor tortor cursus odio, quis luctus turpis elit hendrerit lorem. Nulla accumsan purus a rhoncus varius. Aenean sapien augue, mattis faucibus rhoncus et, dapibus vitae dolor. Maecenas tincidunt nulla sed elit tempor, ac gravida ante posuere. Phasellus blandit ut sem et scelerisque. Cras eu nisl vehicula, imperdiet odio vel, tempor urna. Nulla facilisi. Maecenas ac nunc ac ligula fermentum lacinia. Quisque pulvinar massa sit amet lacus fringilla efficitur.
             </p>
