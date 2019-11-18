@@ -1,8 +1,13 @@
 <template>
-  <div class="q-pa-md form">
+  <div>
+    <div class="row bg-primary justify-center">
+      <div class="col-xs-12 col-sm-8">
+        <h3 class="text-accent q-pl-lg">Log in</h3>
+      </div>
+    </div>
     <div class="row justify-center">
       <div class="col-12 col-md-8 ">
-        <LoginForm />
+        <LoginForm class="q-pl-lg q-pt-lg" />
       </div>
     </div>
   </div>
@@ -18,8 +23,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.form {
-  margin-top: 2em;
-}
-</style>
