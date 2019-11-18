@@ -14,7 +14,14 @@
     </div>
     <div class="row justify-center q-pt-lg">
       <div class="col-xs-12 col-sm-8 q-pa-lg text-justify">
-        <p>Duis at mollis diam. Morbi finibus nibh diam, nec fermentum neque facilisis ac. In hendrerit arcu ipsum, luctus faucibus dolor suscipit nec. Nunc a lorem a nunc ultricies consectetur non ac turpis. Ut cursus nisi urna, id pulvinar ligula luctus eget. Ut eget gravida ex. Nulla a justo eu diam aliquam eleifend. Donec pretium a lorem feugiat bibendum. Cras vitae fermentum mauris. Praesent dictum tellus sed purus semper lacinia. Cras arcu leo, porttitor eget odio in, convallis convallis elit. Curabitur a facilisis justo, luctus venenatis ante. Praesent a enim nibh.</p>
+        <div class="row q-col-gutter-xl">
+          <div class="col-xs-12 col-sm-4">
+            <img src="~assets/together.svg" class="image" />
+          </div>
+          <div class="col-xs-12 col-sm-8 self-center">
+            <p>Duis at mollis diam. Morbi finibus nibh diam, nec fermentum neque facilisis ac. In hendrerit arcu ipsum, luctus faucibus dolor suscipit nec. Nunc a lorem a nunc ultricies consectetur non ac turpis. Ut cursus nisi urna, id pulvinar ligula luctus eget. Ut eget gravida ex. Nulla a justo eu diam aliquam eleifend. Donec pretium a lorem feugiat bibendum. Cras vitae fermentum mauris. Praesent dictum tellus sed purus semper lacinia. Cras arcu leo, porttitor eget odio in, convallis convallis elit. Curabitur a facilisis justo, luctus venenatis ante. Praesent a enim nibh.</p>
+          </div>
+        </div>
       </div>
       <div class="col-xs-12 col-sm-8 q-pa-lg">
         <div class="row justify-around">
@@ -31,3 +38,9 @@ export default {
   name: "Index"
 };
 </script>
+
+<style scoped>
+  .image {
+    max-width: 100%;
+  }
+</style>

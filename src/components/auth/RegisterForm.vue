@@ -83,7 +83,7 @@
                   type="submit"
                   flat
                   size="lg"
-                  label="Log in"
+                  label="Sign up"
                   color="accent"
                 />
               </q-card-actions>
