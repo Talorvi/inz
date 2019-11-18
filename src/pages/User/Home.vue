@@ -1,9 +1,5 @@
 <template>
-  <q-page>
-    <div class="row q-pt-lg">
-      <GameList></GameList>
-    </div>
-  </q-page>
+  <GameList></GameList>
 </template>
 
 <script>

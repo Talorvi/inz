@@ -15,7 +15,11 @@
                   v-model="username"
                   label="Username"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || 'Enter username']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter username',
+                    val =>
+                      val.length > 3 ||
+                      'Username should contain more than 3 letters']"
                   class="q-pb-lg"
                 >
                   <template v-slot:prepend>
@@ -27,7 +31,11 @@
                   filled
                   type="password"
                   label="Password"
-                  :rules="[val => (val && val.length > 0) || 'Enter password']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter password',
+                    val =>
+                      val.length > 5 ||
+                      'Password should contain more than 5 letters']"
                   class="q-pb-lg"
                 >
                   <template v-slot:prepend>
@@ -38,10 +46,10 @@
 
               <q-card-section>
                 <div>
-                  <q-btn flat color="primary">
+                  <q-btn flat>
                     Forgot password?
                   </q-btn>
-                  <q-btn flat color="primary">
+                  <q-btn flat>
                     Doesn't have an account?
                   </q-btn>
                 </div>
@@ -49,6 +57,7 @@
 
               <q-card-actions align="center" class="q-pa-sm">
                 <q-btn
+                  class="text-weight-bold"
                   type="submit"
                   flat
                   size="lg"

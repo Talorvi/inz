@@ -88,7 +88,7 @@ export default {
 
         // eslint-disable-next-line no-unused-vars
         .catch(error => {
-          //console.log(error);
+          console.log(JSON.stringify(error));
           notifications.methods.sendErrorNotification(
             "There was an error. Couldn't log in."
           );

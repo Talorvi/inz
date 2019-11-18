@@ -2,7 +2,7 @@
   <div class="row" style="height: 30rem">
     <div class="col-xs-0 col-sm-4 center-image">
       <span class="helper"></span>
-      <img src="~src/assets/play.svg" alt="world image" class="world-image self-center" />
+      <img src="~src/assets/play.svg" alt="play image" class="play-image self-center" />
     </div>
     <div class="col-xs-12 col-sm-8">
       <div class="row justify-center" style="height: 100%">
@@ -32,7 +32,12 @@
                   v-model="username"
                   label="Username"
                   lazy-rules
-                  :rules="[val => (val && val.length > 0) || 'Enter username']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter username',
+                    val =>
+                      val.length > 3 ||
+                      'Username should contain more than 3 letters'
+                  ]"
                 >
                   <template v-slot:prepend>
                     <q-icon name="person" />
@@ -44,7 +49,12 @@
                   filled
                   type="password"
                   label="Password"
-                  :rules="[val => (val && val.length > 0) || 'Enter password']"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter password',
+                    val =>
+                      val.length > 5 ||
+                      'Password should contain more than 5 letters'
+                  ]"
                 >
                   <template v-slot:prepend>
                     <q-icon name="lock" />
@@ -80,6 +90,7 @@
 
               <q-card-actions align="center" class="q-pa-sm">
                 <q-btn
+                  class="text-weight-bold"
                   type="submit"
                   flat
                   size="lg"
@@ -126,7 +137,7 @@ export default {
   max-width: 30em;
   margin: auto;
 }
-.world-image {
+.play-image {
   width: 100%;
   vertical-align: middle;
 }

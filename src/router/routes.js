@@ -41,6 +41,13 @@ const routes = [
           loggedRequired(to, from, next);
         }
       },
+      {
+        path: "new-scenario",
+        component: () => import("pages/Scenario/NewScenario.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
       //testing routes to delete
       {
         path: "test",
