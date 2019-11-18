@@ -6,8 +6,10 @@
       class="scroll-here"
     >
       <div v-for="message in messages" :key="message.id">
-        <span>{{ message.sender }}: </span>
-        <span>{{ message.text }} </span>
+        <span v-if="message.isWhisper" class="whisper-message">From {{ message.sender }}: </span>
+        <span v-else-if="message.type ==='system'" class="system-message">[SYSTEM]: </span>
+        <span v-else :class="{ 'system-message': message.type === 'system','ooc-message': message.type === 'ooc' && message.type !== message.isGM ,'gm-message': message.type === 'ooc' }">{{ message.sender }}: </span>
+        <span :class="{ 'system-message': message.type === 'system', 'ooc-message': message.type === 'ooc' }">{{ message.text }} </span>
       </div>
     </div>
 
@@ -41,6 +43,7 @@ export default {
     };
   },
   mounted() {
+    this.loadOldMessages();
     this.connect();
   },
   methods: {
@@ -49,7 +52,8 @@ export default {
         id: this.messages.length + 1,
         sender: this.chosenSender,
         text: this.text,
-        messageType: "all"
+        type: "character",
+        isWhisper: false
       };
       if (this.checkMessageCorrectness(message)) {
         this.postMessage(message.text);
@@ -61,6 +65,10 @@ export default {
       this.stompClient.subscribe("/ws/scenario/TESTSCEN", this.displayMessage);
     },
     subscribeToPlayerMessages(playerName) {
+      this.stompClient.subscribe(
+        "/ws/scenario/TESTSCEN/player/kappa",
+        this.displayMessage
+      );
       console.log("Player messages: " + playerName);
     },
     displayMessage: function(response) {
@@ -69,9 +77,16 @@ export default {
         id: this.messages.length + 1,
         sender: responseBody.body.sender,
         text: responseBody.body.content,
-        messageType: "all"
+        type: responseBody.body.type,
+        isWhisper: false,
+        isGM: false
       };
-
+      if (responseBody.body.whisperTarget !== null) {
+        message.isWhisper = true;
+      }
+      if(responseBody.body.sender === "admin"){
+        message.isGM = true;
+      }
       this.messages.push(message);
       if (this.messages.length === 50) {
         this.messages.shift();
@@ -87,12 +102,26 @@ export default {
     },
     onConnected() {
       this.subscribeToScenarioMessages("TESTSCEN");
-      this.subscribeToPlayerMessages("test");
+      this.subscribeToPlayerMessages("kappa");
     },
     onError() {
       console.log("Connection Error x");
     },
-    loadOldMessages() {},
+    loadOldMessages() {
+      var targetURL = "/api/api/v1/message/" + this.scenarioKey;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          for (let i = 0; i < response.data.length; i++){
+            this.disp(response.data[i]);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     changeSender(sender) {
       this.chosenSender = sender;
     },
@@ -124,7 +153,7 @@ export default {
     },
     postMessage(text) {
       console.log("test");
-      var targetURL = "ms/message/scenario/" + this.scenarioKey;
+      var targetURL = "/api/action/message/scenario/" + this.scenarioKey;
       axios.post(
         targetURL,
         {
@@ -135,7 +164,28 @@ export default {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
         }
       );
-    }
+    },
+    disp: function(response) {
+      let responseBody = response;
+      let message = {
+        id: this.messages.length + 1,
+        sender : responseBody.sender,
+        text: responseBody.content,
+        type: responseBody.type,
+        isWhisper: false,
+        isGM: false
+      };
+      if(responseBody.sender === "admin"){
+        message.isGM = true;
+      }
+      if (responseBody.whisperTarget !== null) {
+        message.isWhisper = true;
+      }
+      this.messages.push(message);
+      if (this.messages.length === 50) {
+        this.messages.shift();
+      }
+    },
   }
 };
 </script>
@@ -147,5 +197,17 @@ export default {
   height: 650px;
   width: 100%;
   max-width: 450px;
+}
+.gm-message {
+  color: green;
+}
+.ooc-message {
+  color: blue;
+}
+.whisper-message {
+  color: salmon;
+}
+.system-message {
+  font-weight: bold;
 }
 </style>
