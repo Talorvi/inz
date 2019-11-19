@@ -2,7 +2,7 @@
   <q-page>
     <div class="row">
       <div class="q-pa-sm col-xs-12 col-sm-4 col-md-3">
-        <div class="row justify-center content-center" style="height: 100%">
+        <div class="row justify-center" style="height: 100%">
           <div class="col-auto q-pa-xs-none q-pa-md">
             <q-btn size="lg" color="accent" round>
               <q-icon name="add" @click="$router.push('/new-scenario', () => {})"></q-icon>
@@ -11,7 +11,7 @@
         </div>
       </div>
       <div class="q-pa-sm col-xs-12 col-sm-8 col-md-6">
-        <q-card v-for="game in games" v-bind:key="game.scenario_key">
+        <q-card v-for="game in games" v-bind:key="game.scenario_key" class="q-mb-md">
           <q-card-section class="bg-primary">
             <div class="text-h5 text-white">
               <q-badge align="middle" class="bg-transparent">

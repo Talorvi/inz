@@ -67,7 +67,11 @@
                         label="Max Players"
                         filled
                         :rules="[val => val > 0 || 'Enter valid player number']"
-                      />
+                      >
+                        <template v-slot:prepend>
+                          <q-icon name="people" />
+                        </template>
+                      </q-input>
                     </q-card-section>
                     <q-card-actions align="center">
                       <q-btn
@@ -106,11 +110,12 @@ export default {
       // eslint-disable-next-line no-undef
       // this.$root.$emit("noAuth");
 
-      // this.$store.dispatch("retrieveToken", {
-      //   username: this.username,
-      //   password: this.password,
-      //   quasar: this.$q
-      // });
+      this.$store.dispatch("addNewScenario", {
+        name: this.name,
+        password: this.password,
+        quasar: this.$q,
+        router: this.$router
+      });
     }
   }
 };
