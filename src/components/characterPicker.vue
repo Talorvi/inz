@@ -33,7 +33,8 @@
       >
         <q-item-section v-on:click="clickedOnItem(character)">{{
           character.name
-        }}</q-item-section>
+        }}{{character.length}}
+        </q-item-section>
         <q-btn
           size="12px"
           flat
@@ -50,6 +51,24 @@
 
 <script>
 export default {
+  // data() {
+  //   return {
+  //     // characters: [
+  //     //   { name: "alfa", selected: false },
+  //     //   { name: "beta", selected: false },
+  //     //   { name: "gamma", selected: false },
+  //     //   { name: "delta", selected: false }
+  //     // ],
+  //     isGameMaster: false,
+  //     selectedCharacter: null
+  //   };
+  // },
+  // computed: {
+  //   characters(){
+  //     return this.$store.getters.getCharacterNameList;
+  //   }
+  // }
+
   data() {
     return {
       isGameMaster: false
@@ -102,7 +121,8 @@ export default {
             this.$store.dispatch("requestDeleteCharacter", {
               data: this.$q,
               scenarioKey: "TESTSCEN",
-              characterName: character.name
+              characterName: character.name,
+              index: i
             });
           }
         }

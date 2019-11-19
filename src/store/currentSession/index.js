@@ -7,15 +7,14 @@ export default {
   state: {
     characters: [],
     players: [],
-    scenarioKey: null,
-    messages: [],
+    scenarioKey: "TESTSCEN",
     gameMaster: null,
     selectedCharacter: null,
     characterSelectionList: []
   },
   mutations: {
     updateCharacterList(state, characterList) {
-      state.characterNameList = [];
+      state.characterSelectionList = [];
       for (var i = 0; i < characterList.length; i++) {
         if (
           state.selectedCharacter !== null &&
@@ -47,27 +46,24 @@ export default {
     }
   },
   getters: {
-    getCharacterList: state => {
+    getCharacters: state => {
       return state.characters;
     },
-    getCharacterNameList: state => {
-      return state.characterSelectionList;
+    getPlayer: state => {
+      return state.players;
+    },
+    getScenarioKey(state) {
+      return state.scenarioKey;
+    },
+    getGameMaster(state) {
+      return state.gameMaster;
     },
     getSelectedCharacter: state => {
       return state.selectedCharacter;
     },
-    getPlayerList: state => {
-      return state.players;
-    },
-    getMessages: state => {
-      return state.messages;
-    },
-    getCharaterListNames: state => {
-      var nameArray = [];
-      state.characters.forEach(function(item) {
-        nameArray.push({ name: item.name, selected: false });
-      });
-      return nameArray;
+    //Return list of character with info if they are currently selected
+    getCharacterNameList: state => {
+      return state.characterSelectionList;
     }
   },
   actions: {
