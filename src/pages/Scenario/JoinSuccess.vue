@@ -3,7 +3,7 @@
     <div class="row bg-secondary justify-center">
       <div class="col-xs-12 col-sm-8">
         <h4 class="text-accent q-pl-lg text-weight-bold text-uppercase">
-          New Scenario
+          Congratulations
         </h4>
       </div>
     </div>
@@ -21,12 +21,15 @@
           <div class="col-xs-12 col-sm-8 self-center">
             <div class="row justify-center">
               <div class="col-auto text-center q-pa-xs-md q-pa-sm-md">
-                <h2 class="text-accent text-bold">{{ $route.params.code.toUpperCase() }}</h2><br />
                 <p class="text-h5 q-pb-md q-ml-lg q-mr-lg">
-                  Invite your friends to your newly created scenario with that
-                  code
+                  You have successfully joined to a game.
                 </p>
-                <q-btn color="accent" size="lg" @click="$router.push('/', () => {})">Got it</q-btn>
+                <q-btn
+                  color="accent"
+                  size="lg"
+                  @click="$router.push('/', () => {})"
+                  >Got it</q-btn
+                >
               </div>
             </div>
           </div>

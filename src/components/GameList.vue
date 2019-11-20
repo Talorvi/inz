@@ -4,8 +4,11 @@
       <div class="q-pa-sm col-xs-12 col-sm-4 col-md-3">
         <div class="row justify-center" style="height: 100%">
           <div class="col-auto q-pa-xs-none q-pa-md">
-            <q-btn size="lg" color="accent" round>
-              <q-icon name="add" @click="$router.push('/new-scenario', () => {})"></q-icon>
+            <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/new-scenario', () => {})">
+              Create
+            </q-btn>
+            <q-btn style="width: 100%" class="q-mt-md" size="lg" color="primary" @click="$router.push('/join-scenario', () => {})">
+              Join
             </q-btn>
           </div>
         </div>

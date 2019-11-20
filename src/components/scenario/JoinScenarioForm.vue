@@ -3,19 +3,19 @@
     <div class="row bg-secondary justify-center">
       <div class="col-xs-12 col-sm-8">
         <h4 class="text-accent q-pl-lg text-weight-bold text-uppercase">
-          New Scenario
+          Join Scenario
         </h4>
       </div>
     </div>
     <div class="row">
       <div class="col-xs-12 col-sm-8 offset-xs-0 offset-sm-2">
-        <div class="row justify-center q-pt-md">
-          <div class="col-xs-0 col-sm-4 center-image" style="height: 20rem">
+        <div class="row justify-center q-pt-md" style="height: 20rem">
+          <div class="col-xs-0 col-sm-4 center-image">
             <span class="helper"></span>
             <img
-              src="~src/assets/pizzashare.svg"
-              alt="pizza image"
-              class="pizza-image self-center"
+              src="~src/assets/search.svg"
+              alt="search image"
+              class="search-image self-center"
             />
           </div>
           <div class="col-xs-12 col-sm-8 self-center">
@@ -27,27 +27,23 @@
                   class="q-pt-lg"
                 >
                   <q-form @submit="onSubmit">
-                    <q-card-section>
+                    <q-card-section class="q-px-lg q-pt-lg q-pb-none">
                       <q-input
-                        v-model="name"
                         filled
-                        label="Scenario name"
-                        :rules="[
-                          val =>
-                            (val && val.length > 0) || 'Enter scenario name',
-                          val =>
-                            val.length > 3 ||
-                            'The name should contain more than 3 letters'
-                        ]"
+                        v-model="scenarioKey"
+                        label="Scenario Key"
+                        fill-mask
                         class="q-pb-lg"
+                        mask="XXXXXXXX"
                       >
                         <template v-slot:prepend>
-                          <q-icon name="text_format" />
+                          <q-icon name="vpn_key" />
                         </template>
                       </q-input>
                       <q-input
                         v-model="password"
                         filled
+                        type="password"
                         label="Password"
                         :rules="[
                           val => (val && val.length > 0) || 'Enter password',
@@ -60,25 +56,14 @@
                           <q-icon name="lock" />
                         </template>
                       </q-input>
-<!--                      <q-input-->
-<!--                        v-model.number="maxPlayers"-->
-<!--                        type="number"-->
-<!--                        label="Max Players"-->
-<!--                        filled-->
-<!--                        :rules="[val => val > 0 || 'Enter valid player number']"-->
-<!--                      >-->
-<!--                        <template v-slot:prepend>-->
-<!--                          <q-icon name="people" />-->
-<!--                        </template>-->
-<!--                      </q-input>-->
                     </q-card-section>
-                    <q-card-actions align="center">
+                    <q-card-actions align="center" class="q-pa-sm">
                       <q-btn
                         class="text-weight-bold"
                         type="submit"
                         flat
                         size="lg"
-                        label="Create"
+                        label="Join"
                         color="accent"
                       />
                     </q-card-actions>
@@ -95,12 +80,11 @@
 
 <script>
 export default {
-  name: "NewScenarioForm",
+  name: "JoinScenarioForm",
   data() {
     return {
-      name: null,
-      password: null,
-      maxPlayers: 5
+      scenarioKey: null,
+      password: null
     };
   },
   methods: {
@@ -109,8 +93,8 @@ export default {
       // eslint-disable-next-line no-undef
       // this.$root.$emit("noAuth");
 
-      this.$store.dispatch("addNewScenario", {
-        name: this.name,
+      this.$store.dispatch("joinScenario", {
+        scenarioKey: this.scenarioKey,
         password: this.password,
         quasar: this.$q,
         router: this.$router
@@ -121,7 +105,7 @@ export default {
 </script>
 
 <style scoped>
-.pizza-image {
+.search-image {
   width: 100%;
   vertical-align: middle;
 }

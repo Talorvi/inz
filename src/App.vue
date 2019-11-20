@@ -7,15 +7,10 @@
 <script>
 export default {
   name: "App",
-  mounted() {
-    this.$root.$on("noAuth", msg => this.tryToRefreshToken(msg));
+  beforeCreate() {
+    //this.$root.$on("noAuth", msg => this.tryToRefreshToken(msg));
     //this.$q.dark.set(true);
-  },
-  methods: {
-    tryToRefreshToken(msg) {
-      console.log(msg);
-      // alert('a');
-    }
+    this.$store.dispatch("refreshToken");
   }
 };
 </script>

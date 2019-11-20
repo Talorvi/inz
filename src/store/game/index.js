@@ -53,7 +53,35 @@ export default {
         // eslint-disable-next-line no-unused-vars
         .then(response => {
           data.quasar.loading.hide();
-          this.$router.push("/success/"+response.data, () => {});
+          this.$router.push("/success/" + response.data, () => {});
+        })
+        .catch(error => {
+          console.log(JSON.stringify(error));
+          data.quasar.loading.hide();
+          functions.methods.sendErrorNotification();
+        });
+    },
+    joinScenario: function(context, data) {
+      data.quasar.loading.show();
+      var config = {
+        headers: {
+          Authorization: "Bearer " + VueCookies.get("token")
+        }
+      };
+      var postData = {
+        password: data.password
+      };
+      axios
+        .post(
+          "http://localhost:8080/action/join/scenario/" +
+            data.scenarioKey,
+          postData,
+          config
+        )
+        // eslint-disable-next-line no-unused-vars
+        .then(response => {
+          data.quasar.loading.hide();
+          this.$router.push("/join-success", () => {});
         })
         .catch(error => {
           console.log(JSON.stringify(error));

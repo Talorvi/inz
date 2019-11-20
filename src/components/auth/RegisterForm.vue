@@ -1,5 +1,5 @@
 <template>
-  <div class="row" style="height: 30rem">
+  <div class="row" style="height: 35rem">
     <div class="col-xs-0 col-sm-4 center-image">
       <span class="helper"></span>
       <img src="~src/assets/play.svg" alt="play image" class="play-image self-center" />
