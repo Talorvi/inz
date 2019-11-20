@@ -63,8 +63,6 @@ export default {
               response.data.expires_in - 3480
             );
 
-            console.log("Token odświeży się: " + refreshTime);
-
             const now = new Date();
 
             setTimeout(function() {
@@ -138,10 +136,6 @@ export default {
 
 function refreshToken(context) {
   if (VueCookies.isKey("refreshToken")) {
-    console.log("Oświeżanie tokenu");
-
-    console.log("Stary token: " + VueCookies.get("token"));
-
     const auth = {
       username: process.env.API_USERNAME,
       password: process.env.API_PASSWORD
@@ -167,13 +161,11 @@ function refreshToken(context) {
           );
 
           context.commit("updateAccessToken", response.data.access_token);
-          console.log("Nowy token: " + VueCookies.get("token"));
         }
       })
 
       // eslint-disable-next-line no-unused-vars
       .catch(error => {
-        console.log(error);
         VueCookies.remove("token");
         VueCookies.remove("username");
         VueCookies.remove("refreshToken");
