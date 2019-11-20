@@ -61,12 +61,6 @@ export default {
     };
   },
   computed: {
-    scenarioKey() {
-      return this.$store.getters.getScenarioKey;
-    },
-    userName(){
-      return this.$store.getters.getUserName();
-    }
   },
   //Disconnecting socket on leaving component
   beforeDestroy() {
@@ -97,19 +91,18 @@ export default {
       event.preventDefault();
     },
     onConnected() {
-      this.subscribeToScenarioMessages(this.scenarioKey);
-      this.subscribeToPlayerMessages(this.userName, this.scenarioKey);
+      this.subscribeToScenarioMessages(this.$store.getters.getScenarioKey);
+      this.subscribeToPlayerMessages("kappa", this.$store.getters.getScenarioKey);
     },
     onError() {
       console.log("Connection Error x");
     },
     checkWebSocketResponse(response) {
-      if(response.action === "message"){
+      if (response.action === "message") {
         this.displayMessage(response);
       }
       //else if
       //emit particular event depending on action type
-
     },
     //PostMessage Functionality
     submit() {
@@ -131,7 +124,7 @@ export default {
       axios.post(
         targetURL,
         {
-          characterName: this.chosenSender,
+          characterName: this.$store.getters.getSelectedCharacter.name,
           content: text
         },
         {
@@ -164,14 +157,15 @@ export default {
     },
     //Loading old messages functionality
     loadOldMessages() {
-      var targetURL = "/api/api/v1/scenario/" + this.scenarioKey + "/message";
+      var targetURL = "/api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/message";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
         })
         .then(response => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.displayOldMessage(response.data[i]);
+          var msg = response.data.reverse();
+          for (let i = 0; i < msg.length; i++) {
+            this.displayOldMessage(msg[i]);
           }
         })
         .catch(error => {
