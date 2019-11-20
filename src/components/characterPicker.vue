@@ -27,12 +27,12 @@
         active-class="bg-teal-1"
         clickable
         v-ripple
-        v-for="character in this.$store.getters.getCharacters"
+        v-for="(character, index) in this.$store.getters.getCharacterSelectionList"
         :key="character.name"
         :active="character.selected"
       >
-        <q-item-section v-on:click="clickedOnItem(character)"
-          >{{ character.name }}{{ character.length }}
+        <q-item-section v-on:click="clickedOnItem(character, index)"
+          >{{ character.name }}
         </q-item-section>
         <q-btn
           size="12px"
@@ -41,7 +41,7 @@
           round
           icon="delete"
           color="black"
-          v-on:click="deleteCharacter(character)"
+          v-on:click="deleteCharacter(character, index)"
         />
       </q-item>
     </q-list>
@@ -58,44 +58,13 @@ export default {
       isGameMaster: false
     };
   },
+  computed: {
+    selectedCharacterList() {
+      return this.$store.getters.getCharacterSelectionList;
+    }
+  },
   methods: {
-  // data() {
-  //   return {
-  //     // characters: [
-  //     //   { name: "alfa", selected: false },
-  //     //   { name: "beta", selected: false },
-  //     //   { name: "gamma", selected: false },
-  //     //   { name: "delta", selected: false }
-  //     // ],
-  //     isGameMaster: false,
-  //     selectedCharacter: null
-  //   };
-  // },
-  // computed: {
-  //   characters(){
-  //     return this.$store.getters.getCharacterNameList;
-  //   }
-  // }
-
-  // data() {
-  //   return {
-  //     isGameMaster: false
-  //   };
-  // },
-  //
-  // beforeCreate() {
-  //   this.$store.dispatch("reloadCharacters", {
-  //     data: this.$q
-  //   });
-  // },
-  // computed: {
-  //   characters() {
-  //     return this.$store.getters.getCharacterNameList;
-  //   }
-  // },
-  //
-  // methods: {
-    clickedOnItem(character) {
+    clickedOnItem(character, index) {
       console.log("before:" + this.$store.getters.getSelectedCharacter.name);
       if (character.name === this.$store.getters.getSelectedCharacter.name) {
         console.log("You cannot unselect character");
@@ -103,38 +72,34 @@ export default {
         var prevIndex = 0;
         for (
           var i = 0;
-          i < this.$store.getters.getCharacterNameList.length;
+          i < this.$store.getters.getCharacterSelectionList.length;
           i++
         ) {
           if (
-            this.$store.getters.getCharacterNameList[i].name ===
+            this.$store.getters.getCharacterSelectionList[i].name ===
             this.$store.getters.getSelectedCharacter.name
           ) {
             prevIndex = i;
           }
         }
-        this.$store.commit("unselectCharacter", {
-          index: character.index,
+        this.$store.commit("changeSelectedCharacter", {
+          index: index,
           prevIndex: prevIndex
         });
       }
       console.log("after:" + this.$store.getters.getSelectedCharacter.name);
     },
-    deleteCharacter(character) {
-      console.log(character.name);
-      for (var i = 0; i < this.$store.getters.getCharacters.length; i++) {
-        if (this.$store.getters.getCharacters[i].name === character.name) {
-          console.log("Mielon" + character.name);
-          if (confirm("Are you sure you want to delete this character?")) {
-            this.$store.dispatch("requestDeleteCharacter", {
-              data: this.$q,
-              scenarioKey: "TESTSCEN",
-              characterName: character.name,
-              index: i
-            });
-          }
+      deleteCharacter(character, index) {
+        console.log(character.name);
+        if (confirm("Are you sure you want to delete this character?")) {
+          this.$store.dispatch("requestDeleteCharacter", {
+            data: this.$q,
+            scenarioKey: "TESTSCEN",
+            characterName: character.name,
+            index: index
+          });
         }
-      }
+
     }
   }
 };

@@ -13,43 +13,64 @@ export default {
     characterSelectionList: []
   },
   mutations: {
-    updateCharacterList(state, characterList) {
-      state.characterSelectionList = [];
-      for (var i = 0; i < characterList.length; i++) {
-        if (
-          state.selectedCharacter !== null &&
-          state.selectedCharacter.name === characterList.name
-        ) {
-          state.characterSelectionList.push({
-            name: characterList[i].name,
-            index: i,
-            selected: true
-          });
-        } else {
-          state.characterSelectionList.push({
-            name: characterList[i].name,
-            index: i,
-            selected: false
-          });
-        }
-        if (state.selectedCharacter === null && characterList.length > 0) {
-          state.characterSelectionList[0].selected = true;
-          state.selectedCharacter = characterList[0];
-        }
+    updateCharacterList(context, characterList) {
+      context.characterSelectionList = [];
+      var isSelectedCharacter = false;
+      console.log(characterList.length);
+      //if there are no characters for player
+      if (characterList.length < 1) {
+        context.selectedCharacter = null;
+        context.characters = [];
       }
-      state.characters = characterList;
+      //if there are characters for player
+      else {
+        //Check if selected character wasn't deleted
+        if (context.selectedCharacter !== null) {
+          for (var i = 0; i < characterList.length; i++) {
+            if (characterList[i].name === context.selectedCharacter.name)
+              isSelectedCharacter = true;
+          }
+        }
+        if (isSelectedCharacter === false) {
+          context.selectedCharacter = characterList[0];
+          context.characterSelectionList.push({
+            name: characterList[0].name,
+            selected: true,
+            owner: characterList[0].owner
+          });
+          for (let i = 1; i < characterList.length; i++) {
+            context.characterSelectionList.push({
+              name: characterList[i].name,
+              selected: false,
+              owner: characterList[i].owner
+            });
+          }
+        } else {
+          for (let i = 0; i < characterList.length; i++) {
+            if (context.selectedCharacter.name === characterList[i].name) {
+              context.characterSelectionList.push({
+                name: characterList[i].name,
+                selected: true,
+                owner: characterList[i].owner
+              });
+            } else {
+              context.characterSelectionList.push({
+                name: characterList[i].name,
+                selected: false,
+                owner: characterList[i].owner
+              });
+            }
+          }
+        }
+        context.characters = characterList;
+      }
     },
-    unselectCharacter(state, payload) {
+    changeSelectedCharacter(state, payload) {
       state.characterSelectionList[payload.prevIndex].selected = false;
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
+      console.log("Commit clicked on " + state.characters[payload.index]);
     },
-    deleteOne(state, payload) {
-      console.log(state.characters.length);
-      console.log("Payload: " + payload);
-      state.characters.splice(0, 1);
-      console.log(state.characters.length);
-    }
   },
   getters: {
     getCharacters: state => {
@@ -68,7 +89,7 @@ export default {
       return state.selectedCharacter;
     },
     //Return list of character with info if they are currently selected
-    getCharacterNameList: state => {
+    getCharacterSelectionList: state => {
       return state.characterSelectionList;
     }
   },
@@ -106,7 +127,7 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
-            console.log("Success");
+            console.log(" delete request");
             context.dispatch("reloadCharacters");
           }
           //console.log(response);
