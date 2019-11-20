@@ -73,12 +73,21 @@ export default {
     subscribeToScenarioMessages(scenarioID) {
       console.log("Scenario messages sub:" + scenarioID);
       let targetUrl = "/ws/scenario/" + scenarioID;
-      this.stompClient.subscribe(targetUrl, this.displayMessage);
+      this.stompClient.subscribe(targetUrl, this.checkResponseType);
     },
     subscribeToPlayerMessages(playerName, scenarioID) {
       var targetUrl = "/ws/scenario/" + scenarioID + "/player/" + playerName;
-      this.stompClient.subscribe(targetUrl, this.displayMessage);
+      this.stompClient.subscribe(targetUrl, this.checkResponseType);
       console.log("Player messages: " + playerName);
+    },
+    checkResponseType: function(response){
+      console.log("Object response");
+      let resp = response;
+      var objectResponse = JSON.parse(resp.body);
+      if(objectResponse.action === "message"){
+        console.log("Is A message: " + objectResponse.action);
+        this.displayMessage(objectResponse.body);
+      }
     },
     connect() {
       var socket = new SockJS("http://192.168.99.100:8080/rpg-server");
@@ -133,22 +142,22 @@ export default {
       );
     },
     displayMessage: function(response) {
-      console.log("Odebrana wiadomosc: " + response);
-      let responseBody = JSON.parse(response.body);
-      console.log(responseBody.content);
+      console.log("Odebrana wiadomosc: " + response.action);
+      console.log("Kontent: "+ response.content);
+      let responseBody = response;
       let message = {
         id: this.messages.length + 1,
-        sender: responseBody.body.sender,
-        text: responseBody.body.content,
-        type: responseBody.body.type,
+        sender: responseBody.sender,
+        text: responseBody.content,
+        type: responseBody.type,
         isWhisper: false,
         isGM: false
       };
-      if (responseBody.body.whisperTarget !== null) {
-        message.isWhisper = true;
-      }
-      if (responseBody.body.sender === "admin") {
+      if (responseBody.sender === "admin") {
         message.isGM = true;
+      }
+      if (responseBody.whisperTarget !== null) {
+        message.isWhisper = true;
       }
       this.messages.push(message);
       if (this.messages.length === 50) {
@@ -168,7 +177,7 @@ export default {
         .then(response => {
           var msg = response.data.reverse();
           for (let i = 0; i < msg.length; i++) {
-            this.displayOldMessage(msg[i]);
+            this.displayMessage(msg[i]);
           }
         })
         .catch(error => {
@@ -201,33 +210,6 @@ export default {
       }
       return true;
     },
-    displayOldMessage: function(response) {
-      let responseBody = response;
-      let message = {
-        id: this.messages.length + 1,
-        sender: responseBody.sender,
-        text: responseBody.content,
-        type: responseBody.type,
-        isWhisper: false,
-        isGM: false
-      };
-      if (responseBody.sender === "admin") {
-        message.isGM = true;
-      }
-      if (responseBody.whisperTarget !== null) {
-        message.isWhisper = true;
-      }
-      this.messages.push(message);
-      if (this.messages.length === 50) {
-        this.messages.shift();
-      }
-    },
-    checkResponseType: function(response){
-      if(response.action === "message"){
-        let responseBody = JSON.parse(response.body);
-        this.displayMessage(responseBody)
-      }
-    }
   }
 };
 </script>
