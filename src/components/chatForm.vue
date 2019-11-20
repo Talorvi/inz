@@ -36,7 +36,7 @@
       outlined
       v-model="text"
       v-on:keyup.enter="submit()"
-      v-bind:label="chosenSender"
+      v-bind:label="this.$store.getters.getSelectedCharacter.name"
       id="chat-message-input"
     >
       <q-btn round dense flat icon="send" v-on:click="submit()" />
@@ -56,11 +56,9 @@ export default {
   data() {
     return {
       messages: [],
-      chosenSender: "Robert",
-      stompClient: null
+      stompClient: null,
+      text: ""
     };
-  },
-  computed: {
   },
   //Disconnecting socket on leaving component
   beforeDestroy() {
@@ -82,17 +80,19 @@ export default {
       this.stompClient.subscribe(targetUrl, this.displayMessage);
       console.log("Player messages: " + playerName);
     },
-    connect(event) {
+    connect() {
       var socket = new SockJS("http://192.168.99.100:8080/rpg-server");
       var header = { "X-Authorization": this.$store.getters.loggedIn };
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(header, this.onConnected, this.onError);
 
-      event.preventDefault();
     },
     onConnected() {
       this.subscribeToScenarioMessages(this.$store.getters.getScenarioKey);
-      this.subscribeToPlayerMessages("kappa", this.$store.getters.getScenarioKey);
+      this.subscribeToPlayerMessages(
+        "kappa",
+        this.$store.getters.getScenarioKey
+      );
     },
     onError() {
       console.log("Connection Error x");
@@ -108,7 +108,7 @@ export default {
     submit() {
       let message = {
         id: this.messages.length + 1,
-        sender: this.chosenSender,
+        sender: this.$store.getters.getSelectedCharacter.name,
         text: this.text,
         type: "character",
         isWhisper: false
@@ -120,7 +120,7 @@ export default {
     },
     postMessage(text) {
       console.log("wysylam wiadomosc");
-      var targetURL = "/api/action/message/scenario/" + this.scenarioKey;
+      var targetURL = "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
       axios.post(
         targetURL,
         {
@@ -157,7 +157,10 @@ export default {
     },
     //Loading old messages functionality
     loadOldMessages() {
-      var targetURL = "/api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/message";
+      var targetURL =
+        "/api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/message";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -217,6 +220,12 @@ export default {
       this.messages.push(message);
       if (this.messages.length === 50) {
         this.messages.shift();
+      }
+    },
+    checkResponseType: function(response){
+      if(response.action === "message"){
+        let responseBody = JSON.parse(response.body);
+        this.displayMessage(responseBody)
       }
     }
   }
