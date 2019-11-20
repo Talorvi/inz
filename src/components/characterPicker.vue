@@ -27,13 +27,12 @@
         active-class="bg-teal-1"
         clickable
         v-ripple
-        v-for="character in characters"
+        v-for="character in this.$store.getters.getCharacters"
         :key="character.name"
         :active="character.selected"
       >
-        <q-item-section v-on:click="clickedOnItem(character)">{{
-          character.name
-        }}{{character.length}}
+        <q-item-section v-on:click="clickedOnItem(character)"
+          >{{ character.name }}{{ character.length }}
         </q-item-section>
         <q-btn
           size="12px"
@@ -51,6 +50,15 @@
 
 <script>
 export default {
+  mounted() {
+    this.$store.dispatch("reloadCharacters");
+  },
+  data() {
+    return {
+      isGameMaster: false
+    };
+  },
+  methods: {
   // data() {
   //   return {
   //     // characters: [
@@ -69,24 +77,24 @@ export default {
   //   }
   // }
 
-  data() {
-    return {
-      isGameMaster: false
-    };
-  },
-
-  beforeCreate() {
-    this.$store.dispatch("reloadCharacters", {
-      data: this.$q
-    });
-  },
-  computed: {
-    characters() {
-      return this.$store.getters.getCharacterNameList;
-    }
-  },
-
-  methods: {
+  // data() {
+  //   return {
+  //     isGameMaster: false
+  //   };
+  // },
+  //
+  // beforeCreate() {
+  //   this.$store.dispatch("reloadCharacters", {
+  //     data: this.$q
+  //   });
+  // },
+  // computed: {
+  //   characters() {
+  //     return this.$store.getters.getCharacterNameList;
+  //   }
+  // },
+  //
+  // methods: {
     clickedOnItem(character) {
       console.log("before:" + this.$store.getters.getSelectedCharacter.name);
       if (character.name === this.$store.getters.getSelectedCharacter.name) {
@@ -113,10 +121,10 @@ export default {
       console.log("after:" + this.$store.getters.getSelectedCharacter.name);
     },
     deleteCharacter(character) {
-      console.log(this.games);
-      for (var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].name === character.name) {
-          console.log(character.name);
+      console.log(character.name);
+      for (var i = 0; i < this.$store.getters.getCharacters.length; i++) {
+        if (this.$store.getters.getCharacters[i].name === character.name) {
+          console.log("Mielon" + character.name);
           if (confirm("Are you sure you want to delete this character?")) {
             this.$store.dispatch("requestDeleteCharacter", {
               data: this.$q,

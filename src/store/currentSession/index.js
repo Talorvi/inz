@@ -43,6 +43,12 @@ export default {
       state.characterSelectionList[payload.prevIndex].selected = false;
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
+    },
+    deleteOne(state, payload) {
+      console.log(state.characters.length);
+      console.log("Payload: " + payload);
+      state.characters.splice(0, 1);
+      console.log(state.characters.length);
     }
   },
   getters: {
@@ -67,8 +73,8 @@ export default {
     }
   },
   actions: {
-    reloadCharacters(context, data) {
-      data.data.loading.show();
+    reloadCharacters() {
+      //data.data.loading.show();
       var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
       axios
         .get(targetURL, {
@@ -78,24 +84,33 @@ export default {
         })
         .then(response => {
           this.commit("updateCharacterList", response.data);
-          data.data.loading.hide();
+          console.l;
+          //data.data.loading.hide();
         })
         .catch(error => {
           console.log(error);
-          data.data.loading.hide();
+          //data.data.loading.hide();
         });
     },
     requestDeleteCharacter(context, payload) {
       var targetURL =
         "api/action/remove/character/scenario/" + payload.scenarioKey;
-      axios.delete(targetURL, {
-        params: {
-          character: payload.characterName
-        },
-        headers: {
-          Authorization: "Bearer " + VueCookies.get("token")
-        }
-      });
+      axios
+        .delete(targetURL, {
+          params: {
+            character: payload.characterName
+          },
+          headers: {
+            Authorization: "Bearer " + VueCookies.get("token")
+          }
+        })
+        .then(response => {
+          if (response.status === 200) {
+            console.log("Success");
+            context.dispatch("reloadCharacters");
+          }
+          //console.log(response);
+        });
     }
     //request for messages
     //request for session info
