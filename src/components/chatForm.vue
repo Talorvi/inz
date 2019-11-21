@@ -73,20 +73,27 @@ export default {
     subscribeToScenarioMessages(scenarioID) {
       console.log("Scenario messages sub:" + scenarioID);
       let targetUrl = "/ws/scenario/" + scenarioID;
-      this.stompClient.subscribe(targetUrl, this.checkResponseType);
+      this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
     },
     subscribeToPlayerMessages(playerName, scenarioID) {
       var targetUrl = "/ws/scenario/" + scenarioID + "/player/" + playerName;
-      this.stompClient.subscribe(targetUrl, this.checkResponseType);
+      this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
       console.log("Player messages: " + playerName);
     },
-    checkResponseType: function(response){
+    checkWebSocketResponseType: function(response){
       console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
       if(objectResponse.action === "message"){
         console.log("Is A message: " + objectResponse.action);
         this.displayMessage(objectResponse.body);
+      }
+      else if(objectResponse.action === "reload"){
+        if(objectResponse.target === "characters"){
+          console.log("Reloading characters via socket");
+          this.$store.dispatch("reloadCharacters");
+        }
+        //do some stuff here
       }
     },
     connect() {

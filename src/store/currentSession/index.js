@@ -10,7 +10,8 @@ export default {
     scenarioKey: "TESTSCEN",
     gameMaster: null,
     selectedCharacter: null,
-    characterSelectionList: []
+    characterSelectionList: [],
+    onlinePlayers: []
   },
   mutations: {
     updateCharacterList(context, characterList) {
@@ -65,6 +66,11 @@ export default {
         context.characters = characterList;
       }
     },
+    updatePlayerList(context, playerList){
+      context.gameMaster = playerList.gameMaster;
+      context.onlinePlayers = playerList.onlinePlayers;
+      context.players = playerList;
+    },
     changeSelectedCharacter(state, payload) {
       state.characterSelectionList[payload.prevIndex].selected = false;
       state.selectedCharacter = state.characters[payload.index];
@@ -94,7 +100,7 @@ export default {
     }
   },
   actions: {
-    reloadCharacters() {
+    reloadCharacters(context) {
       //data.data.loading.show();
       var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
       axios
@@ -104,8 +110,7 @@ export default {
           }
         })
         .then(response => {
-          this.commit("updateCharacterList", response.data);
-          console.l;
+          context.commit("updateCharacterList", response.data);
           //data.data.loading.hide();
         })
         .catch(error => {
@@ -128,9 +133,25 @@ export default {
         .then(response => {
           if (response.status === 200) {
             console.log(" delete request");
-            context.dispatch("reloadCharacters");
           }
           //console.log(response);
+        });
+    },
+    reloadPlayers(context) {
+      var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/player";
+      axios
+        .get(targetURL, {
+          headers: {
+            Authorization: "Bearer " + VueCookies.get("token")
+          }
+        })
+        .then(response => {
+          context.commit("updatePlayerList", response.data);
+          //data.data.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          //data.data.loading.hide();
         });
     }
     //request for messages
