@@ -1,11 +1,11 @@
 <template>
   <q-page class="flex flex-center">
-    <h5>Index page</h5>
+    <h5>Profile page</h5>
   </q-page>
 </template>
 
 <script>
 export default {
-  name: "Index"
+  name: "Profile"
 };
 </script>

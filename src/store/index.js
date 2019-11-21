@@ -1,25 +1,20 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import VueCookies from "vue-cookies";
 
-// import example from './module-example'
+import user from "./user";
+import registration from "./registration";
+import game from "./game";
+import currentSession from "./currentSession"
 
 Vue.use(Vuex);
+Vue.use(VueCookies);
 
-/*
- * If not building with SSR mode, you can
- * directly export the Store instantiation
- */
-
-export default function(/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
-      // example
-    },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode only
-    strict: process.env.DEV
-  });
-
-  return Store;
-}
+export default new Vuex.Store({
+  modules: {
+    user: user,
+    registration: registration,
+    game: game,
+    currentSession: currentSession
+  }
+});
