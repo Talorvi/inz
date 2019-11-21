@@ -1,20 +1,11 @@
 <template>
   <div id="q-app">
-    <router-view></router-view>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
-  mounted() {
-    this.$root.$on("noAuth", msg => this.tryToRefreshToken(msg));
-  },
-  methods: {
-    tryToRefreshToken(msg) {
-      console.log(msg);
-      // alert('a');
-    }
-  }
+  name: "App"
 };
 </script>
