@@ -20,10 +20,10 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-if="isLoggedIn" v-model="right" side="right" bordered>
+    <q-drawer v-if="isLoggedIn" v-model="right" side="right" elevated>
       <!-- drawer content -->
       <q-img
-        src="https://cdn.quasar.dev/img/material.png"
+        class="bg-secondary"
         style="height: 150px"
       >
         <div class="absolute-top-right bg-transparent">

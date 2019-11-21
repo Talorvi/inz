@@ -43,6 +43,35 @@ const routes = [
       },
       //testing routes to delete
       {
+        path: "new-scenario",
+        component: () => import("pages/Scenario/NewScenario.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      {
+        path: "success/:code",
+        component: () => import("pages/Scenario/NewScenarioSuccess.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      {
+        path: "join-scenario",
+        component: () => import("pages/Scenario/JoinScenario.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      {
+        path: "join-success",
+        component: () => import("pages/Scenario/JoinSuccess.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
+      //testing routes to delete
+      {
         path: "test",
         component: () => import("pages/ComponentTester.vue"),
 

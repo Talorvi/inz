@@ -1,91 +1,109 @@
 <template>
-  <q-card class="register-form">
-    <q-form @submit="onSubmit">
-      <q-card-section class="bg-primary">
-        <div class="text-white text-h6">
-          Sign up
+  <div class="row" style="height: 35rem">
+    <div class="col-xs-0 col-sm-4 center-image">
+      <span class="helper"></span>
+      <img src="~src/assets/play.svg" alt="play image" class="play-image self-center" />
+    </div>
+    <div class="col-xs-12 col-sm-8">
+      <div class="row justify-center" style="height: 100%">
+        <div class="col-auto text-center self-center">
+          <q-card flat style="max-width: 30rem;">
+            <q-form @submit="onSubmit">
+              <q-card-section class="q-px-lg q-pt-lg q-pb-none">
+                <q-input
+                  class="q-pb-lg"
+                  filled
+                  v-model="email"
+                  label="Email"
+                  lazy-rules
+                  type="email"
+                  :rules="[
+                    val => !!val || 'Email is required',
+                    val => val.match(emailRegex) || 'Invalid email address'
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="email" />
+                  </template>
+                </q-input>
+                <q-input
+                  class="q-pb-lg"
+                  filled
+                  v-model="username"
+                  label="Username"
+                  lazy-rules
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter username',
+                    val =>
+                      val.length > 3 ||
+                      'Username should contain more than 3 letters'
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="person" />
+                  </template>
+                </q-input>
+                <q-input
+                  class="q-pb-lg"
+                  v-model="password1"
+                  filled
+                  type="password"
+                  label="Password"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter password',
+                    val =>
+                      val.length > 5 ||
+                      'Password should contain more than 5 letters'
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="lock" />
+                  </template>
+                </q-input>
+                <q-input
+                  class="q-pb-lg"
+                  v-model="password2"
+                  filled
+                  type="password"
+                  label="Password"
+                  :rules="[
+                    val => (val && val.length > 0) || 'Enter password',
+                    val => val === password1 || 'Passwords must be the same'
+                  ]"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="lock" />
+                  </template>
+                </q-input>
+              </q-card-section>
+
+              <q-card-section>
+                <div>
+                  <q-btn flat color="primary">
+                    Forgot password?
+                  </q-btn>
+                  <q-btn flat>
+                    Already have an account? Log in
+                  </q-btn>
+                </div>
+              </q-card-section>
+
+              <q-card-actions align="center" class="q-pa-sm">
+                <q-btn
+                  class="text-weight-bold"
+                  type="submit"
+                  flat
+                  size="lg"
+                  label="Sign up"
+                  color="accent"
+                />
+              </q-card-actions>
+            </q-form>
+          </q-card>
         </div>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-section class="q-px-lg q-pt-lg q-pb-none">
-        <q-input
-          class="q-pb-lg"
-          filled
-          v-model="email"
-          label="Email"
-          lazy-rules
-          type="email"
-          :rules="[
-            val => !!val || 'Email is required',
-            val => val.match(emailRegex) || 'Invalid email address'
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="email" />
-          </template>
-        </q-input>
-        <q-input
-          class="q-pb-lg"
-          filled
-          v-model="username"
-          label="Username"
-          lazy-rules
-          :rules="[val => (val && val.length > 0) || 'Enter username']"
-        >
-          <template v-slot:prepend>
-            <q-icon name="person" />
-          </template>
-        </q-input>
-        <q-input
-          class="q-pb-lg"
-          v-model="password1"
-          filled
-          type="password"
-          label="Password"
-          :rules="[val => (val && val.length > 0) || 'Enter password']"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
-        <q-input
-          class="q-pb-lg"
-          v-model="password2"
-          filled
-          type="password"
-          label="Password"
-          :rules="[
-            val => (val && val.length > 0) || 'Enter password',
-            val => val === password1 || 'Passwords must be the same'
-          ]"
-        >
-          <template v-slot:prepend>
-            <q-icon name="lock" />
-          </template>
-        </q-input>
-      </q-card-section>
-
-      <q-card-section class="text-right">
-        <q-btn flat>
-          Already have an account? Log in
-        </q-btn>
-      </q-card-section>
-
-      <q-separator />
-
-      <q-card-actions align="center" class="q-pa-sm">
-        <q-btn
-          type="submit"
-          flat
-          size="medium"
-          label="Sign up"
-          color="accent"
-        />
-      </q-card-actions>
-    </q-form>
-  </q-card>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -118,5 +136,18 @@ export default {
 .register-form {
   max-width: 30em;
   margin: auto;
+}
+.play-image {
+  width: 100%;
+  vertical-align: middle;
+}
+.center-image {
+  white-space: nowrap;
+  text-align: center; margin: 1em 0;
+}
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 </style>

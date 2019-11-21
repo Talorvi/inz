@@ -1,29 +1,46 @@
 <template>
-  <div
-    class="q-pa-md q-pa-sm-none col-xs-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3"
-  >
-    <q-card v-for="game in games" v-bind:key="game.scenario_key">
-      <q-card-section>
-        <div class="text-h5">
-          <div>
-            <q-badge align="middle" class="bg-transparent">
-              <q-icon name="brightness_1" color="red" />
-            </q-badge>
-            {{ game.name }} - [{{ game.gameMaster }}]
+  <q-page>
+    <div class="row">
+      <div class="q-pa-sm col-xs-12 col-sm-4 col-md-3">
+        <div class="row justify-center" style="height: 100%">
+          <div class="col-auto q-pa-xs-none q-pa-md">
+            <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/new-scenario', () => {})">
+              Create
+            </q-btn>
+            <q-btn style="width: 100%" class="q-mt-md" size="lg" color="primary" @click="$router.push('/join-scenario', () => {})">
+              Join
+            </q-btn>
           </div>
         </div>
-      </q-card-section>
-      <q-separator />
-      <q-card-actions align="right">
-        <q-btn size="12px" color="primary" round class="q-mr-xs">
-          <q-icon name="settings" />
-        </q-btn>
-        <q-btn size="12px" color="primary" round>
-          <q-icon name="play_arrow" />
-        </q-btn>
-      </q-card-actions>
-    </q-card>
-  </div>
+      </div>
+      <div class="q-pa-sm col-xs-12 col-sm-8 col-md-6">
+        <q-card v-for="game in games" v-bind:key="game.scenario_key" class="q-mb-md">
+          <q-card-section class="bg-primary">
+            <div class="text-h5 text-white">
+              <q-badge align="middle" class="bg-transparent">
+                <q-icon name="brightness_1" color="positive" />
+                5
+              </q-badge>
+              {{ game.name.toUpperCase() }}
+            </div>
+          </q-card-section>
+          <q-separator color="accent" />
+          <q-card-actions class="q-pa-md" align="around">
+            <div class="text-h6 q-pl-md">
+              <q-icon name="person"></q-icon> {{ game.gameMaster }}
+            </div>
+            <q-space></q-space>
+            <q-btn size="12px" color="accent" round class="q-mr-xs">
+              <q-icon name="settings" color="white" />
+            </q-btn>
+            <q-btn size="12px" color="accent" round>
+              <q-icon name="play_arrow" color="white" />
+            </q-btn>
+          </q-card-actions>
+        </q-card>
+      </div>
+    </div>
+  </q-page>
 </template>
 
 <script>

@@ -27,7 +27,8 @@
         active-class="bg-teal-1"
         clickable
         v-ripple
-        v-for="(character, index) in this.$store.getters.getCharacterSelectionList"
+        v-for="(character, index) in this.$store.getters
+          .getCharacterSelectionList"
         :key="character.name"
         :active="character.selected"
       >
@@ -89,17 +90,17 @@ export default {
       }
       console.log("after:" + this.$store.getters.getSelectedCharacter.name);
     },
-      deleteCharacter(character, index) {
-        console.log(character.name);
-        if (confirm("Are you sure you want to delete this character?")) {
-          this.$store.dispatch("requestDeleteCharacter", {
-            data: this.$q,
-            scenarioKey: "TESTSCEN",
-            characterName: character.name,
-            index: index
-          });
-        }
 
+    deleteCharacter(character, index) {
+      console.log(character.name);
+      if (confirm("Are you sure you want to delete this character?")) {
+        this.$store.dispatch("requestDeleteCharacter", {
+          data: this.$q,
+          scenarioKey: "TESTSCEN",
+          characterName: character.name,
+          index: index
+        });
+      }
     }
   }
 };
