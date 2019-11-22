@@ -27,7 +27,7 @@ export default {
       };
 
       axios
-        .get("http://localhost:8080/api/v1/scenario", config)
+        .get("api/api/v1/scenario", config)
         .then(response => {
           console.log(response);
           this.commit("updateGameList", response.data);
@@ -36,7 +36,11 @@ export default {
         .catch(error => {
           console.log(error);
           data.data.loading.hide();
-          functions.methods.sendErrorNotification();
+          if (error.response.status === 401) {
+            functions.methods.sendErrorNotification("Unauthorized");
+          } else {
+            functions.methods.sendErrorNotification(error.response.data);
+          }
         });
     },
     addNewScenario: function(context, data) {
@@ -51,7 +55,7 @@ export default {
         password: data.password
       };
       axios
-        .post("http://localhost:8080/api/v1/scenario", postData, config)
+        .post("api/api/v1/scenario", postData, config)
         // eslint-disable-next-line no-unused-vars
         .then(response => {
           data.quasar.loading.hide();
@@ -60,7 +64,11 @@ export default {
         .catch(error => {
           console.log(JSON.stringify(error));
           data.quasar.loading.hide();
-          functions.methods.sendErrorNotification();
+          if (error.response.status === 401) {
+            functions.methods.sendErrorNotification("Unauthorized");
+          } else {
+            functions.methods.sendErrorNotification(error.response.data);
+          }
         });
     },
     joinScenario: function(context, data) {
@@ -75,7 +83,7 @@ export default {
       };
       axios
         .post(
-          "http://localhost:8080/action/join/scenario/" + data.scenarioKey,
+          "api/action/join/scenario/" + data.scenarioKey,
           postData,
           config
         )
@@ -87,7 +95,11 @@ export default {
         .catch(error => {
           console.log(JSON.stringify(error));
           data.quasar.loading.hide();
-          functions.methods.sendErrorNotification();
+          if (error.response.status === 401) {
+            functions.methods.sendErrorNotification("Unauthorized");
+          } else {
+            functions.methods.sendErrorNotification(error.response.data);
+          }
         });
     }
   }

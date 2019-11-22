@@ -77,6 +77,7 @@ export default {
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
     },
     subscribeToPlayerMessages(playerName, scenarioID) {
+      console.log("Player name to subscribe: " + playerName);
       var targetUrl = "/ws/scenario/" + scenarioID + "/player/" + playerName;
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
       console.log("Player messages: " + playerName);
@@ -105,7 +106,7 @@ export default {
     onConnected() {
       this.subscribeToScenarioMessages(this.$store.getters.getScenarioKey);
       this.subscribeToPlayerMessages(
-        "kappa",
+        this.$store.getters.getUserName,
         this.$store.getters.getScenarioKey
       );
     },

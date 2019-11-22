@@ -25,6 +25,9 @@ import PasswordForm from "../../components/scenario/PasswordForm";
 import OnlineList from "../../components/scenario/OnlineList";
 export default {
   name: "Lobby",
-  components: { PasswordForm, OnlineList }
+  components: { PasswordForm, OnlineList },
+  beforeCreate(){
+    this.$store.dispatch("connectToScenario", this.$route.params.scenarioKey);
+  }
 };
 </script>

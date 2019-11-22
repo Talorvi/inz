@@ -126,8 +126,8 @@ export default {
     }
   },
   actions: {
-    reloadCharacters(context) {
-      //data.data.loading.show();
+    reloadCharacters(context, payload) {
+      payload.data.loading.show();
       var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
       axios
         .get(targetURL, {
@@ -137,7 +137,7 @@ export default {
         })
         .then(response => {
           context.commit("updateCharacterList", response.data);
-          //data.data.loading.hide();
+          payload.data.loading.hide();
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -147,9 +147,11 @@ export default {
               "Couldn't reload character list"
             );
           }
+          payload.data.loading.hide();
         });
     },
     requestDeleteCharacter(context, payload) {
+      payload.data.loading.show();
       var targetURL =
         "api/action/remove/character/scenario/" + payload.scenarioKey;
       axios
@@ -165,7 +167,7 @@ export default {
           if (response.status === 200) {
             console.log(" delete request");
           }
-          //console.log(response);
+          payload.data.loading.hide();
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -175,6 +177,7 @@ export default {
               "Couldn't delete character"
             );
           }
+          payload.data.loading.hide();
         });
     },
     reloadPlayers(context) {
