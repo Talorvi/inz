@@ -125,7 +125,7 @@ export default {
     },
     getOnlinePlayers: state => {
       return state.onlinePlayers;
-    }
+    },
   },
   actions: {
     reloadCharacters(context, payload) {
@@ -206,6 +206,7 @@ export default {
         });
     },
     connectToScenario(context, scenarioKey) {
+      console.log("Rambooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
       var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
       axios
         .get(targetURL, {

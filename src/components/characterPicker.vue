@@ -57,11 +57,10 @@
 
 <script>
 export default {
-  
-  mounted() {
+
+  beforeCreate() {
     // this.$store.dispatch("reloadCharacters");
     // this.$store.dispatch("reloadPlayers");
-    this.$store.dispatch("connectToScenario","TESTSCEN");
   },
   data() {
     return {

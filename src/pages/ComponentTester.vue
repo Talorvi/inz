@@ -15,6 +15,9 @@
 export default {
   name: "Test",
   components: { ChatForm,Picker },
+  mounted(){
+    this.$store.dispatch("connectToScenario","TESTSCEN");
+  }
 };
 </script>
 

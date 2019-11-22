@@ -6,8 +6,8 @@
       class="scroll-here"
     >
       <div v-for="message in messages" :key="message.id">
-        <span v-if="message.isWhisper" class="whisper-message"
-          >From {{ message.sender }}:
+        <span v-if="message.whisperTarget !== null" class="whisper-message"
+          >From {{ message.sender }} to {{ message.whisperTarget }}:
         </span>
         <span v-else-if="message.type === 'system'" class="system-message"
           >[SYSTEM]:
@@ -36,7 +36,7 @@
       outlined
       v-model="text"
       v-on:keyup.enter="submit()"
-      v-bind:label="this.$store.getters.getSelectedCharacter.name"
+      v-bind:label="$store.getters.getSelectedCharacter.name"
       id="chat-message-input"
     >
       <q-btn round dense flat icon="send" v-on:click="submit()" />
@@ -154,14 +154,11 @@ export default {
         sender: responseBody.sender,
         text: responseBody.content,
         type: responseBody.type,
-        isWhisper: false,
+        whisperTarget: responseBody.whisperTarget,
         isGM: false
       };
       if (responseBody.sender === "admin") {
         message.isGM = true;
-      }
-      if (responseBody.whisperTarget !== null) {
-        message.isWhisper = true;
       }
       this.messages.push(message);
       if (this.messages.length === 50) {
