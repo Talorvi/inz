@@ -55,8 +55,9 @@
 <script>
 export default {
   mounted() {
-    this.$store.dispatch("reloadCharacters");
-    this.$store.dispatch("reloadPlayers");
+    // this.$store.dispatch("reloadCharacters");
+    // this.$store.dispatch("reloadPlayers");
+    this.$store.dispatch("connectToScenario","TESTSCEN");
   },
   data() {
     return {

@@ -12,10 +12,12 @@ export default {
     isGameMaster: false,
     selectedCharacter: null,
     characterSelectionList: [],
-    onlinePlayers: []
+    onlinePlayers: [],
+    scenarioStatus: null
   },
   mutations: {
     updateCharacterList(context, characterList) {
+      console.log(characterList);
       context.characterSelectionList = [];
       var isSelectedCharacter = false;
       console.log(characterList.length);
@@ -68,14 +70,26 @@ export default {
       }
     },
     updatePlayerList(context, playerList) {
-      context.gameMaster = playerList.gameMaster;
-      context.onlinePlayers = playerList.onlinePlayers;
+      console.log(playerList);
       context.players = playerList;
-      console.log("Username: " + context.gameMaster);
-      if (context.gameMaster === "admin") {
+    },
+    updateGameMaster(context, payload) {
+      context.gameMaster = payload.gameMaster;
+      if (context.gameMaster === payload.userName) {
         context.isGameMaster = true;
         console.log(context.isGameMaster);
       }
+    },
+    updateOnlinePlayerList(context, onlinePlayerList) {
+      context.onlinePlayers = onlinePlayerList;
+    },
+    updateScenarioStatus(context, scenarioStatus) {
+      console.log(scenarioStatus);
+      context.scenarioStatus = scenarioStatus;
+    },
+    updateScenarioKey(context, scenarioKey) {
+      console.log(scenarioKey);
+      context.scenarioKey = scenarioKey;
     },
     changeSelectedCharacter(state, payload) {
       state.characterSelectionList[payload.prevIndex].selected = false;
@@ -129,7 +143,9 @@ export default {
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
           } else {
-            notifications.methods.sendErrorNotification("Couldn't reload character list");
+            notifications.methods.sendErrorNotification(
+              "Couldn't reload character list"
+            );
           }
         });
     },
@@ -155,7 +171,9 @@ export default {
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
           } else {
-            notifications.methods.sendErrorNotification("Couldn't delete character");
+            notifications.methods.sendErrorNotification(
+              "Couldn't delete character"
+            );
           }
         });
     },
@@ -168,14 +186,62 @@ export default {
           }
         })
         .then(response => {
-          context.commit("updatePlayerList", response.data);
-          //data.data.loading.hide();
+          context.commit("updateGameMaster", response.data.gameMaster);
+          context.commit("updatePlayerList", response.data.players);
+          context.commit("updateOnlinePlayerList", response.data.onlinePlayers);
         })
         .catch(error => {
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
           } else {
-            notifications.methods.sendErrorNotification("Couldn't reload player list");
+            notifications.methods.sendErrorNotification(
+              "Couldn't reload player list"
+            );
+          }
+        });
+    },
+    connectToScenario(context, scenarioKey) {
+      var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
+      axios
+        .get(targetURL, {
+          headers: {
+            Authorization: "Bearer " + VueCookies.get("token")
+          }
+        })
+        .then(response => {
+          console.log("Huge response");
+          console.log(response.data);
+          context.commit(
+            "updateScenarioKey",
+            response.data.scenarioInfo.scenarioKey
+          );
+          context.commit(
+            "updateScenarioStatus",
+            response.data.scenarioInfo.scenarioStatus
+          );
+          context.commit("updateGameMaster", {
+            gameMaster: response.data.scenarioInfo.gameMaster,
+            userName: context.getters.getUserName
+          });
+          console.log("Is here");
+          context.commit(
+            "updatePlayerList",
+            response.data.scenarioInfo.players
+          );
+          console.log("Is here not");
+          context.commit(
+            "updateOnlinePlayerList",
+            response.data.scenarioInfo.onlinePlayers
+          );
+          context.commit("updateCharacterList", response.data.userCharacters);
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(
+              "Couldn't load scenario correctly"
+            );
           }
         });
     }
