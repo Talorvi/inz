@@ -80,11 +80,9 @@ export default {
             this.$router.push("/home", () => {});
           }
         })
-
-        // eslint-disable-next-line no-unused-vars
         .catch(error => {
           notifications.methods.sendErrorNotification(
-            "There was an error. Couldn't log in."
+            error.response.data.error_description
           );
         })
 
@@ -110,14 +108,11 @@ export default {
             this.$router.push("/", () => {});
           }
         })
-
-        // eslint-disable-next-line no-unused-vars
         .catch(error => {
           notifications.methods.sendErrorNotification(
-            "There was an error. Couldn't log in."
+            error.response.data
           );
         })
-
         .finally(() => {
           credentials.quasar.loading.hide();
         });
@@ -125,13 +120,12 @@ export default {
     fetchAccessToken({ commit }) {
       commit("updateAccessToken", VueCookies.get("token"));
     },
-    // eslint-disable-next-line no-unused-vars
     logout: function(context) {
       VueCookies.remove("token");
       VueCookies.remove("username");
       VueCookies.remove("refreshToken");
       VueCookies.remove("refreshTime");
-      this.commit("updateAccessToken", VueCookies.get("token"));
+      context.commit("updateAccessToken", VueCookies.get("token"));
 
       notifications.methods.sendSuccessNotification("Successfully logged out!");
       this.$router.push("/", () => {});
