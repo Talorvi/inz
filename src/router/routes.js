@@ -81,20 +81,9 @@ const routes = [
       {
         path: "test",
         component: () => import("pages/ComponentTester.vue"),
-
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         },
-        children: [
-          {
-            path: "picker",
-            component: () => import("components/characterPicker.vue")
-          },
-          {
-            path: "chat",
-            component: () => import("components/chatForm.vue")
-          }
-        ]
       }
     ]
   }

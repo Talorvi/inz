@@ -2,14 +2,20 @@
   <div class="q-pa-md form">
     <div class="row justify-center">
       <div class="col-12 col-md-8 ">
-        <router-view />
+        <ChatForm></ChatForm>
+        <Picker></Picker>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+  import ChatForm from "../components/chatForm";
+  import Picker from "../components/characterPicker";
+export default {
+  name: "Test",
+  components: { ChatForm,Picker },
+};
 </script>
 
 <style scoped>

@@ -72,27 +72,24 @@ export default {
   methods: {
     //Web socket functionality
     subscribeToScenarioMessages(scenarioID) {
-      console.log("Scenario messages sub:" + scenarioID);
       let targetUrl = "/ws/scenario/" + scenarioID;
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
     },
     subscribeToPlayerMessages(playerName, scenarioID) {
-      console.log("Player name to subscribe: " + playerName);
       var targetUrl = "/ws/scenario/" + scenarioID + "/player/" + playerName;
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
-      console.log("Player messages: " + playerName);
     },
     checkWebSocketResponseType: function(response) {
       console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
       if (objectResponse.action === "message") {
-        console.log("Is A message: " + objectResponse.action);
         this.displayMessage(objectResponse.body);
       } else if (objectResponse.action === "reload") {
         if (objectResponse.target === "characters") {
-          console.log("Reloading characters via socket");
-          this.$store.dispatch("reloadCharacters");
+          this.$store.dispatch("reloadCharacters",{
+            data: this.$q
+          });
         }
         //do some stuff here
       }
@@ -113,13 +110,6 @@ export default {
     onError() {
       console.log("Connection Error x");
     },
-    checkWebSocketResponse(response) {
-      if (response.action === "message") {
-        this.displayMessage(response);
-      }
-      //else if
-      //emit particular event depending on action type
-    },
     //PostMessage Functionality
     submit() {
       let message = {
@@ -135,7 +125,7 @@ export default {
       }
     },
     postMessage(text) {
-      console.log("wysylam wiadomosc");
+      console.log("Sending message");
       var targetURL =
         "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
       axios
@@ -158,8 +148,6 @@ export default {
         });
     },
     displayMessage: function(response) {
-      console.log("Odebrana wiadomosc: " + response.action);
-      console.log("Kontent: " + response.content);
       let responseBody = response;
       let message = {
         id: this.messages.length + 1,

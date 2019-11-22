@@ -23,11 +23,13 @@ export default {
       console.log(characterList.length);
       //if there are no characters for player
       if (characterList.length < 1) {
-        context.selectedCharacter = null;
+        console.log("Removing last chara");
+        context.selectedCharacter = "No character";
         context.characters = [];
       }
       //if there are characters for player
       else {
+        console.log("This shouldn't show");
         //Check if selected character wasn't deleted
         if (context.selectedCharacter !== null) {
           for (var i = 0; i < characterList.length; i++) {

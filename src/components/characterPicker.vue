@@ -1,6 +1,9 @@
 <template>
   <div>
-    <q-list bordered separator v-if="this.$store.getters.getIsGameMaster">
+    <div v-if="this.$store.getters.getCharacters.length < 1">
+      You have no characters!
+    </div>
+    <q-list bordered separator v-else-if="this.$store.getters.getIsGameMaster">
       <q-item
         clickable
         v-ripple
@@ -54,6 +57,7 @@
 
 <script>
 export default {
+  
   mounted() {
     // this.$store.dispatch("reloadCharacters");
     // this.$store.dispatch("reloadPlayers");
