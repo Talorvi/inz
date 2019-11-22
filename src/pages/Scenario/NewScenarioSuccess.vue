@@ -21,12 +21,20 @@
           <div class="col-xs-12 col-sm-8 self-center">
             <div class="row justify-center">
               <div class="col-auto text-center q-pa-xs-md q-pa-sm-md">
-                <h2 class="text-accent text-bold">{{ $route.params.code.toUpperCase() }}</h2><br />
+                <h2 class="text-accent text-bold">
+                  {{ $route.params.code.toUpperCase() }}
+                </h2>
+                <br />
                 <p class="text-h5 q-pb-md q-ml-lg q-mr-lg">
                   Invite your friends to your newly created scenario with that
                   code
                 </p>
-                <q-btn color="accent" size="lg" @click="$router.push('/', () => {})">Got it</q-btn>
+                <q-btn
+                  color="accent"
+                  size="lg"
+                  @click="$router.push('/', () => {})"
+                  >Got it</q-btn
+                >
               </div>
             </div>
           </div>
@@ -52,3 +60,9 @@
   vertical-align: middle;
 }
 </style>
+
+<script>
+export default {
+  name: "NewScenarioSuccess"
+};
+</script>

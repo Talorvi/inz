@@ -4,37 +4,73 @@
       <div class="q-pa-sm col-xs-12 col-sm-4 col-md-3">
         <div class="row justify-center" style="height: 100%">
           <div class="col-auto q-pa-xs-none q-pa-md">
-            <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/new-scenario', () => {})">
+            <q-btn
+              style="width: 100%"
+              size="lg"
+              color="accent"
+              @click="$router.push('/new-scenario', () => {})"
+            >
               Create
             </q-btn>
-            <q-btn style="width: 100%" class="q-mt-md" size="lg" color="primary" @click="$router.push('/join-scenario', () => {})">
+            <q-btn
+              style="width: 100%"
+              class="q-mt-md"
+              size="lg"
+              color="primary"
+              @click="$router.push('/join-scenario', () => {})"
+            >
               Join
             </q-btn>
           </div>
         </div>
       </div>
       <div class="q-pa-sm col-xs-12 col-sm-8 col-md-6">
-        <q-card v-for="game in games" v-bind:key="game.scenario_key" class="q-mb-md">
+        <q-card
+          v-for="game in games"
+          v-bind:key="game.scenario_key"
+          class="q-mb-md"
+        >
           <q-card-section class="bg-primary">
             <div class="text-h5 text-white">
-              <q-badge align="middle" class="bg-transparent">
-                <q-icon name="brightness_1" color="positive" />
-                5
-              </q-badge>
-              {{ game.name.toUpperCase() }}
+              <div v-if="game.onlinePlayers.length > 0">
+                <q-badge align="middle" class="bg-transparent">
+                  <q-icon name="brightness_1" color="positive" />
+                  {{ game.onlinePlayers.length }}
+                </q-badge>
+                {{ game.name.toUpperCase() }}
+              </div>
+              <div v-else>
+                <q-badge align="middle" class="bg-transparent">
+                  <q-icon name="brightness_1" color="negative" />
+                </q-badge>
+                {{ game.name.toUpperCase() }}
+              </div>
             </div>
           </q-card-section>
           <q-separator color="accent" />
           <q-card-actions class="q-pa-md" align="around">
             <div class="text-h6 q-pl-md">
-              <q-icon name="person"></q-icon> {{ game.gameMaster }}
+              <div v-if="game.gameMaster === username">
+                <q-icon color="accent" name="person"></q-icon>
+                {{ game.gameMaster }}
+              </div>
+              <div v-else>
+                <q-icon name="person"></q-icon>
+                {{ game.gameMaster }}
+              </div>
             </div>
             <q-space></q-space>
-            <q-btn size="12px" color="accent" round class="q-mr-xs">
-              <q-icon name="settings" color="white" />
-            </q-btn>
+            <div v-if="game.gameMaster === username">
+              <q-btn size="12px" color="accent" round class="q-mr-xs">
+                <q-icon name="settings" color="white" />
+              </q-btn>
+            </div>
             <q-btn size="12px" color="accent" round>
-              <q-icon name="play_arrow" color="white" />
+              <q-icon
+                name="play_arrow"
+                color="white"
+                @click="joinGame(game.scenarioKey)"
+              />
             </q-btn>
           </q-card-actions>
         </q-card>
@@ -52,11 +88,16 @@ export default {
     });
   },
   methods: {
-    joinGame() {}
+    joinGame(scenarioKey) {
+      this.$router.push(/lobby/ + scenarioKey);
+    }
   },
   computed: {
     games() {
       return this.$store.getters.getGameList;
+    },
+    username() {
+      return this.$store.getters.getUserName;
     }
   }
 };

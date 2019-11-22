@@ -70,6 +70,13 @@ const routes = [
           loggedRequired(to, from, next);
         }
       },
+      {
+        path: "lobby/:scenarioKey",
+        component: () => import("pages/Scenario/Lobby.vue"),
+        beforeEnter: (to, from, next) => {
+          loggedRequired(to, from, next);
+        }
+      },
       //testing routes to delete
       {
         path: "test",

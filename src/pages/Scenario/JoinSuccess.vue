@@ -55,3 +55,9 @@
   vertical-align: middle;
 }
 </style>
+
+<script>
+export default {
+  name: "JoinSuccess"
+};
+</script>

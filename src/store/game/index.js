@@ -3,7 +3,8 @@ import functions from "../../functions/notifications";
 import VueCookies from "vue-cookies";
 export default {
   state: {
-    gameList: null
+    gameList: null,
+    currentGame: null
   },
   mutations: {
     updateGameList: (state, gameList) => {
@@ -28,6 +29,7 @@ export default {
       axios
         .get("http://localhost:8080/api/v1/scenario", config)
         .then(response => {
+          console.log(response);
           this.commit("updateGameList", response.data);
           data.data.loading.hide();
         })
@@ -73,8 +75,7 @@ export default {
       };
       axios
         .post(
-          "http://localhost:8080/action/join/scenario/" +
-            data.scenarioKey,
+          "http://localhost:8080/action/join/scenario/" + data.scenarioKey,
           postData,
           config
         )

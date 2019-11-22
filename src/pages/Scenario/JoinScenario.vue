@@ -5,7 +5,7 @@
 <script>
 import JoinScenarioForm from "../../components/scenario/JoinScenarioForm";
 export default {
-  name: "NewScenario",
+  name: "JoinScenario",
   components: { JoinScenarioForm }
 };
 </script>

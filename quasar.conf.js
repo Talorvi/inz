@@ -73,17 +73,17 @@ module.exports = function(ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {
-        cfg.module.rules.push({
-          enforce: "pre",
-          test: /\.(js|vue)$/,
-          loader: "eslint-loader",
-          exclude: /node_modules/,
-          options: {
-            formatter: require("eslint").CLIEngine.getFormatter("stylish")
-          }
-        });
-      }
+      // extendWebpack(cfg) {
+      //   cfg.module.rules.push({
+      //     enforce: "pre",
+      //     test: /\.(js|vue)$/,
+      //     loader: "eslint-loader",
+      //     exclude: /node_modules/,
+      //     options: {
+      //       formatter: require("eslint").CLIEngine.getFormatter("stylish")
+      //     }
+      //   });
+      // }
     },
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
@@ -91,8 +91,8 @@ module.exports = function(ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "http://192.168.99.100:8080",
-          //target: "http://localhost:8080",
+          //target: "http://192.168.99.100:8080",
+          target: "http://localhost:8080",
           changeOrigin: true,
           pathRewrite: {
             "^/api": ""

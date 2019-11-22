@@ -22,10 +22,7 @@
 
     <q-drawer v-if="isLoggedIn" v-model="right" side="right" elevated>
       <!-- drawer content -->
-      <q-img
-        class="bg-secondary"
-        style="height: 150px"
-      >
+      <q-img class="bg-secondary" style="height: 150px">
         <div class="absolute-top-right bg-transparent">
           <q-btn round color="primary" @click="logout">
             <q-icon size="sm" name="logout"></q-icon>
@@ -39,9 +36,9 @@
               color="accent"
               text-color="white"
             >
-              {{ getUserName[0].toUpperCase() }}
+              {{ $store.getters.getUserName[0].toUpperCase() }}
             </q-avatar>
-            <div class="text-weight-bold text-center">{{ getUserName }}</div>
+            <div class="text-weight-bold text-center">{{ $store.getters.getUserName }}</div>
           </q-btn>
         </div>
       </q-img>
@@ -79,7 +76,6 @@
 
 <script>
 import { mapActions } from "vuex";
-import VueCookies from "vue-cookies";
 
 export default {
   name: "MyLayout",
@@ -98,11 +94,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.loggedIn;
-    },
-    getUserName() {
-      return VueCookies.get("username");
     }
   },
+
   methods: {
     ...mapActions(["fetchAccessToken"]),
     logout() {

@@ -66,7 +66,7 @@ export default {
         context.characters = characterList;
       }
     },
-    updatePlayerList(context, playerList){
+    updatePlayerList(context, playerList) {
       context.gameMaster = playerList.gameMaster;
       context.onlinePlayers = playerList.onlinePlayers;
       context.players = playerList;
@@ -76,7 +76,7 @@ export default {
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
       console.log("Commit clicked on " + state.characters[payload.index]);
-    },
+    }
   },
   getters: {
     getCharacters: state => {
@@ -97,6 +97,9 @@ export default {
     //Return list of character with info if they are currently selected
     getCharacterSelectionList: state => {
       return state.characterSelectionList;
+    },
+    getOnlinePlayers: state => {
+      return state.onlinePlayers;
     }
   },
   actions: {

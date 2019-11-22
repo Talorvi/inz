@@ -10,16 +10,23 @@ VueCookies.config("12h");
 
 export default {
   state: {
-    accessToken: null
+    accessToken: null,
+    username: VueCookies.get("username")
   },
   getters: {
     loggedIn: state => {
       return state.accessToken;
+    },
+    getUserName: state => {
+      return state.username;
     }
   },
   mutations: {
     updateAccessToken: (state, accessToken) => {
       state.accessToken = accessToken;
+    },
+    updateUsername: (state, username) => {
+      state.username = username;
     }
   },
   actions: {
@@ -47,7 +54,7 @@ export default {
               "Successfully logged in!"
             );
 
-            VueCookies.set("username", credentials.username, "12h");
+            VueCookies.set("username", credentials.username, "Infinity");
             VueCookies.set("token", response.data.access_token, "12h");
             VueCookies.set("refreshToken", response.data.refresh_token, "12h");
             VueCookies.set(
@@ -57,6 +64,7 @@ export default {
             );
 
             this.commit("updateAccessToken", VueCookies.get("token"));
+            this.commit("updateUsername", credentials.username);
 
             const refreshTime = addSeconds(
               new Date(),

@@ -45,12 +45,6 @@
                         filled
                         type="password"
                         label="Password"
-                        :rules="[
-                          val => (val && val.length > 0) || 'Enter password',
-                          val =>
-                            val.length > 5 ||
-                            'Password should contain more than 5 letters'
-                        ]"
                       >
                         <template v-slot:prepend>
                           <q-icon name="lock" />
