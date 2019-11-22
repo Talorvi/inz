@@ -1,15 +1,18 @@
 <template>
   <div>
-    <q-list bordered separator v-if="isGameMaster">
+    <q-list bordered separator v-if="this.$store.getters.getIsGameMaster">
       <q-item
         clickable
         v-ripple
-        v-for="character in characters"
-        :key="character.id"
+        active-class="bg-teal-1"
+        v-for="(character, index) in this.$store.getters
+          .getCharacterSelectionList"
+        :key="character.name"
+        :active="character.selected"
       >
-        <q-item-section>
-          <q-item-label>Item with caption</q-item-label>
-          <q-item-label caption>Caption</q-item-label>
+        <q-item-section v-on:click="clickedOnItem(character, index)">
+          <q-item-label>{{ character.name }}</q-item-label>
+          <q-item-label caption>{{ character.owner }}</q-item-label>
         </q-item-section>
         <q-btn
           size="12px"
@@ -17,7 +20,7 @@
           dense
           round
           icon="delete"
-          v-on:click="deleteCharacter(character)"
+          v-on:click="deleteCharacter(character, index)"
         />
       </q-item>
     </q-list>
@@ -53,6 +56,7 @@
 export default {
   mounted() {
     this.$store.dispatch("reloadCharacters");
+    this.$store.dispatch("reloadPlayers");
   },
   data() {
     return {

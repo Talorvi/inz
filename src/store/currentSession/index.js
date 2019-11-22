@@ -2,13 +2,14 @@ import axios from "axios";
 import Vue from "vue";
 import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
-//import notifications from "../../functions/notifications";
+import notifications from "../../functions/notifications";
 export default {
   state: {
     characters: [],
     players: [],
     scenarioKey: "TESTSCEN",
     gameMaster: null,
+    isGameMaster: false,
     selectedCharacter: null,
     characterSelectionList: [],
     onlinePlayers: []
@@ -66,17 +67,22 @@ export default {
         context.characters = characterList;
       }
     },
-    updatePlayerList(context, playerList){
+    updatePlayerList(context, playerList) {
       context.gameMaster = playerList.gameMaster;
       context.onlinePlayers = playerList.onlinePlayers;
       context.players = playerList;
+      console.log("Username: " + context.gameMaster);
+      if (context.gameMaster === "admin") {
+        context.isGameMaster = true;
+        console.log(context.isGameMaster);
+      }
     },
     changeSelectedCharacter(state, payload) {
       state.characterSelectionList[payload.prevIndex].selected = false;
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
       console.log("Commit clicked on " + state.characters[payload.index]);
-    },
+    }
   },
   getters: {
     getCharacters: state => {
@@ -97,6 +103,9 @@ export default {
     //Return list of character with info if they are currently selected
     getCharacterSelectionList: state => {
       return state.characterSelectionList;
+    },
+    getIsGameMaster(context) {
+      return context.isGameMaster;
     }
   },
   actions: {
@@ -114,8 +123,11 @@ export default {
           //data.data.loading.hide();
         })
         .catch(error => {
-          console.log(error);
-          //data.data.loading.hide();
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification("Couldn't reload character list");
+          }
         });
     },
     requestDeleteCharacter(context, payload) {
@@ -135,6 +147,13 @@ export default {
             console.log(" delete request");
           }
           //console.log(response);
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification("Couldn't delete character");
+          }
         });
     },
     reloadPlayers(context) {
@@ -150,11 +169,12 @@ export default {
           //data.data.loading.hide();
         })
         .catch(error => {
-          console.log(error);
-          //data.data.loading.hide();
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification("Couldn't reload player list");
+          }
         });
     }
-    //request for messages
-    //request for session info
   }
 };

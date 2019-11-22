@@ -52,6 +52,7 @@ import Stomp from "webstomp-client";
 import axios from "axios";
 import { Notify } from "quasar";
 Vue.use(VueChatScroll);
+import notifications from "../functions/notifications";
 export default {
   data() {
     return {
@@ -80,16 +81,15 @@ export default {
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
       console.log("Player messages: " + playerName);
     },
-    checkWebSocketResponseType: function(response){
+    checkWebSocketResponseType: function(response) {
       console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
-      if(objectResponse.action === "message"){
+      if (objectResponse.action === "message") {
         console.log("Is A message: " + objectResponse.action);
         this.displayMessage(objectResponse.body);
-      }
-      else if(objectResponse.action === "reload"){
-        if(objectResponse.target === "characters"){
+      } else if (objectResponse.action === "reload") {
+        if (objectResponse.target === "characters") {
           console.log("Reloading characters via socket");
           this.$store.dispatch("reloadCharacters");
         }
@@ -101,7 +101,6 @@ export default {
       var header = { "X-Authorization": this.$store.getters.loggedIn };
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(header, this.onConnected, this.onError);
-
     },
     onConnected() {
       this.subscribeToScenarioMessages(this.$store.getters.getScenarioKey);
@@ -136,21 +135,30 @@ export default {
     },
     postMessage(text) {
       console.log("wysylam wiadomosc");
-      var targetURL = "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
-      axios.post(
-        targetURL,
-        {
-          characterName: this.$store.getters.getSelectedCharacter.name,
-          content: text
-        },
-        {
-          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
-        }
-      );
+      var targetURL =
+        "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
+      axios
+        .post(
+          targetURL,
+          {
+            characterName: this.$store.getters.getSelectedCharacter.name,
+            content: text
+          },
+          {
+            headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+          }
+        )
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
     },
     displayMessage: function(response) {
       console.log("Odebrana wiadomosc: " + response.action);
-      console.log("Kontent: "+ response.content);
+      console.log("Kontent: " + response.content);
       let responseBody = response;
       let message = {
         id: this.messages.length + 1,
@@ -188,7 +196,13 @@ export default {
           }
         })
         .catch(error => {
-          console.log(error);
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(
+              "Couldn't load old messages"
+            );
+          }
         });
     },
     checkSubmittedMessageCorrectness(message) {
@@ -216,7 +230,7 @@ export default {
         }
       }
       return true;
-    },
+    }
   }
 };
 </script>
