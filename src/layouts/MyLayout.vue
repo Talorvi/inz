@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh lpr fFf">
+  <q-layout view="lHh lpr fFf">
     <q-header reveal elevated class="bg-primary text-white q-pt-md">
       <q-toolbar inset>
         <q-toolbar-title class="title" @click="$router.push('/', () => {})">
@@ -7,6 +7,34 @@
         </q-toolbar-title>
       </q-toolbar>
       <q-toolbar>
+        <div v-if="isInGame">
+
+          <div v-if="unreadMessages > 0">
+            <q-btn
+              dense
+              flat
+              round
+              icon="fas fa-comments"
+              @click="toggleChatOpen"
+              color="accent"
+            />
+            <q-badge align="middle" class="bg-transparent">
+              {{ unreadMessages }}
+            </q-badge>
+          </div>
+
+          <div v-else>
+            <q-btn
+              dense
+              flat
+              round
+              icon="fas fa-comments"
+              @click="toggleChatOpen"
+            />
+          </div>
+
+
+        </div>
         <q-space></q-space>
         <div v-if="isLoggedIn">
           <q-btn dense flat round icon="menu" @click="right = !right" />
@@ -19,6 +47,16 @@
         </div>
       </q-toolbar>
     </q-header>
+
+    <q-drawer
+      v-if="isInGame"
+      v-model="chatOpen"
+      side="left"
+      elevated
+      ref="drawer"
+    >
+      <chatForm></chatForm>
+    </q-drawer>
 
     <q-drawer v-if="isLoggedIn" v-model="right" side="right" elevated>
       <!-- drawer content -->
@@ -38,7 +76,9 @@
             >
               {{ $store.getters.getUserName[0].toUpperCase() }}
             </q-avatar>
-            <div class="text-weight-bold text-center">{{ $store.getters.getUserName }}</div>
+            <div class="text-weight-bold text-center">
+              {{ $store.getters.getUserName }}
+            </div>
           </q-btn>
         </div>
       </q-img>
@@ -46,22 +86,59 @@
       <q-list>
         <q-item clickable v-ripple @click="logout()">
           <q-item-section avatar>
-            <q-icon color="primary" name="logout" />
+            <q-icon name="logout" />
           </q-item-section>
           <q-item-section>Logout</q-item-section>
         </q-item>
         <q-item clickable v-ripple>
           <q-item-section avatar>
-            <q-icon color="primary" name="person" />
+            <q-icon name="person" />
           </q-item-section>
           <q-item-section>Account</q-item-section>
         </q-item>
         <q-separator />
         <q-item clickable v-ripple>
           <q-item-section avatar>
-            <q-icon color="primary" name="list" />
+            <q-icon name="list" />
           </q-item-section>
           <q-item-section>Games</q-item-section>
+        </q-item>
+        <q-separator />
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-dice-d20" />
+          </q-item-section>
+          <q-item-section>Roll</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-scroll" />
+          </q-item-section>
+          <q-item-section>Statistics</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-box" />
+          </q-item-section>
+          <q-item-section>Equipment</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-hat-wizard" />
+          </q-item-section>
+          <q-item-section>Magic</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-clipboard" />
+          </q-item-section>
+          <q-item-section>Notes</q-item-section>
+        </q-item>
+        <q-item clickable v-ripple>
+          <q-item-section avatar>
+            <q-icon name="fas fa-users" />
+          </q-item-section>
+          <q-item-section>Characters</q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -76,9 +153,11 @@
 
 <script>
 import { mapActions } from "vuex";
+import chatForm from "../components/chatForm";
 
 export default {
   name: "MyLayout",
+  components: { chatForm },
 
   mounted() {
     //this.$q.addressbarColor.set("#027BE3");
@@ -86,6 +165,7 @@ export default {
 
   data() {
     return {
+      chatOpen: this.$store.getters.getChatOpen,
       right: true,
       appName: process.env.APP_NAME
     };
@@ -94,6 +174,12 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.loggedIn;
+    },
+    isInGame() {
+      return this.$store.getters.getIsInGame;
+    },
+    unreadMessages() {
+      return this.$store.getters.getUnreadMessages;
     }
   },
 
@@ -104,6 +190,14 @@ export default {
     },
     goToProfile() {
       this.$router.push("profile", () => {});
+    },
+    toggleChatOpen() {
+      this.$store
+        .dispatch("toggleChatOpen", this.$refs.drawer.value)
+        .then(() => {
+          this.$refs.drawer.toggle();
+          console.log("Chat: " + this.$store.getters.getChatOpen);
+        });
     }
   },
   created() {

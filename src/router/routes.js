@@ -71,8 +71,8 @@ const routes = [
         }
       },
       {
-        path: "lobby/:scenarioKey",
-        component: () => import("pages/Scenario/Lobby.vue"),
+        path: "game/:scenarioKey",
+        component: () => import("pages/Game/Game.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         }

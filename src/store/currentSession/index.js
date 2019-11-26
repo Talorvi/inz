@@ -13,7 +13,10 @@ export default {
     selectedCharacter: null,
     characterSelectionList: [],
     onlinePlayers: [],
-    scenarioStatus: null
+    scenarioStatus: null,
+    isInGame: false,
+    chatOpen: false,
+    unreadMessages: 0
   },
   mutations: {
     updateCharacterList(context, characterList) {
@@ -98,6 +101,18 @@ export default {
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
       console.log("Commit clicked on " + state.characters[payload.index]);
+    },
+    changeIsInGame(context, state) {
+      context.isInGame = state;
+    },
+    changeChatOpen(context, value) {
+      context.chatOpen = !value;
+      if (context.chatOpen) {
+        context.unreadMessages = 0;
+      }
+    },
+    pushNewMessage(context) {
+      context.unreadMessages++;
     }
   },
   getters: {
@@ -126,6 +141,15 @@ export default {
     getOnlinePlayers: state => {
       return state.onlinePlayers;
     },
+    getIsInGame: state => {
+      return state.isInGame;
+    },
+    getChatOpen: state => {
+      return state.chatOpen;
+    },
+    getUnreadMessages: state => {
+      return state.unreadMessages;
+    }
   },
   actions: {
     reloadCharacters(context, payload) {
@@ -206,7 +230,9 @@ export default {
         });
     },
     connectToScenario(context, scenarioKey) {
-      console.log("Rambooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
+      console.log(
+        "Rambooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
+      );
       var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
       axios
         .get(targetURL, {
@@ -240,6 +266,7 @@ export default {
             response.data.scenarioInfo.onlinePlayers
           );
           context.commit("updateCharacterList", response.data.userCharacters);
+          context.commit("changeIsInGame", true);
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -250,6 +277,12 @@ export default {
             );
           }
         });
+    },
+    toggleChatOpen(context, value) {
+      context.commit("changeChatOpen", value);
+    },
+    addMessage(context) {
+      context.commit("pushNewMessage");
     }
   }
 };

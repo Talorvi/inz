@@ -15,7 +15,7 @@ module.exports = function(ctx) {
     extras: [
       // 'ionicons-v4',
       // 'mdi-v4',
-      // 'fontawesome-v5',
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
@@ -91,8 +91,8 @@ module.exports = function(ctx) {
       proxy: {
         // proxy all requests starting with /api to jsonplaceholder
         "/api": {
-          target: "http://192.168.99.100:8080",
-          //target: "http://localhost:8080",
+          //target: "http://192.168.99.100:8080",
+          target: "http://localhost:8080",
           changeOrigin: true,
           pathRewrite: {
             "^/api": ""

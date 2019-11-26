@@ -1,45 +1,76 @@
 <template>
-  <div class="q-pa-md row justify-center">
+  <div class="q-pa-md row" style="height: 100vh">
     <div
       v-chat-scroll="{ always: true, smooth: true }"
       id="chat-messages-form"
-      class="scroll-here"
+      class="scroll-here q-pr-sm"
     >
-      <div v-for="message in messages" :key="message.id">
-        <span v-if="message.whisperTarget !== null" class="whisper-message"
-          >From {{ message.sender }} to {{ message.whisperTarget }}:
-        </span>
-        <span v-else-if="message.type === 'system'" class="system-message"
-          >[SYSTEM]:
-        </span>
-        <span
-          v-else
-          :class="{
-            'system-message': message.type === 'system',
-            'ooc-message':
-              message.type === 'ooc' && message.type !== message.isGM,
-            'gm-message': message.type === 'ooc'
-          }"
-          >{{ message.sender }}:
-        </span>
-        <span
-          :class="{
-            'system-message': message.type === 'system',
-            'ooc-message': message.type === 'ooc'
-          }"
-          >{{ message.text }}
-        </span>
+      <div
+        v-for="message in messages"
+        :key="message.id"
+        class="text-justify q-pl-sm q-pr-sm"
+        :class="{
+          'system-background': message.type === 'system',
+          'ooc-background':
+            message.type === 'ooc' &&
+            message.sender !== $store.getters.getGameMaster,
+          'gm-background':
+            message.type === 'ooc' &&
+            message.sender === $store.getters.getGameMaster
+        }"
+        style="padding-top: 0.5rem;"
+      >
+        <div style="padding-bottom: 0.5rem">
+          <span v-if="message.whisperTarget !== null" class="whisper-message"
+            >From {{ message.sender }} to {{ message.whisperTarget }}:
+          </span>
+          <span v-else-if="message.type === 'system'" class="system-message"
+            >[SYSTEM]:
+          </span>
+          <span
+            v-else
+            :class="{
+              'system-message': message.type === 'system',
+              'ooc-message':
+                message.type === 'ooc' &&
+                message.sender !== $store.getters.getGameMaster,
+              'gm-message':
+                message.type === 'ooc' &&
+                message.sender === $store.getters.getGameMaster
+            }"
+            >{{ message.sender }}:
+          </span>
+          <span>
+            <!--          :class="{-->
+            <!--            'system-message': message.type === 'system',-->
+            <!--            'ooc-message': message.type === 'ooc'-->
+            <!--          }"-->
+            {{ message.text }}
+          </span>
+        </div>
+        <q-separator></q-separator>
       </div>
     </div>
 
     <q-input
-      outlined
+      filled
       v-model="text"
       v-on:keyup.enter="submit()"
       v-bind:label="$store.getters.getSelectedCharacter.name"
-      id="chat-message-input"
+      class="chat-message-input fixed-bottom-right"
+      style="width: 100%;"
+      color="accent"
     >
-      <q-btn round dense flat icon="send" v-on:click="submit()" />
+      <template v-slot:append>
+        <q-btn
+          round
+          dense
+          flat
+          icon="send"
+          color="accent"
+          v-on:click="submit()"
+        />
+      </template>
     </q-input>
   </div>
 </template>
@@ -87,7 +118,7 @@ export default {
         this.displayMessage(objectResponse.body);
       } else if (objectResponse.action === "reload") {
         if (objectResponse.target === "characters") {
-          this.$store.dispatch("reloadCharacters",{
+          this.$store.dispatch("reloadCharacters", {
             data: this.$q
           });
         }
@@ -95,7 +126,7 @@ export default {
       }
     },
     connect() {
-      var socket = new SockJS("http://192.168.99.100:8080/rpg-server");
+      var socket = new SockJS("http://localhost:8080/rpg-server");
       var header = { "X-Authorization": this.$store.getters.loggedIn };
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(header, this.onConnected, this.onError);
@@ -164,9 +195,14 @@ export default {
       if (this.messages.length === 50) {
         this.messages.shift();
       }
+      if (!this.$store.getters.getChatOpen) {
+        this.$store.dispatch("addMessage");
+        console.log("test test test");
+      }
     },
     //Loading old messages functionality
     loadOldMessages() {
+      console.log("Klucz scenariusza: " + this.$store.getters.getScenarioKey);
       var targetURL =
         "/api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
@@ -225,9 +261,8 @@ export default {
 /*creating special classes*/
 .scroll-here {
   overflow: auto;
-  height: 650px;
+  height: 90%;
   width: 100%;
-  max-width: 450px;
 }
 .gm-message {
   color: green;
@@ -240,5 +275,19 @@ export default {
 }
 .system-message {
   font-weight: bold;
+}
+.chat-message-input {
+  height: 10%;
+  position: sticky;
+  bottom: 8px;
+}
+.ooc-background {
+  background-color: rgba(0, 0, 255, 0.1);
+}
+.whisper-background {
+  background-color: rgba(250, 158, 114, 0.1);
+}
+.gm-background {
+  background-color: rgba(0, 255, 0, 0.1);
 }
 </style>

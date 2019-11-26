@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     joinGame(scenarioKey) {
-      this.$router.push(/lobby/ + scenarioKey);
+      this.$router.push(/game/ + scenarioKey);
     }
   },
   computed: {

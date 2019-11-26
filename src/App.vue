@@ -9,7 +9,7 @@ export default {
   name: "App",
   beforeCreate() {
     //this.$root.$on("noAuth", msg => this.tryToRefreshToken(msg));
-    //this.$q.dark.set(true);
+    this.$q.dark.set(true);
     this.$store.dispatch("refreshToken");
   }
 };

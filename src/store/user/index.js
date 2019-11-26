@@ -109,9 +109,7 @@ export default {
           }
         })
         .catch(error => {
-          notifications.methods.sendErrorNotification(
-            error.response.data
-          );
+          notifications.methods.sendErrorNotification(error.response.data);
         })
         .finally(() => {
           credentials.quasar.loading.hide();
