@@ -8,7 +8,6 @@
       </q-toolbar>
       <q-toolbar>
         <div v-if="isInGame">
-
           <div v-if="unreadMessages > 0">
             <q-btn
               dense
@@ -32,8 +31,6 @@
               @click="toggleChatOpen"
             />
           </div>
-
-
         </div>
         <q-space></q-space>
         <div v-if="isLoggedIn">
@@ -103,43 +100,45 @@
           </q-item-section>
           <q-item-section>Games</q-item-section>
         </q-item>
-        <q-separator />
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-dice-d20" />
-          </q-item-section>
-          <q-item-section>Roll</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-scroll" />
-          </q-item-section>
-          <q-item-section>Statistics</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-box" />
-          </q-item-section>
-          <q-item-section>Equipment</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-hat-wizard" />
-          </q-item-section>
-          <q-item-section>Magic</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-clipboard" />
-          </q-item-section>
-          <q-item-section>Notes</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="fas fa-users" />
-          </q-item-section>
-          <q-item-section>Characters</q-item-section>
-        </q-item>
+        <div v-if="isInGame">
+          <q-separator />
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-dice-d20" />
+            </q-item-section>
+            <q-item-section>Roll</q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-scroll" />
+            </q-item-section>
+            <q-item-section>Statistics</q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-box" />
+            </q-item-section>
+            <q-item-section>Equipment</q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-hat-wizard" />
+            </q-item-section>
+            <q-item-section>Magic</q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-clipboard" />
+            </q-item-section>
+            <q-item-section>Notes</q-item-section>
+          </q-item>
+          <q-item clickable v-ripple>
+            <q-item-section avatar>
+              <q-icon name="fas fa-users" />
+            </q-item-section>
+            <q-item-section>Characters</q-item-section>
+          </q-item>
+        </div>
       </q-list>
     </q-drawer>
 
