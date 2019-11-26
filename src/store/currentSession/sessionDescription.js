@@ -206,7 +206,6 @@ export default {
         });
     },
     connectToScenario(context, scenarioKey) {
-      console.log("Rambooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo");
       var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
       axios
         .get(targetURL, {
@@ -215,8 +214,6 @@ export default {
           }
         })
         .then(response => {
-          console.log("Huge response");
-          console.log(response.data);
           context.commit(
             "updateScenarioKey",
             response.data.scenarioInfo.scenarioKey
@@ -248,6 +245,92 @@ export default {
             notifications.methods.sendErrorNotification(
               "Couldn't load scenario correctly"
             );
+          }
+        });
+    },
+
+    getNotes(context, payload) {
+      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note";
+      axios
+        .get(targetURL, {
+          headers: {
+            Authorization: "bearer " + context.getters.loggedIn
+          }
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    createNote(context, payload) {
+      payload.data.loading.show();
+      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note";
+      axios
+        .post(
+          targetURL,
+          {
+            content: payload.note.content,
+            name: payload.note.name
+          },
+          {
+            headers: { Authorization: "bearer " + context.getters.loggedIn }
+          }
+        )
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    updateNote(context, payload) {
+      payload.data.loading.show();
+      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note" + payload.note.id;
+      axios
+        .patch(
+          targetURL,
+          {
+            content: payload.note.content,
+            name: payload.note.name
+          },
+          {
+            headers: { Authorization: "bearer " + context.getters.loggedIn }
+          }
+        )
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    deleteNote(context, payload) {
+      payload.data.loading.show();
+      var targetURL =
+        "api/api/v1/scenario/" +
+        payload.scenarioKey +
+        "/note" +
+        payload.noteId;
+      axios
+        .delete(targetURL, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
           }
         });
     }
