@@ -207,6 +207,7 @@ export default {
         });
     },
     reloadPlayers(context) {
+      console.log("tets");
       var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/player";
       axios
         .get(targetURL, {
@@ -283,6 +284,35 @@ export default {
     },
     addMessage(context) {
       context.commit("pushNewMessage");
+    },
+    rollDice(context, payload) {
+      var postData = {
+        characterName: payload.characterName.name,
+        dices: payload.dices,
+        value: payload.sides
+      };
+      console.log(postData);
+      var config = {
+        headers: {
+          Authorization: "Bearer " + VueCookies.get("token")
+        }
+      };
+      var targetURL = "api/action/roll/scenario/" + payload.scenarioKey;
+      axios
+        .post(targetURL, postData, config)
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          console.log(error);
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(
+              "Couldn't load scenario correctly"
+            );
+          }
+        });
     }
   }
 };

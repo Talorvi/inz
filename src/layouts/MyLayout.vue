@@ -102,7 +102,16 @@
         </q-item>
         <div v-if="isInGame">
           <q-separator />
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/roll',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-dice-d20" />
             </q-item-section>
@@ -138,6 +147,15 @@
             </q-item-section>
             <q-item-section>Characters</q-item-section>
           </q-item>
+          <q-separator />
+          <q-expansion-item
+            clickable
+            icon="fas fa-user"
+            label="Online players"
+            v-model="expanded"
+          >
+            <OnlineList />
+          </q-expansion-item>
         </div>
       </q-list>
     </q-drawer>
@@ -153,10 +171,11 @@
 <script>
 import { mapActions } from "vuex";
 import chatForm from "../components/chatForm";
+import OnlineList from "../components/scenario/OnlineList";
 
 export default {
   name: "MyLayout",
-  components: { chatForm },
+  components: { chatForm, OnlineList },
 
   mounted() {
     //this.$q.addressbarColor.set("#027BE3");
@@ -166,7 +185,8 @@ export default {
     return {
       chatOpen: this.$store.getters.getChatOpen,
       right: true,
-      appName: process.env.APP_NAME
+      appName: process.env.APP_NAME,
+      expanded: true,
     };
   },
 

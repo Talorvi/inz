@@ -1,29 +1,41 @@
 <template>
-  <div>
-    <h4>Players online:</h4>
-    <q-btn class="q-mx-xs" v-for="player in this.$store.getters.getOnlinePlayers" :key="player">
-      <div>
+  <!--  <q-scroll-area horizontal>-->
+  <q-list>
+    <q-item
+      v-ripple
+      v-for="player in this.$store.getters.getOnlinePlayers"
+      :key="player"
+    >
+      <q-item-section avatar>
         <q-avatar
-          size="56px"
+          size="28px"
           class="q-mb-sm q-mt-sm"
           color="accent"
           text-color="white"
         >
           {{ player[0].toUpperCase() }}
         </q-avatar>
-        <div class="text-weight-bold text-center">{{ player }}</div>
-      </div>
+      </q-item-section>
 
-    </q-btn>
-  </div>
+      <q-item-section
+        ><div class="text-weight-bold">
+          {{ player }}
+        </div></q-item-section
+      >
+    </q-item>
+  </q-list>
 </template>
 
 <script>
 export default {
   name: "OnlineList",
-  mounted(){
-    console.log("Online players: " + this.$store.getters.getOnlinePlayers.length);
+  created() {
+    console.log("Online players: " + this.onlinePlayers);
+  },
+  computed: {
+    onlinePlayers() {
+      return this.$store.getters.getOnlinePlayers;
+    }
   }
 };
-
 </script>

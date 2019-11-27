@@ -75,7 +75,16 @@ const routes = [
         component: () => import("pages/Game/Game.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
-        }
+        },
+        children: [
+          {
+            path: "roll",
+            component: () => import("pages/Game/Roll.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          }
+        ]
       },
       //testing routes to delete
       {
@@ -83,7 +92,7 @@ const routes = [
         component: () => import("pages/ComponentTester.vue"),
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
-        },
+        }
       }
     ]
   }

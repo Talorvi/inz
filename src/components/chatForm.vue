@@ -114,6 +114,7 @@ export default {
       console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
+      console.log(objectResponse.action);
       if (objectResponse.action === "message") {
         this.displayMessage(objectResponse.body);
       } else if (objectResponse.action === "reload") {
@@ -121,6 +122,9 @@ export default {
           this.$store.dispatch("reloadCharacters", {
             data: this.$q
           });
+        } else if (objectResponse.action === "players") {
+          this.$store.dispatch("reloadPlayers");
+          console.log("Tutaj reload");
         }
         //do some stuff here
       }
