@@ -84,6 +84,113 @@ const routes = [
         beforeEnter: (to, from, next) => {
           loggedRequired(to, from, next);
         },
+        children: [
+          {
+            path: "featureForm/:featureName",
+            component: () => import("components/forms/featureForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "languageForm/:languageName",
+            component: () => import("components/forms/languageForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "proficiencyForm/:proficiencyName",
+            component: () => import("components/forms/proficiencyForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "skillForm/:skillName",
+            component: () => import("components/forms/skillForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "spellForm/:spellName",
+            component: () => import("components/forms/spellForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "traitForm/:traitName",
+            component: () => import("components/forms/traitForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "armorForm/:armorName",
+            component: () => import("components/forms/armorForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "gearForm/:gearName",
+            component: () => import("components/forms/gearForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "toolForm/:toolName",
+            component: () => import("components/forms/toolForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "vehicleForm/:vehicleName",
+            component: () => import("components/forms/vehicleForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "weaponForm/:weaponName",
+            component: () => import("components/forms/weaponForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "conditionForm/:conditionName",
+            component: () => import("components/forms/conditionForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "damageTypeForm/:damageTypeName",
+            component: () => import("components/forms/damageTypeForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "magicSchoolForm/:magicSchoolName",
+            component: () => import("components/forms/magicSchoolForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "weaponPropertyForm/:weaponPropertyName",
+            component: () => import("components/forms/weaponPropertyForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          }
+        ]
       }
     ]
   }

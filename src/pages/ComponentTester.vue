@@ -5,6 +5,7 @@
         <ChatForm></ChatForm>
         <Picker></Picker>
         <CreateCharacter></CreateCharacter>
+        <router-view />
       </div>
     </div>
   </div>

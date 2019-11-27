@@ -48,8 +48,8 @@
                       />
                       <q-input
                         filled
-                        v-model="general.class"
-                        label="Class"
+                        v-model="general.profession"
+                        label="Profession"
                         :rules="[]"
                       />
                       <q-input
@@ -139,6 +139,7 @@
                     <div class="row no-wrap">
                       <q-input
                         filled
+                        type="number"
                         v-model="general.proficiency"
                         label="Proficiency"
                         :rules="[]"
@@ -148,6 +149,13 @@
                         type="number"
                         v-model="general.passivePerception"
                         label="Passive perception"
+                        :rules="[]"
+                      />
+                      <q-input
+                        filled
+                        type="number"
+                        v-model="general.passiveInsight"
+                        label="Passive insight"
                         :rules="[]"
                       />
                       <q-input
@@ -164,7 +172,7 @@
                         filled
                         style="width: 100px"
                         type="number"
-                        v-model="general.hitPoints.max"
+                        v-model="general.health.maxHealth"
                         label="Max Hit Points"
                         :rules="[
                           val => val > 0 || 'Max HP must be greater than 0!'
@@ -174,7 +182,7 @@
                         filled
                         style="width: 100px"
                         type="number"
-                        v-model="general.hitPoints.current"
+                        v-model="general.health.actualHealth"
                         label="Current Hit Points"
                         :rules="[]"
                       />
@@ -182,7 +190,7 @@
                         filled
                         style="width: 100px"
                         type="number"
-                        v-model="general.hitPoints.temporary"
+                        v-model="general.health.temporaryHealth"
                         label="Temporary Hit Points"
                         :rules="[]"
                       />
@@ -191,8 +199,15 @@
                       <q-input
                         filled
                         style="width: 100px"
+                        v-model="general.hitDices.dice"
+                        label="Hit Dice Type"
+                        :rules="[]"
+                      />
+                      <q-input
+                        filled
+                        style="width: 100px"
                         type="number"
-                        v-model="general.hitDice.total"
+                        v-model="general.hitDices.total"
                         label="Total Hit Dice"
                         :rules="[]"
                       />
@@ -200,7 +215,7 @@
                         filled
                         style="width: 100px"
                         type="number"
-                        v-model="general.hitDice.used"
+                        v-model="general.hitDices.used"
                         label="Used Hit Dice"
                         :rules="[]"
                       />
@@ -286,7 +301,7 @@ export default {
       general: {
         name: "",
         race: "",
-        class: "",
+        profession: "",
         level: 1,
         background: "",
         experience: 0,
@@ -299,15 +314,17 @@ export default {
           wisdom: 0,
           charisma: 0
         },
-        proficiency: "",
+        proficiency: 0,
         passivePerception: 0,
+        passiveInsight: 0,
         inspiration: 0,
-        hitPoints: {
-          current: 0,
-          max: 1,
-          temporary: 0
+        health: {
+          actualHealth: 0,
+          maxHealth: 1,
+          temporaryHealth: 0
         },
-        hitDice: {
+        hitDices: {
+          dice: "",
           total: 0,
           used: 0
         },
@@ -326,7 +343,9 @@ export default {
     };
   },
   methods: {
-    submit() {},
+    onSubmit() {
+      this.$store.dispatch("createCharacter", {general: this.general, scenarioKey: "TESTSCEN"});
+    },
     onReset() {
       this.general = {
         name: "",

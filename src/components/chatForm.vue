@@ -83,6 +83,7 @@ export default {
       console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
+      console.log("Ktoś wlazł:" + objectResponse.action);
       if (objectResponse.action === "message") {
         this.displayMessage(objectResponse.body);
       } else if (objectResponse.action === "reload") {

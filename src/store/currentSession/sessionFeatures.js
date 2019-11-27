@@ -4,11 +4,77 @@ import VueCookies from "vue-cookies";
 Vue.use(VueCookies);
 import notifications from "../../functions/notifications";
 export default {
-  state: {},
-  mutations: {},
-  getters: {},
+  state: {
+    feature: {
+      name: "",
+      description: "",
+      visible: false
+    },
+    features: []
+  },
+  mutations: {
+    updateFeatureTable(context, payload) {
+      context.features = [];
+      for (var i = 0; i < payload.length; i++) {
+        context.features.push(payload[i].name);
+      }
+    },
+    updateSingleFeature(context, payload) {
+      context.feature = null;
+     console.log("Before loop" +  payload.results[0].name.toLowerCase());
+      for (var i = 0; i < payload.results.length; i++) {
+        if (
+          payload.results[i].name.toLowerCase() ===
+          payload.searchPhrase.toLowerCase()
+        ) {
+          console.log("Condition fulfilled" + payload.results[i].name.toLowerCase());
+          context.feature = payload.results[i];
+          break;
+        }
+      }
+    },
+    clearFeature(context){
+      context.feature = {
+        name: "",
+        description: "",
+        visible: false
+      };
+    }
+  },
+  getters: {
+    getFeature(context) {
+      return context.feature;
+    }
+  },
   actions: {
     //Abilities?
+    getExactFeatureByName(context, payload) {
+      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/feature";
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn },
+          params: {
+            name: payload.name
+          }
+        })
+        .then(response => {
+          console.log("lambda");
+          var resp = response.data;
+          console.log("This is returned feature", resp);
+          context.commit("updateSingleFeature", {
+            results: response.data,
+            searchPhrase: payload.name
+          });
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+
     getFeatureByName(context, payload) {
       var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/feature";
       axios
@@ -19,30 +85,9 @@ export default {
           }
         })
         .then(response => {
-          console.log(response);
+          console.log("This is returned feature", response);
+          context.commit("updateFeatureTable", response.data);
         })
-        .catch(error => {
-          if (error.response.status === 401) {
-            notifications.methods.sendErrorNotification("Unauthorized");
-          } else {
-            notifications.methods.sendErrorNotification(error.response.data);
-          }
-        });
-    },
-    createFeature(context, payload) {
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/feature";
-      axios
-        .post(
-          targetURL,
-          {
-            description: payload.feature.description,
-            name: payload.feature.name,
-            visible: payload.feature.visible
-          },
-          {
-            headers: { Authorization: "bearer " + context.getters.loggedIn }
-          }
-        )
         .catch(error => {
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
@@ -1090,7 +1135,8 @@ export default {
 
     //types
     getConditionByName(context, payload) {
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
       axios
         .get(targetURL, {
           headers: {
@@ -1113,7 +1159,8 @@ export default {
     },
     createCondition(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
       axios
         .post(
           targetURL,
@@ -1136,7 +1183,8 @@ export default {
     },
     updateCondition(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/condition";
       axios
         .patch(
           targetURL,
@@ -1181,7 +1229,8 @@ export default {
     },
 
     getDamageTypeByName(context, payload) {
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
       axios
         .get(targetURL, {
           headers: {
@@ -1204,7 +1253,8 @@ export default {
     },
     createDamageType(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
       axios
         .post(
           targetURL,
@@ -1227,7 +1277,8 @@ export default {
     },
     updateDamageType(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/damageType";
       axios
         .patch(
           targetURL,
@@ -1272,7 +1323,8 @@ export default {
     },
 
     getMagicSchoolByName(context, payload) {
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
       axios
         .get(targetURL, {
           headers: {
@@ -1295,7 +1347,8 @@ export default {
     },
     createMagicSchool(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
       axios
         .post(
           targetURL,
@@ -1318,7 +1371,8 @@ export default {
     },
     updateMagicSchool(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/magicSchool";
       axios
         .patch(
           targetURL,
@@ -1363,7 +1417,8 @@ export default {
     },
 
     getWeaponPropertyByName(context, payload) {
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
       axios
         .get(targetURL, {
           headers: {
@@ -1386,7 +1441,8 @@ export default {
     },
     createWeaponProperty(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
       axios
         .post(
           targetURL,
@@ -1409,7 +1465,8 @@ export default {
     },
     updateWeaponProperty(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
+      var targetURL =
+        "api/api/v1/scenario/" + payload.scenarioKey + "/weaponProperty";
       axios
         .patch(
           targetURL,

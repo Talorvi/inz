@@ -125,7 +125,7 @@ export default {
     },
     getOnlinePlayers: state => {
       return state.onlinePlayers;
-    },
+    }
   },
   actions: {
     reloadCharacters(context, payload) {
@@ -248,6 +248,21 @@ export default {
           }
         });
     },
+    createCharacter(context, payload) {
+      var targetURL =
+        "api/action/create/character/scenario/" + payload.scenarioKey;
+      axios
+        .post(targetURL, payload.general, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
 
     getNotes(context, payload) {
       var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note";
@@ -292,7 +307,11 @@ export default {
     },
     updateNote(context, payload) {
       payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note" + payload.note.id;
+      var targetURL =
+        "api/api/v1/scenario/" +
+        payload.scenarioKey +
+        "/note" +
+        payload.note.id;
       axios
         .patch(
           targetURL,
@@ -315,10 +334,7 @@ export default {
     deleteNote(context, payload) {
       payload.data.loading.show();
       var targetURL =
-        "api/api/v1/scenario/" +
-        payload.scenarioKey +
-        "/note" +
-        payload.noteId;
+        "api/api/v1/scenario/" + payload.scenarioKey + "/note" + payload.noteId;
       axios
         .delete(targetURL, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
