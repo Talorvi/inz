@@ -87,19 +87,6 @@
           </q-item-section>
           <q-item-section>Logout</q-item-section>
         </q-item>
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="person" />
-          </q-item-section>
-          <q-item-section>Account</q-item-section>
-        </q-item>
-        <q-separator />
-        <q-item clickable v-ripple>
-          <q-item-section avatar>
-            <q-icon name="list" />
-          </q-item-section>
-          <q-item-section>Games</q-item-section>
-        </q-item>
         <div v-if="isInGame">
           <q-separator />
           <q-item
@@ -141,7 +128,16 @@
             </q-item-section>
             <q-item-section>Notes</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/characters',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-users" />
             </q-item-section>
@@ -186,7 +182,7 @@ export default {
       chatOpen: this.$store.getters.getChatOpen,
       right: true,
       appName: process.env.APP_NAME,
-      expanded: true,
+      expanded: true
     };
   },
 

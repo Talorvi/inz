@@ -83,6 +83,13 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
+          },
+          {
+            path: "characters",
+            component: () => import("pages/Game/CharacterPicker.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
           }
         ]
       },
