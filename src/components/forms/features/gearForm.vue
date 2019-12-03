@@ -1,30 +1,28 @@
 <template>
   <div>
-    <div v-if="tool.scenarioKey === null">
-      <h5>This tool cannot be edited</h5>
-      <h5>Name: {{ tool.name }}</h5>
-      <h5>Category: {{ tool.category }}</h5>
-      <h5>Cost: {{ tool.cost }}</h5>
-      <h5>Weight: {{ tool.weight }}</h5>
-      <p>Description: {{ tool.description }}</p>
+    <div v-if="gear.scenarioKey === null">
+      <h5>This gear cannot be edited</h5>
+      <h5>Name: {{ gear.name }}</h5>
+      <h5>Cost: {{ gear.cost }}</h5>
+      <h5>Weight: {{ gear.weight }}</h5>
+      <p>Description: {{ gear.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="toolName === 'new'"
+      v-else-if="gearName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="tool.name" />
-      <q-input filled label="Category" :rules="[]" v-model="tool.category" />
-      <q-input filled label="Cost" :rules="[]" v-model="tool.cost" />
-      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="tool.weight" />
+      <q-input filled label="Name" :rules="[]" v-model="gear.name" />
+      <q-input filled label="Cost" :rules="[]" v-model="gear.cost" />
+      <q-input filled label="weight" type="number" :rules="[]" v-model="gear.weight" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="tool.description"
+        v-model="gear.description"
       />
-      <q-toggle color="green" label="Visible" v-model="tool.visible" />
+      <q-toggle color="green" label="Visible" v-model="gear.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -39,51 +37,49 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="toolName !== 'new' && searchResultFound === true"
+      v-else-if="gearName !== 'new' && searchResultFound === true"
     >
-      <h3>Tool: {{ tool.name }}</h3>
-      <q-input filled label="Category" :rules="[]" v-model="tool.category" />
-      <q-input filled label="Cost" :rules="[]" v-model="tool.cost" />
-      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="tool.weight" />
+      <h3>Gear: {{ gear.name }}</h3>
+      <q-input filled label="Cost" :rules="[]" v-model="gear.cost" />
+      <q-input filled label="weight" type="number" :rules="[]" v-model="gear.weight" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="tool.description"
+        v-model="gear.description"
       />
-      <q-toggle color="green" label="Visible" v-model="tool.visible" />
+      <q-toggle color="green" label="Visible" v-model="gear.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found tool with name: {{ toolName }}.</h5>
+      <h5>Haven't found gear with name: {{ gearName }}</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      toolName: "",
-      tool: {
+      gearName: "",
+      gear: {
         name: "",
-        category: "",
         cost: "",
-        weight: 0,
         description: "",
+        weight: 0,
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.toolName = this.$route.params.toolName;
-    if (this.toolName !== "new") {
-      this.getExactFeatureByName(this.toolName);
+    this.gearName = this.$route.params.gearName;
+    if (this.gearName !== "new") {
+      this.getExactFeatureByName(this.gearName);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -94,17 +90,16 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/tool";
+        "/gear";
       axios
         .post(
           targetURL,
           {
-            description: this.tool.description,
-            name: this.tool.name,
-            category: this.tool.category,
-            cost: this.tool.cost,
-            weight: this.tool.weight,
-            visible: this.tool.visible
+            description: this.gear.description,
+            name: this.gear.name,
+            cost: this.gear.cost,
+            weight: this.gear.weight,
+            visible: this.gear.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -112,14 +107,13 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created tool"
+            "Successfully created gear"
           );
-          this.tool.description = "";
-          this.tool.name = "";
-          this.tool.category = "";
-          this.tool.cost = "";
-          this.tool.wight = 0;
-          this.tool.visible = false;
+          this.gear.description = "";
+          this.gear.name = "";
+          this.gear.cost = "";
+          this.gear.weight = 0;
+          this.gear.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -133,17 +127,16 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/tool";
+        "/gear";
       axios
         .patch(
           targetURL,
           {
-            description: this.tool.description,
-            name: this.tool.name,
-            category: this.tool.category,
-            cost: this.tool.cost,
-            weight: this.tool.weight,
-            visible: this.tool.visible
+            description: this.gear.description,
+            name: this.gear.name,
+            cost: this.gear.cost,
+            weight: this.gear.weight,
+            visible: this.gear.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -151,7 +144,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated tool"
+            "Successfully updated gear"
           );
         })
         .catch(error => {
@@ -163,23 +156,22 @@ export default {
         });
     },
     onReset() {
-      this.tool.description = "";
-      this.tool.name = "";
-      this.tool.category = "";
-      this.tool.cost = "";
-      this.tool.wight = 0;
-      this.tool.visible = false;
+      this.gear.description = "";
+      this.gear.name = "";
+      this.gear.cost = "";
+      this.gear.weight = 0;
+      this.gear.visible = false;
     },
-    getExactFeatureByName(toolName) {
+    getExactFeatureByName(gearName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/tool";
+        "/gear";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: toolName
+            name: gearName
           }
         })
         .then(response => {
@@ -187,9 +179,9 @@ export default {
           var resp = response.data;
           console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === toolName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === gearName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.tool = resp[i];
+              this.gear = resp[i];
               this.searchResultFound = true;
               break;
             }

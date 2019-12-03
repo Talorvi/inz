@@ -253,11 +253,7 @@
 
               <q-tab-panel name="abilities">
                 <div class="text-h6">Alarms</div>
-                <q-form
-                  @submit="onSubmit"
-                  @reset="onReset"
-                  class="q-gutter-md"
-                >
+                <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
                   <q-input
                     filled
                     v-model="feature.name"
@@ -332,7 +328,7 @@ export default {
         speed: ""
       },
       equipment: {
-        armorClass : 1
+        armorClass: 1
       },
       feature: {
         name: "",
@@ -344,7 +340,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("createCharacter", {general: this.general, scenarioKey: "TESTSCEN"});
+      this.$store.dispatch("createCharacter", {
+        general: this.general,
+        scenarioKey: this.$store.getters.getScenarioKey
+      });
     },
     onReset() {
       this.general = {

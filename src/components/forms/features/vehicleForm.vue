@@ -1,21 +1,28 @@
 <template>
   <div>
-    <div v-if="language.scenarioKey === null">
-      <h5>This language cannot be edited</h5>
-      <h5>Name: {{ language.name }}</h5>
-      <h5>Type: {{ language.type }}</h5>
-      <h5>Script: {{ language.script }}</h5>
+    <div v-if="vehicle.scenarioKey === null">
+      <h5>This vehicle cannot be edited</h5>
+      <h5>Name: {{ vehicle.name }}</h5>
+      <h5>Cost: {{ vehicle.cost }}</h5>
+      <h5>Weight: {{ vehicle.weight }}</h5>
+      <p>Description: {{ vehicle.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="languageName === 'new'"
+      v-else-if="vehicleName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="language.name" />
-      <q-input filled label="Type" :rules="[]" v-model="language.type" />
-      <q-input filled label="Script" :rules="[]" v-model="language.script" />
-      <q-toggle color="green" label="Visible" v-model="language.visible" />
+      <q-input filled label="Name" :rules="[]" v-model="vehicle.name" />
+      <q-input filled label="Cost" :rules="[]" v-model="vehicle.cost" />
+      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="vehicle.weight" />
+      <q-input
+        filled
+        label="Description"
+        :rules="[]"
+        v-model="vehicle.description"
+      />
+      <q-toggle color="green" label="Visible" v-model="vehicle.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -30,58 +37,69 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="languageName !== 'new' && searchResultFound === true"
+      v-else-if="vehicleName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ language.name }}</h3>
-      <q-input filled label="Type" :rules="[]" v-model="language.type" />
-      <q-input filled label="Script" :rules="[]" v-model="language.script" />
-      <q-toggle color="green" label="Visible" v-model="language.visible" />
+      <h3>Vehicle: {{ vehicle.name }}</h3>
+      <q-input filled label="Cost" :rules="[]" v-model="vehicle.cost" />
+      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="vehicle.weight" />
+      <q-input
+        filled
+        label="Description"
+        :rules="[]"
+        v-model="vehicle.description"
+      />
+      <q-toggle color="green" label="Visible" v-model="vehicle.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found language with name: {{languageName}}.</h5>
+      <h5>Haven't found vehicle with name: {{ vehicleName }}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      languageName: "",
-      language: {
+      vehicleName: "",
+      vehicle: {
         name: "",
-        script: "",
-        type: "",
+        cost: "",
+        weight: 0,
+        description: "",
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.languageName = this.$route.params.languageName;
-    if (this.languageName !== "new") {
-      this.getExactFeatureByName(this.languageName);
+    this.vehicleName = this.$route.params.vehicleName;
+    if (this.vehicleName !== "new") {
+      this.getExactFeatureByName(this.vehicleName);
     }
+    //new -> no fill to fields, submit creates a new one
+    //existing -> fill fields, name cannot be changed , submit patch existing one
+    //not new and not existing -> 404!
   },
   methods: {
     createFeature() {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/language";
+        "/vehicle";
       axios
         .post(
           targetURL,
           {
-            script: this.language.script,
-            type: this.language.type,
-            name: this.language.name,
-            visible: this.language.visible
+            description: this.vehicle.description,
+            name: this.vehicle.name,
+            cost: this.vehicle.cost,
+            weight: this.vehicle.weight,
+            visible: this.vehicle.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -89,12 +107,13 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created language"
+            "Successfully created vehicle"
           );
-          this.language.script = "";
-          this.language.type = "";
-          this.language.name = "";
-          this.language.visible = false;
+          this.vehicle.description = "";
+          this.vehicle.name = "";
+          this.vehicle.cost = "";
+          this.vehicle.weight = 0;
+          this.vehicle.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -108,15 +127,16 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/language";
+        "/vehicle";
       axios
         .patch(
           targetURL,
           {
-            script: this.language.script,
-            type: this.language.type,
-            name: this.language.name,
-            visible: this.language.visible
+            description: this.vehicle.description,
+            name: this.vehicle.name,
+            cost: this.vehicle.cost,
+            weight: this.vehicle.weight,
+            visible: this.vehicle.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -124,7 +144,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated language"
+            "Successfully updated vehicle"
           );
         })
         .catch(error => {
@@ -136,32 +156,32 @@ export default {
         });
     },
     onReset() {
-      this.language.script = "";
-      this.language.type = "";
-      this.language.name = "";
-      this.language.visible = false;
+      this.vehicle.description = "";
+      this.vehicle.name = "";
+      this.vehicle.cost = "";
+      this.vehicle.weight = 0;
+      this.vehicle.visible = false;
     },
-    getExactFeatureByName(languageName) {
+    getExactFeatureByName(vehicleName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/language";
+        "/vehicle";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: languageName
+            name: vehicleName
           }
         })
         .then(response => {
           console.log("This is mounted method");
           var resp = response.data;
           console.log("This is returned feature", resp);
-
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === languageName.toLowerCase()) {
-              console.log("Condition fulfilled" + resp[i].scenarioKey);
-              this.language = resp[i];
+            if (resp[i].name.toLowerCase() === vehicleName.toLowerCase()) {
+              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
+              this.vehicle = resp[i];
               this.searchResultFound = true;
               break;
             }

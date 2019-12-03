@@ -1,24 +1,26 @@
 <template>
   <div>
-    <div v-if="condition.scenarioKey === null">
-      <h5>This condition cannot be edited</h5>
-      <h5>Name: {{ condition.name }}</h5>
-      <p>Description: {{ condition.description }}</p>
+    <div v-if="skill.scenarioKey === null">
+      <h5>This skill cannot be edited</h5>
+      <h5>Name: {{ skill.name }}</h5>
+      <h5>Ability Score: {{ skill.abilityScore }}</h5>
+      <p>Description: {{ skill.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="conditionName === 'new'"
+      v-else-if="skillName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="condition.name" />
+      <q-input filled label="Name" :rules="[]" v-model="skill.name" />
+      <q-input filled label="Ability Score" :rules="[]" v-model="skill.abilityScore" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="condition.description"
+        v-model="skill.description"
       />
-      <q-toggle color="green" label="Visible" v-model="condition.visible" />
+      <q-toggle color="green" label="Visible" v-model="skill.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -33,45 +35,47 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="conditionName !== 'new' && searchResultFound === true"
+      v-else-if="skillName !== 'new' && searchResultFound === true"
     >
-      <h3>Condition: {{ condition.name }}</h3>
+      <h3>Feature: {{ skill.name }}</h3>
+      <q-input filled label="Ability Score" :rules="[]" v-model="skill.abilityScore" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="condition.description"
+        v-model="skill.description"
       />
-      <q-toggle color="green" label="Visible" v-model="condition.visible" />
+      <q-toggle color="green" label="Visible" v-model="skill.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found condition with name: {{ conditionName }}.</h5>
+      <h5>Haven't found skill with name: {{ skillName }}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      conditionName: "",
-      condition: {
+      skillName: "",
+      skill: {
         name: "",
         description: "",
+        abilityScore: "",
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.conditionName = this.$route.params.conditionName;
-    if (this.conditionName !== "new") {
-      this.getExactFeatureByName(this.conditionName);
+    this.skillName = this.$route.params.skillName;
+    if (this.skillName !== "new") {
+      this.getExactFeatureByName(this.skillName);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -82,14 +86,15 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/condition";
+        "/skill";
       axios
         .post(
           targetURL,
           {
-            description: this.condition.description,
-            name: this.condition.name,
-            visible: this.condition.visible
+            description: this.skill.description,
+            abilityScore: this.skill.abilityScore,
+            name: this.skill.name,
+            visible: this.skill.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -97,11 +102,12 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created condition"
+            "Successfully created feature"
           );
-          this.condition.description = "";
-          this.condition.name = "";
-          this.condition.visible = false;
+          this.skill.description = "";
+          this.skill.abilityScore = "";
+          this.skill.name = "";
+          this.skill.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -115,14 +121,15 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/condition";
+        "/skill";
       axios
         .patch(
           targetURL,
           {
-            description: this.condition.description,
-            name: this.condition.name,
-            visible: this.condition.visible
+            description: this.skill.description,
+            abilityScore: this.skill.abilityScore,
+            name: this.skill.name,
+            visible: this.skill.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -130,7 +137,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated condition"
+            "Successfully updated feature"
           );
         })
         .catch(error => {
@@ -142,20 +149,21 @@ export default {
         });
     },
     onReset() {
-      this.condition.description = "";
-      this.condition.name = "";
-      this.condition.visible = false;
+      this.skill.description = "";
+      this.skill.abilityScore = "";
+      this.skill.name = "";
+      this.skill.visible = false;
     },
-    getExactFeatureByName(conditionName) {
+    getExactFeatureByName(skillName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/condition";
+        "/skill";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: conditionName
+            name: skillName
           }
         })
         .then(response => {
@@ -163,9 +171,9 @@ export default {
           var resp = response.data;
           console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === conditionName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === skillName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.condition = resp[i];
+              this.skill = resp[i];
               this.searchResultFound = true;
               break;
             }

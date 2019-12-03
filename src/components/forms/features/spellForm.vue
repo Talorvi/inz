@@ -75,7 +75,7 @@
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {

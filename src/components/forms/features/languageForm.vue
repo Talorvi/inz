@@ -1,24 +1,21 @@
 <template>
   <div>
-    <div v-if="damageType.scenarioKey === null">
-      <h5>This Damage Type cannot be edited</h5>
-      <h5>Name: {{ damageType.name }}</h5>
-      <p>Description: {{ damageType.description }}</p>
+    <div v-if="language.scenarioKey === null">
+      <h5>This language cannot be edited</h5>
+      <h5>Name: {{ language.name }}</h5>
+      <h5>Type: {{ language.type }}</h5>
+      <h5>Script: {{ language.script }}</h5>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="damageTypeName === 'new'"
+      v-else-if="languageName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="damageType.name" />
-      <q-input
-        filled
-        label="Description"
-        :rules="[]"
-        v-model="damageType.description"
-      />
-      <q-toggle color="green" label="Visible" v-model="damageType.visible" />
+      <q-input filled label="Name" :rules="[]" v-model="language.name" />
+      <q-input filled label="Type" :rules="[]" v-model="language.type" />
+      <q-input filled label="Script" :rules="[]" v-model="language.script" />
+      <q-toggle color="green" label="Visible" v-model="language.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -33,63 +30,58 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="damageTypeName !== 'new' && searchResultFound === true"
+      v-else-if="languageName !== 'new' && searchResultFound === true"
     >
-      <h3>Damage Type: {{ damageType.name }}</h3>
-      <q-input
-        filled
-        label="Description"
-        :rules="[]"
-        v-model="damageType.description"
-      />
-      <q-toggle color="green" label="Visible" v-model="damageType.visible" />
+      <h3>Feature: {{ language.name }}</h3>
+      <q-input filled label="Type" :rules="[]" v-model="language.type" />
+      <q-input filled label="Script" :rules="[]" v-model="language.script" />
+      <q-toggle color="green" label="Visible" v-model="language.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found Damage Type with name: {{ damageTypeName }}.</h5>
+      <h5>Haven't found language with name: {{languageName}}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      damageTypeName: "",
-      damageType: {
+      languageName: "",
+      language: {
         name: "",
-        description: "",
+        script: "",
+        type: "",
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.damageTypeName = this.$route.params.damageTypeName;
-    if (this.damageTypeName !== "new") {
-      this.getExactFeatureByName(this.damageTypeName);
+    this.languageName = this.$route.params.languageName;
+    if (this.languageName !== "new") {
+      this.getExactFeatureByName(this.languageName);
     }
-    //new -> no fill to fields, submit creates a new one
-    //existing -> fill fields, name cannot be changed , submit patch existing one
-    //not new and not existing -> 404!
   },
   methods: {
     createFeature() {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/damageType";
+        "/language";
       axios
         .post(
           targetURL,
           {
-            description: this.damageType.description,
-            name: this.damageType.name,
-            visible: this.damageType.visible
+            script: this.language.script,
+            type: this.language.type,
+            name: this.language.name,
+            visible: this.language.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -97,11 +89,12 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created damageType"
+            "Successfully created language"
           );
-          this.damageType.description = "";
-          this.damageType.name = "";
-          this.damageType.visible = false;
+          this.language.script = "";
+          this.language.type = "";
+          this.language.name = "";
+          this.language.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -115,14 +108,15 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/damageType";
+        "/language";
       axios
         .patch(
           targetURL,
           {
-            description: this.damageType.description,
-            name: this.damageType.name,
-            visible: this.damageType.visible
+            script: this.language.script,
+            type: this.language.type,
+            name: this.language.name,
+            visible: this.language.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -130,7 +124,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated damageType"
+            "Successfully updated language"
           );
         })
         .catch(error => {
@@ -142,30 +136,32 @@ export default {
         });
     },
     onReset() {
-      this.damageType.description = "";
-      this.damageType.name = "";
-      this.damageType.visible = false;
+      this.language.script = "";
+      this.language.type = "";
+      this.language.name = "";
+      this.language.visible = false;
     },
-    getExactFeatureByName(damageTypeName) {
+    getExactFeatureByName(languageName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/damageType";
+        "/language";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: damageTypeName
+            name: languageName
           }
         })
         .then(response => {
           console.log("This is mounted method");
           var resp = response.data;
           console.log("This is returned feature", resp);
+
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === damageTypeName.toLowerCase()) {
-              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.damageType = resp[i];
+            if (resp[i].name.toLowerCase() === languageName.toLowerCase()) {
+              console.log("Condition fulfilled" + resp[i].scenarioKey);
+              this.language = resp[i];
               this.searchResultFound = true;
               break;
             }

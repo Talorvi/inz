@@ -14,11 +14,13 @@
 <script>
   import ChatForm from "../components/chatForm";
   import Picker from "../components/characterPicker";
-  import CreateCharacter from "../components/characterForm";
+  import CreateCharacter from "../components/forms/character/createCharacterForm";
+  import notifications from "../functions/notifications";
 export default {
   name: "Test",
   components: { ChatForm,Picker, CreateCharacter },
   mounted(){
+    notifications.methods.sendSuccessNotification("Mounted test Compo");
     this.$store.dispatch("connectToScenario","TESTSCEN");
   }
 };

@@ -1,26 +1,24 @@
 <template>
   <div>
-    <div v-if="skill.scenarioKey === null">
-      <h5>This skill cannot be edited</h5>
-      <h5>Name: {{ skill.name }}</h5>
-      <h5>Ability Score: {{ skill.abilityScore }}</h5>
-      <p>Description: {{ skill.description }}</p>
+    <div v-if="magicSchool.scenarioKey === null">
+      <h5>This Magic School cannot be edited</h5>
+      <h5>Name: {{ magicSchool.name }}</h5>
+      <p>Description: {{ magicSchool.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="skillName === 'new'"
+      v-else-if="magicSchoolName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="skill.name" />
-      <q-input filled label="Ability Score" :rules="[]" v-model="skill.abilityScore" />
+      <q-input filled label="Name" :rules="[]" v-model="magicSchool.name" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="skill.description"
+        v-model="magicSchool.description"
       />
-      <q-toggle color="green" label="Visible" v-model="skill.visible" />
+      <q-toggle color="green" label="Visible" v-model="magicSchool.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -35,47 +33,45 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="skillName !== 'new' && searchResultFound === true"
+      v-else-if="magicSchoolName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ skill.name }}</h3>
-      <q-input filled label="Ability Score" :rules="[]" v-model="skill.abilityScore" />
+      <h3>Magic School: {{ magicSchool.name }}</h3>
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="skill.description"
+        v-model="magicSchool.description"
       />
-      <q-toggle color="green" label="Visible" v-model="skill.visible" />
+      <q-toggle color="green" label="Visible" v-model="magicSchool.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found skill with name: {{ skillName }}.</h5>
+      <h5>Haven't found Magic School with name: {{ magicSchoolName }}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      skillName: "",
-      skill: {
+      magicSchoolName: "",
+      magicSchool: {
         name: "",
         description: "",
-        abilityScore: "",
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.skillName = this.$route.params.skillName;
-    if (this.skillName !== "new") {
-      this.getExactFeatureByName(this.skillName);
+    this.magicSchoolName = this.$route.params.magicSchoolName;
+    if (this.magicSchoolName !== "new") {
+      this.getExactFeatureByName(this.magicSchoolName);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -86,15 +82,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/skill";
+        "/magicSchool";
       axios
         .post(
           targetURL,
           {
-            description: this.skill.description,
-            abilityScore: this.skill.abilityScore,
-            name: this.skill.name,
-            visible: this.skill.visible
+            description: this.magicSchool.description,
+            name: this.magicSchool.name,
+            visible: this.magicSchool.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -102,12 +97,11 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created feature"
+            "Successfully created Magic School"
           );
-          this.skill.description = "";
-          this.skill.abilityScore = "";
-          this.skill.name = "";
-          this.skill.visible = false;
+          this.magicSchool.description = "";
+          this.magicSchool.name = "";
+          this.magicSchool.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -121,15 +115,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/skill";
+        "/magicSchool";
       axios
         .patch(
           targetURL,
           {
-            description: this.skill.description,
-            abilityScore: this.skill.abilityScore,
-            name: this.skill.name,
-            visible: this.skill.visible
+            description: this.magicSchool.description,
+            name: this.magicSchool.name,
+            visible: this.magicSchool.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -137,7 +130,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated feature"
+            "Successfully updated Magic School"
           );
         })
         .catch(error => {
@@ -149,21 +142,20 @@ export default {
         });
     },
     onReset() {
-      this.skill.description = "";
-      this.skill.abilityScore = "";
-      this.skill.name = "";
-      this.skill.visible = false;
+      this.magicSchool.description = "";
+      this.magicSchool.name = "";
+      this.magicSchool.visible = false;
     },
-    getExactFeatureByName(skillName) {
+    getExactFeatureByName(magicSchoolName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/skill";
+        "/magicSchool";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: skillName
+            name: magicSchoolName
           }
         })
         .then(response => {
@@ -171,9 +163,9 @@ export default {
           var resp = response.data;
           console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === skillName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === magicSchoolName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.skill = resp[i];
+              this.magicSchool = resp[i];
               this.searchResultFound = true;
               break;
             }

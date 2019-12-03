@@ -134,7 +134,7 @@
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
@@ -205,7 +205,6 @@ export default {
             notifications.methods.sendErrorNotification(error.response.data);
           }
         });
-
     },
     deleteProperty(index){
       this.weapon.properties.splice(index,1);

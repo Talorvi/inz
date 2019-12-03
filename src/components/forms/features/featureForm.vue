@@ -1,19 +1,24 @@
 <template>
   <div>
-    <div v-if="proficiency.scenarioKey === null">
+    <div v-if="feature.scenarioKey === null">
       <h5>This feature cannot be edited</h5>
-      <h5>Name: {{ proficiency.name }}</h5>
-      <h5>Type: {{ proficiency.type }}</h5>
+      <h5>Name: {{ feature.name }}</h5>
+      <p>Description: {{ feature.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="proficiencyName === 'new'"
+      v-else-if="featureName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="proficiency.name" />
-      <q-input filled label="Type" :rules="[]" v-model="proficiency.type" />
-      <q-toggle color="green" label="Visible" v-model="proficiency.visible" />
+      <q-input filled label="Name" :rules="[]" v-model="feature.name" />
+      <q-input
+        filled
+        label="Description"
+        :rules="[]"
+        v-model="feature.description"
+      />
+      <q-toggle color="green" label="Visible" v-model="feature.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -28,41 +33,48 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="proficiencyName !== 'new' && searchResultFound === true"
+      v-else-if="featureName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ proficiency.name }}</h3>
-      <q-input filled label="Type" :rules="[]" v-model="proficiency.type" />
-      <q-toggle color="green" label="Visible" v-model="proficiency.visible" />
+      <h3>Feature: {{ feature.name }}</h3>
+      <q-input
+        filled
+        label="Description"
+        :rules="[]"
+        v-model="feature.description"
+      />
+      <q-toggle color="green" label="Visible" v-model="feature.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found proficiency with name: {{proficiencyName}}.</h5>
+      <h5>Haven't found feature with name: {{featureName}}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      proficiencyName: "",
-      proficiency: {
+      featureName: "",
+      feature: {
         name: "",
-        type: "",
+        description: "",
         visible: false
       },
       searchResultFound: false
     };
   },
   mounted() {
-    this.proficiencyName = this.$route.params.proficiencyName;
-    if (this.proficiencyName !== "new") {
-      this.getExactFeatureByName(this.proficiencyName);
+    this.featureName = this.$route.params.featureName;
+    if (this.featureName !== "new") {
+      this.getExactFeatureByName(this.featureName);
     }
+    //new -> no fill to fields, submit creates a new one
+    //existing -> fill fields, name cannot be changed , submit patch existing one
     //not new and not existing -> 404!
   },
   methods: {
@@ -70,14 +82,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/proficiency";
+        "/feature";
       axios
         .post(
           targetURL,
           {
-            type: this.proficiency.type,
-            name: this.proficiency.name,
-            visible: this.proficiency.visible
+            description: this.feature.description,
+            name: this.feature.name,
+            visible: this.feature.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -85,11 +97,11 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created proficiency"
+            "Successfully created feature"
           );
-          this.proficiency.type = "";
-          this.proficiency.name = "";
-          this.proficiency.visible = false;
+          this.feature.description = "";
+          this.feature.name = "";
+          this.feature.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -103,14 +115,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/proficiency";
+        "/feature";
       axios
         .patch(
           targetURL,
           {
-            type: this.proficiency.type,
-            name: this.proficiency.name,
-            visible: this.proficiency.visible
+            description: this.feature.description,
+            name: this.feature.name,
+            visible: this.feature.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -118,7 +130,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated proficiency"
+            "Successfully updated feature"
           );
         })
         .catch(error => {
@@ -130,31 +142,30 @@ export default {
         });
     },
     onReset() {
-      this.proficiency.type = "";
-      this.proficiency.name = "";
-      this.proficiency.visible = false;
+      this.feature.description = "";
+      this.feature.name = "";
+      this.feature.visible = false;
     },
-    getExactFeatureByName(proficiencyName) {
+    getExactFeatureByName(featureName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/proficiency";
+        "/feature";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: proficiencyName
+            name: featureName
           }
         })
         .then(response => {
           console.log("This is mounted method");
           var resp = response.data;
           console.log("This is returned feature", resp);
-
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === proficiencyName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === featureName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.proficiency = resp[i];
+              this.feature = resp[i];
               this.searchResultFound = true;
               break;
             }

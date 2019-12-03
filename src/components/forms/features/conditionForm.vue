@@ -1,24 +1,24 @@
 <template>
   <div>
-    <div v-if="trait.scenarioKey === null">
-      <h5>This trait cannot be edited</h5>
-      <h5>Name: {{ trait.name }}</h5>
-      <p>Description: {{ trait.description }}</p>
+    <div v-if="condition.scenarioKey === null">
+      <h5>This condition cannot be edited</h5>
+      <h5>Name: {{ condition.name }}</h5>
+      <p>Description: {{ condition.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="traitName === 'new'"
+      v-else-if="conditionName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="trait.name" />
+      <q-input filled label="Name" :rules="[]" v-model="condition.name" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="trait.description"
+        v-model="condition.description"
       />
-      <q-toggle color="green" label="Visible" v-model="trait.visible" />
+      <q-toggle color="green" label="Visible" v-model="condition.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -33,34 +33,34 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="traitName !== 'new' && searchResultFound === true"
+      v-else-if="conditionName !== 'new' && searchResultFound === true"
     >
-      <h3>Trait: {{ trait.name }}</h3>
+      <h3>Condition: {{ condition.name }}</h3>
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="trait.description"
+        v-model="condition.description"
       />
-      <q-toggle color="green" label="Visible" v-model="trait.visible" />
+      <q-toggle color="green" label="Visible" v-model="condition.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found trait with name: {{ traitName }}.</h5>
+      <h5>Haven't found condition with name: {{ conditionName }}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      traitName: "",
-      trait: {
+      conditionName: "",
+      condition: {
         name: "",
         description: "",
         visible: false
@@ -69,9 +69,9 @@ export default {
     };
   },
   mounted() {
-    this.traitName = this.$route.params.traitName;
-    if (this.traitName !== "new") {
-      this.getExactFeatureByName(this.traitName);
+    this.conditionName = this.$route.params.conditionName;
+    if (this.conditionName !== "new") {
+      this.getExactFeatureByName(this.conditionName);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -82,14 +82,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/trait";
+        "/condition";
       axios
         .post(
           targetURL,
           {
-            description: this.trait.description,
-            name: this.trait.name,
-            visible: this.trait.visible
+            description: this.condition.description,
+            name: this.condition.name,
+            visible: this.condition.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -97,11 +97,11 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created trait"
+            "Successfully created condition"
           );
-          this.trait.description = "";
-          this.trait.name = "";
-          this.trait.visible = false;
+          this.condition.description = "";
+          this.condition.name = "";
+          this.condition.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -115,14 +115,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/trait";
+        "/condition";
       axios
         .patch(
           targetURL,
           {
-            description: this.trait.description,
-            name: this.trait.name,
-            visible: this.trait.visible
+            description: this.condition.description,
+            name: this.condition.name,
+            visible: this.condition.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -130,7 +130,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated trait"
+            "Successfully updated condition"
           );
         })
         .catch(error => {
@@ -142,20 +142,20 @@ export default {
         });
     },
     onReset() {
-      this.trait.description = "";
-      this.trait.name = "";
-      this.trait.visible = false;
+      this.condition.description = "";
+      this.condition.name = "";
+      this.condition.visible = false;
     },
-    getExactFeatureByName(traitName) {
+    getExactFeatureByName(conditionName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/trait";
+        "/condition";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: traitName
+            name: conditionName
           }
         })
         .then(response => {
@@ -163,9 +163,9 @@ export default {
           var resp = response.data;
           console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === traitName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === conditionName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.trait = resp[i];
+              this.condition = resp[i];
               this.searchResultFound = true;
               break;
             }

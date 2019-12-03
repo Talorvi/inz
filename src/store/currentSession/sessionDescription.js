@@ -230,9 +230,6 @@ export default {
         });
     },
     connectToScenario(context, scenarioKey) {
-      console.log(
-        "Rambooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo"
-      );
       var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
       axios
         .get(targetURL, {
@@ -316,6 +313,21 @@ export default {
         "api/action/create/character/scenario/" + payload.scenarioKey;
       axios
         .post(targetURL, payload.general, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    updateCharacterGeneralInfo(context, payload){
+      var targetURL =
+        "api/action/update/character/scenario/" + payload.scenarioKey;
+      axios
+        .patch(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
         })
         .catch(error => {

@@ -1,28 +1,24 @@
 <template>
   <div>
-    <div v-if="vehicle.scenarioKey === null">
-      <h5>This vehicle cannot be edited</h5>
-      <h5>Name: {{ vehicle.name }}</h5>
-      <h5>Cost: {{ vehicle.cost }}</h5>
-      <h5>Weight: {{ vehicle.weight }}</h5>
-      <p>Description: {{ vehicle.description }}</p>
+    <div v-if="weaponProperty.scenarioKey === null">
+      <h5>This Weapon Property cannot be edited</h5>
+      <h5>Name: {{ weaponProperty.name }}</h5>
+      <p>Description: {{ weaponProperty.description }}</p>
     </div>
     <q-form
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-else-if="vehicleName === 'new'"
+      v-else-if="weaponPropertyName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="vehicle.name" />
-      <q-input filled label="Cost" :rules="[]" v-model="vehicle.cost" />
-      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="vehicle.weight" />
+      <q-input filled label="Name" :rules="[]" v-model="weaponProperty.name" />
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="vehicle.description"
+        v-model="weaponProperty.description"
       />
-      <q-toggle color="green" label="Visible" v-model="vehicle.visible" />
+      <q-toggle color="green" label="Visible" v-model="weaponProperty.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
@@ -37,39 +33,35 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="vehicleName !== 'new' && searchResultFound === true"
+      v-else-if="weaponPropertyName !== 'new' && searchResultFound === true"
     >
-      <h3>Vehicle: {{ vehicle.name }}</h3>
-      <q-input filled label="Cost" :rules="[]" v-model="vehicle.cost" />
-      <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="vehicle.weight" />
+      <h3>Weapon Property: {{ weaponProperty.name }}</h3>
       <q-input
         filled
         label="Description"
         :rules="[]"
-        v-model="vehicle.description"
+        v-model="weaponProperty.description"
       />
-      <q-toggle color="green" label="Visible" v-model="vehicle.visible" />
+      <q-toggle color="green" label="Visible" v-model="weaponProperty.visible" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found vehicle with name: {{ vehicleName }}.</h5>
+      <h5>Haven't found Weapon Property with name: {{ weaponPropertyName }}.</h5>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
-import notifications from "../../functions/notifications";
+import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
-      vehicleName: "",
-      vehicle: {
+      weaponPropertyName: "",
+      weaponProperty: {
         name: "",
-        cost: "",
-        weight: 0,
         description: "",
         visible: false
       },
@@ -77,9 +69,9 @@ export default {
     };
   },
   mounted() {
-    this.vehicleName = this.$route.params.vehicleName;
-    if (this.vehicleName !== "new") {
-      this.getExactFeatureByName(this.vehicleName);
+    this.weaponPropertyName = this.$route.params.weaponPropertyName;
+    if (this.weaponPropertyName !== "new") {
+      this.getExactFeatureByName(this.weaponPropertyName);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -90,16 +82,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/vehicle";
+        "/weaponProperty";
       axios
         .post(
           targetURL,
           {
-            description: this.vehicle.description,
-            name: this.vehicle.name,
-            cost: this.vehicle.cost,
-            weight: this.vehicle.weight,
-            visible: this.vehicle.visible
+            description: this.weaponProperty.description,
+            name: this.weaponProperty.name,
+            visible: this.weaponProperty.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -107,13 +97,11 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created vehicle"
+            "Successfully created Weapon Property"
           );
-          this.vehicle.description = "";
-          this.vehicle.name = "";
-          this.vehicle.cost = "";
-          this.vehicle.weight = 0;
-          this.vehicle.visible = false;
+          this.weaponProperty.description = "";
+          this.weaponProperty.name = "";
+          this.weaponProperty.visible = false;
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -127,16 +115,14 @@ export default {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/vehicle";
+        "/weaponProperty";
       axios
         .patch(
           targetURL,
           {
-            description: this.vehicle.description,
-            name: this.vehicle.name,
-            cost: this.vehicle.cost,
-            weight: this.vehicle.weight,
-            visible: this.vehicle.visible
+            description: this.weaponProperty.description,
+            name: this.weaponProperty.name,
+            visible: this.weaponProperty.visible
           },
           {
             headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -144,7 +130,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated vehicle"
+            "Successfully updated Weapon Property"
           );
         })
         .catch(error => {
@@ -156,22 +142,20 @@ export default {
         });
     },
     onReset() {
-      this.vehicle.description = "";
-      this.vehicle.name = "";
-      this.vehicle.cost = "";
-      this.vehicle.weight = 0;
-      this.vehicle.visible = false;
+      this.weaponProperty.description = "";
+      this.weaponProperty.name = "";
+      this.weaponProperty.visible = false;
     },
-    getExactFeatureByName(vehicleName) {
+    getExactFeatureByName(weaponPropertyName) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/vehicle";
+        "/weaponProperty";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: vehicleName
+            name: weaponPropertyName
           }
         })
         .then(response => {
@@ -179,9 +163,9 @@ export default {
           var resp = response.data;
           console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === vehicleName.toLowerCase()) {
+            if (resp[i].name.toLowerCase() === weaponPropertyName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
-              this.vehicle = resp[i];
+              this.weaponProperty = resp[i];
               this.searchResultFound = true;
               break;
             }
