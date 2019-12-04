@@ -160,7 +160,7 @@ export default {
     };
   },
   mounted() {
-    var char = this.getCharacterByName(this.$route.params.charName);
+    this.getCharacterByName(this.$route.params.charName);
   },
   methods: {
     onSubmit() {

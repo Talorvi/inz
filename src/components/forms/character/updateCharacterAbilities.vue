@@ -290,32 +290,12 @@ export default {
     };
   },
   mounted() {
-    var char = this.getCharacterByName(this.$route.params.charName);
+    this.getCharacterByName(this.$route.params.charName);
   },
   methods: {
     onSubmit() {
-      var abilitiesOnlyNames = {
-        name: this.abilities.name,
-        features: [],
-        languages: [],
-        proficiencies: [],
-        traits: []
-      };
-
-      this.abilities.features.forEach(function(item) {
-        abilitiesOnlyNames.features.push(item.name);
-      });
-      this.abilities.languages.forEach(function(item) {
-        abilitiesOnlyNames.languages.push(item.name);
-      });
-      this.abilities.proficiencies.forEach(function(item) {
-        abilitiesOnlyNames.proficiencies.push(item.name);
-      });
-      this.abilities.traits.forEach(function(item) {
-        abilitiesOnlyNames.traits.push(item.name);
-      });
       this.$store.dispatch("updateCharacterAbilities", {
-        abilities: abilitiesOnlyNames,
+        abilities: this.abilities,
         scenarioKey: this.$store.getters.getScenarioKey
       });
     },
