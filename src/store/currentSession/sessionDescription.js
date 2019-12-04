@@ -20,7 +20,6 @@ export default {
   },
   mutations: {
     updateCharacterList(context, characterList) {
-      console.log(characterList);
       context.characterSelectionList = [];
       var isSelectedCharacter = false;
       console.log(characterList.length);
@@ -153,6 +152,7 @@ export default {
   },
   actions: {
     reloadCharacters(context, payload) {
+      notifications.methods.sendSuccessNotification("Reloaded Characters");
       payload.data.loading.show();
       var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
       axios
@@ -323,12 +323,33 @@ export default {
           }
         });
     },
-    updateCharacterGeneralInfo(context, payload){
+    updateCharacterGeneralInfo(context, payload) {
       var targetURL =
         "api/action/update/character/scenario/" + payload.scenarioKey;
       axios
         .patch(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .then(() => {
+          notifications.methods.sendSuccessNotification("Updated character");
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    updateCharacterAbilities(context, payload) {
+      var targetURL =
+        "api/action/update/characterAbilities/scenario/" + payload.scenarioKey;
+      axios
+        .patch(targetURL, payload.abilities, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .then(() => {
+          notifications.methods.sendSuccessNotification("Updated character");
         })
         .catch(error => {
           if (error.response.status === 401) {

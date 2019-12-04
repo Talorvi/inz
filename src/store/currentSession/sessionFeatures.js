@@ -118,7 +118,7 @@ export default {
           }
         });
     },
-    deleteFeature(context, payload) {
+    deleteSpell(context, payload) {
       var targetURL =
         "api/api/v1/scenario/" +
         payload.scenarioKey +

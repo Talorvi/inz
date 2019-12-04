@@ -219,6 +219,20 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
+          },
+          {
+            path: "updateCharacter/equipment/:charName",
+            component: () => import("components/forms/character/updateCharacterEquipment.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "updateCharacter/spells/:charName",
+            component: () => import("components/forms/character/updateCharacterSpells.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
           }
         ]
       }
