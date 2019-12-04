@@ -5,7 +5,7 @@
         <div class="q-gutter-y-md" style="max-width: 1600px">
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
-              <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+              <q-form @submit="onSubmit" class="q-gutter-md">
                 <h4>Character: {{ charSpells.name }}</h4>
                 <div class="row no-wrap">
                   <q-input
@@ -65,9 +65,7 @@
                       />
                     </q-item>
                   </q-list>
-                  <q-btn
-                    v-on:click="addSpellSlot()"
-                  > Add Spell Slots</q-btn>
+                  <q-btn v-on:click="addSpellSlot()"> Add Spell Slots</q-btn>
                 </div>
 
                 <q-card>
@@ -130,6 +128,7 @@
                     </q-list>
                   </q-card-section>
                 </q-card>
+                <q-btn label="Submit" type="submit" color="primary" />
               </q-form>
             </div>
           </q-card>
@@ -154,7 +153,7 @@ export default {
         baseStat: "",
         spellAttackBonus: 0,
         spellSaveDc: 0,
-        spellSlots:[],
+        spellSlots: [],
         spells: []
       },
       characterName: "general"
@@ -165,43 +164,10 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("updateCharacterGeneralInfo", {
-        general: this.general,
+      this.$store.dispatch("updateCharacterSpells", {
+        spells: this.charSpells,
         scenarioKey: this.$store.getters.getScenarioKey
       });
-    },
-    onReset() {
-      this.general = {
-        name: "",
-        race: "",
-        class: "",
-        level: 1,
-        background: "",
-        experience: 0,
-        alignment: "",
-        attributes: {
-          strength: 0,
-          dexterity: 0,
-          constitution: 0,
-          intelligence: 0,
-          wisdom: 0,
-          charisma: 0
-        },
-        proficiency: "",
-        passivePerception: 0,
-        inspiration: 0,
-        hitPoints: {
-          current: 0,
-          max: 1,
-          temporary: 0
-        },
-        hitDice: {
-          total: 0,
-          used: 0
-        },
-        initiative: 0,
-        speed: ""
-      };
     },
     getCharacterByName(characterName) {
       var char = null;
@@ -212,8 +178,17 @@ export default {
         }
       }
       if (char !== null) {
-        this.charSpells = char.spells
-        notifications.methods.sendSuccessNotification("Spell number: " + char.spells.length);
+        this.charSpells = {
+          name: characterName,
+          baseStat: char.spells.baseStat,
+          spellAttackBonus: char.spells.spellAttackBonus,
+          spellSaveDc: char.spells.spellSaveDc,
+          spellSlots: char.spells.spellSlots,
+          spells: char.spells.spells
+        }
+        notifications.methods.sendSuccessNotification(
+          "Spell number: " + char.spells.length
+        );
       } else {
         notifications.methods.sendErrorNotification(
           "Haven't found character " + characterName
@@ -243,9 +218,7 @@ export default {
     searchSpell(spellName) {
       notifications.methods.sendSuccessNotification(spellName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/spell";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -283,15 +256,15 @@ export default {
         });
     },
 
-    addSpellSlot(){
+    addSpellSlot() {
       this.charSpells.spellSlots.push({
-        level:0,
+        level: 0,
         total: 0,
         used: 0
       });
     },
-    deleteSpellSlot(index){
-      this.charSpells.spellSlots.splice(index,1);
+    deleteSpellSlot(index) {
+      this.charSpells.spellSlots.splice(index, 1);
     }
   }
 };

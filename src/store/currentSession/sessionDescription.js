@@ -151,10 +151,8 @@ export default {
     }
   },
   actions: {
-    reloadCharacters(context, payload) {
-      notifications.methods.sendSuccessNotification("Reloaded Characters");
-      payload.data.loading.show();
-      var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/character";
+    reloadCharacters(context) {
+      var targetURL = "api/api/v1/scenario/" + context.getters.getScenarioKey + "/character";
       axios
         .get(targetURL, {
           headers: {
@@ -163,7 +161,6 @@ export default {
         })
         .then(response => {
           context.commit("updateCharacterList", response.data);
-          payload.data.loading.hide();
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -173,7 +170,6 @@ export default {
               "Couldn't reload character list"
             );
           }
-          payload.data.loading.hide();
         });
     },
     requestDeleteCharacter(context, payload) {
@@ -315,6 +311,9 @@ export default {
         .post(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
         })
+        .then(() =>{
+          notifications.methods.sendSuccessNotification("Created character");
+        })
         .catch(error => {
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
@@ -359,7 +358,24 @@ export default {
           }
         });
     },
-
+    updateCharacterSpells(context, payload) {
+      var targetURL =
+        "api/action/update/characterSpells/scenario/" + payload.scenarioKey;
+      axios
+        .patch(targetURL, payload.spells, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .then(() => {
+          notifications.methods.sendSuccessNotification("Updated character");
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
     getNotes(context, payload) {
       var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note";
       axios
