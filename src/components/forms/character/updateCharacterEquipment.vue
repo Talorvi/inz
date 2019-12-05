@@ -5,14 +5,14 @@
         <div class="q-gutter-y-md" style="max-width: 1600px">
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
-              <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+              <q-form @submit="onSubmit" class="q-gutter-md">
                 <h4>Character: {{ equipment.name }}</h4>
                 <q-input
-                  filled
-                  v-model="equipment.armorClass"
-                  label="Armor Class"
-                  type="number"
-                />
+                filled
+                v-model="equipment.armorClass"
+                label="Armor Class"
+                type="number"
+              />
                 <h4>Currency:</h4>
                 <div class="row no-wrap">
                   <q-input
@@ -45,41 +45,30 @@
                     label="Platinium Piece"
                     type="number"
                   />
-
                 </div>
                 <q-card>
                   <q-card-section>
-                    <h4> Selected Armors</h4>
+                    <h4>Selected Armors</h4>
                     <div v-if="equipment.armors.length === 0">
-                      <h4 >No armor added yet</h4>
+                      <h4>No armors added yet</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Armor name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
                         v-for="(armor, index) in equipment.armors"
                       >
                         <q-item-section>
-                          <q-item-label>{{ armor }}</q-item-label>
+                          <div class="row no-wrap">
+                            <q-item-label>{{ armor.name }}</q-item-label>
+                            <q-input
+                              filled
+                              label="Amount"
+                              :rules="[]"
+                              v-model="armor.amount"
+                              type="number"
+                            />
+                          </div>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -87,7 +76,7 @@
                           dense
                           round
                           icon="delete"
-                          v-on:click="deleteFeature(index, armor)"
+                          v-on:click="deleteArmor(index, armor.name)"
                         />
                       </q-item>
                     </q-list>
@@ -99,27 +88,9 @@
                       :rules="[]"
                       v-model="newArmor"
                     />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
+                    <q-btn v-on:click="searchArmor(newArmor)">
+                      Search spell
                     </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
                     <div v-if="armorsFound.length === 0">
                       <h4>No Results Found</h4>
                     </div>
@@ -138,7 +109,7 @@
                           dense
                           round
                           icon="add"
-                          v-on:click="addFeature(index, armorFound)"
+                          v-on:click="addArmor(index, armorFound)"
                         />
                       </q-item>
                     </q-list>
@@ -146,37 +117,27 @@
                 </q-card>
                 <q-card>
                   <q-card-section>
-                    <h4> Selected Armors</h4>
-                    <div v-if="equipment.armors.length === 0">
-                      <h4 >No armor added yet</h4>
+                    <h4>Selected Weapons</h4>
+                    <div v-if="equipment.weapons.length === 0">
+                      <h4>No weapons added yet</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Armor name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(armor, index) in equipment.armors"
+                        v-for="(weapon, index) in equipment.weapons"
                       >
                         <q-item-section>
-                          <q-item-label>{{ armor }}</q-item-label>
+                          <div class="row no-wrap">
+                            <q-item-label>{{ weapon.name }}</q-item-label>
+                            <q-input
+                              filled
+                              label="Amount"
+                              :rules="[]"
+                              v-model="weapon.amount"
+                              type="number"
+                            />
+                          </div>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -184,7 +145,7 @@
                           dense
                           round
                           icon="delete"
-                          v-on:click="deleteFeature(index, armor)"
+                          v-on:click="deleteWeapon(index, weapon.name)"
                         />
                       </q-item>
                     </q-list>
@@ -192,42 +153,24 @@
                   <q-card-section>
                     <q-input
                       filled
-                      label="Armor"
+                      label="Weapon"
                       :rules="[]"
-                      v-model="newArmor"
+                      v-model="newWeapon"
                     />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
+                    <q-btn v-on:click="searchWeapon(newWeapon)">
+                      Search weapon
                     </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                    <div v-if="armorsFound.length === 0">
+                    <div v-if="weaponsFound.length === 0">
                       <h4>No Results Found</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(featureFound, index) in spellsFound"
+                        v-for="(weaponFound, index) in weaponsFound"
                       >
                         <q-item-section>
-                          <q-item-label>{{ featureFound }}</q-item-label>
+                          <q-item-label>{{ weaponFound }}</q-item-label>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -235,7 +178,7 @@
                           dense
                           round
                           icon="add"
-                          v-on:click="addFeature(index, featureFound)"
+                          v-on:click="addWeapon(index, weaponFound)"
                         />
                       </q-item>
                     </q-list>
@@ -243,37 +186,27 @@
                 </q-card>
                 <q-card>
                   <q-card-section>
-                    <h4> Selected Armors</h4>
-                    <div v-if="equipment.armors.length === 0">
-                      <h4 >No armor added yet</h4>
+                    <h4>Selected Gears</h4>
+                    <div v-if="equipment.gear.length === 0">
+                      <h4>No gears added yet</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Armor name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(armor, index) in equipment.armors"
+                        v-for="(gear, index) in equipment.gear"
                       >
                         <q-item-section>
-                          <q-item-label>{{ armor }}</q-item-label>
+                          <div class="row no-wrap">
+                            <q-item-label>{{ gear.name }}</q-item-label>
+                            <q-input
+                              filled
+                              label="Amount"
+                              :rules="[]"
+                              v-model="gear.amount"
+                              type="number"
+                            />
+                          </div>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -281,7 +214,7 @@
                           dense
                           round
                           icon="delete"
-                          v-on:click="deleteFeature(index, armor)"
+                          v-on:click="deleteGear(index, gear.name)"
                         />
                       </q-item>
                     </q-list>
@@ -289,42 +222,24 @@
                   <q-card-section>
                     <q-input
                       filled
-                      label="Armor"
+                      label="Gear"
                       :rules="[]"
-                      v-model="newArmor"
+                      v-model="newGear"
                     />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
+                    <q-btn v-on:click="searchGear(newGear)">
+                      Search gear
                     </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                    <div v-if="armorsFound.length === 0">
+                    <div v-if="gearsFound.length === 0">
                       <h4>No Results Found</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(featureFound, index) in spellsFound"
+                        v-for="(gearFound, index) in gearsFound"
                       >
                         <q-item-section>
-                          <q-item-label>{{ featureFound }}</q-item-label>
+                          <q-item-label>{{ gearFound }}</q-item-label>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -332,7 +247,7 @@
                           dense
                           round
                           icon="add"
-                          v-on:click="addFeature(index, featureFound)"
+                          v-on:click="addGear(index, gearFound)"
                         />
                       </q-item>
                     </q-list>
@@ -340,37 +255,27 @@
                 </q-card>
                 <q-card>
                   <q-card-section>
-                    <h4> Selected Armors</h4>
-                    <div v-if="equipment.armors.length === 0">
-                      <h4 >No armor added yet</h4>
+                    <h4>Selected Tools</h4>
+                    <div v-if="equipment.tools.length === 0">
+                      <h4>No tools added yet</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Armor name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(armor, index) in equipment.armors"
+                        v-for="(tool, index) in equipment.tools"
                       >
                         <q-item-section>
-                          <q-item-label>{{ armor }}</q-item-label>
+                          <div class="row no-wrap">
+                            <q-item-label>{{ tool.name }}</q-item-label>
+                            <q-input
+                              filled
+                              label="Amount"
+                              :rules="[]"
+                              v-model="tool.amount"
+                              type="number"
+                            />
+                          </div>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -378,7 +283,7 @@
                           dense
                           round
                           icon="delete"
-                          v-on:click="deleteFeature(index, armor)"
+                          v-on:click="deleteTool(index, tool.name)"
                         />
                       </q-item>
                     </q-list>
@@ -386,42 +291,24 @@
                   <q-card-section>
                     <q-input
                       filled
-                      label="Armor"
+                      label="Tool"
                       :rules="[]"
-                      v-model="newArmor"
+                      v-model="newTool"
                     />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
+                    <q-btn v-on:click="searchTool(newTool)">
+                      Search tool
                     </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                    <div v-if="armorsFound.length === 0">
+                    <div v-if="toolsFound.length === 0">
                       <h4>No Results Found</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
-                        v-for="(featureFound, index) in spellsFound"
+                        v-for="(toolFound, index) in toolsFound"
                       >
                         <q-item-section>
-                          <q-item-label>{{ featureFound }}</q-item-label>
+                          <q-item-label>{{ toolFound }}</q-item-label>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -429,7 +316,7 @@
                           dense
                           round
                           icon="add"
-                          v-on:click="addFeature(index, featureFound)"
+                          v-on:click="addTool(index, toolFound)"
                         />
                       </q-item>
                     </q-list>
@@ -437,134 +324,27 @@
                 </q-card>
                 <q-card>
                   <q-card-section>
-                    <h4> Selected Armors</h4>
-                    <div v-if="equipment.armors.length === 0">
-                      <h4 >No armor added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Armor name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(armor, index) in equipment.armors"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ armor }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteFeature(index, armor)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Armor"
-                      :rules="[]"
-                      v-model="newArmor"
-                    />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
-                    </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
-                    <div v-if="armorsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(featureFound, index) in spellsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ featureFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addFeature(index, featureFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4> Owned Vehicles</h4>
+                    <h4>Selected Vehicles</h4>
                     <div v-if="equipment.vehicles.length === 0">
-                      <h4 >No vehicles owned</h4>
+                      <h4>No vehicles added yet</h4>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
-                      <q-expansion-item
-                        expand-separator
-                        label="Vehicle name"
-                      >
-                        <q-separator />
-                        <q-card>
-                          <q-card-section>
-                            Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                          </q-card-section>
-                          <q-card-section>
-                            <q-btn
-                              v-on:click=""
-                            >
-                              Remove
-                            </q-btn>
-
-                          </q-card-section>
-                        </q-card>
-                      </q-expansion-item>
                       <q-item
                         v-ripple
                         active-class="bg-teal-1"
                         v-for="(vehicle, index) in equipment.vehicles"
                       >
                         <q-item-section>
-                          <q-item-label>{{ vehicle }}</q-item-label>
+                          <div class="row no-wrap">
+                            <q-item-label>{{ vehicle.name }}</q-item-label>
+                            <q-input
+                              filled
+                              label="Amount"
+                              :rules="[]"
+                              v-model="vehicle.amount"
+                              type="number"
+                            />
+                          </div>
                         </q-item-section>
                         <q-btn
                           size="12px"
@@ -572,7 +352,7 @@
                           dense
                           round
                           icon="delete"
-                          v-on:click="deleteFeature(index, vehicle)"
+                          v-on:click="deleteVehicle(index, vehicle.name)"
                         />
                       </q-item>
                     </q-list>
@@ -580,31 +360,13 @@
                   <q-card-section>
                     <q-input
                       filled
-                      label="Armor"
+                      label="Vehicle"
                       :rules="[]"
-                      v-model="newArmor"
+                      v-model="newVehicle"
                     />
-                    <q-btn v-on:click="searchFeature(newArmor)">
-                      Search Armor
+                    <q-btn v-on:click="searchVehicle(newVehicle)">
+                      Search vehicle
                     </q-btn>
-                    <q-expansion-item
-                      expand-separator
-                      label="Feature name"
-                    >
-                      <q-card>
-                        <q-card-section>
-                          Description: description Description: descriptionDescription: descriptionDescription: descriptionDescription: description
-                        </q-card-section>
-                        <q-card-section>
-                          <q-btn
-                            v-on:click=""
-                          >
-                            Add
-                          </q-btn>
-
-                        </q-card-section>
-                      </q-card>
-                    </q-expansion-item>
                     <div v-if="vehiclesFound.length === 0">
                       <h4>No Results Found</h4>
                     </div>
@@ -623,12 +385,58 @@
                           dense
                           round
                           icon="add"
-                          v-on:click="addFeature(index, vehicleFound)"
+                          v-on:click="addVehicle(index, vehicleFound)"
                         />
                       </q-item>
                     </q-list>
                   </q-card-section>
                 </q-card>
+                <div>
+                  <h4>Attack list: </h4>
+                  <q-list bordered separator class="q-mt-md">
+                    <q-item
+                      v-ripple
+                      active-class="bg-teal-1"
+                      v-for="(attack, index) in equipment.attacks"
+                    >
+                      <q-item-section>
+                        <div class="row no-wrap">
+                          <q-input
+                            filled
+                            v-model="attack.name"
+                            label="Name"
+                          />
+                          <q-input
+                            filled
+                            v-model="attack.type"
+                            label="Type"
+                          />
+                          <q-input
+                            filled
+                            v-model="attack.damage"
+                            label="Damage"
+                          />
+                          <q-input
+                            filled
+                            v-model="attack.bonus"
+                            label="Bonus"
+                            type="number"
+                          />
+                        </div>
+                      </q-item-section>
+                      <q-btn
+                        size="12px"
+                        flat
+                        dense
+                        round
+                        icon="delete"
+                        v-on:click="deleteAttack(index)"
+                      />
+                    </q-item>
+                  </q-list>
+                  <q-btn v-on:click="addAttack()"> Add Attack</q-btn>
+                </div>
+                <q-btn label="Submit" type="submit" color="primary" />
               </q-form>
             </div>
           </q-card>
@@ -658,15 +466,19 @@ export default {
       gearsFound: [],
       gearsFoundBase: [],
 
-      newGear: "",
-      gearsFound: [],
-      gearsFoundBase: [],
+      newTool: "",
+      toolsFound: [],
+      toolsFoundBase: [],
+
+      newWeapon: "",
+      weaponsFound: [],
+      weaponsFoundBase: [],
 
       equipment: {
         name: "",
         armorClass: 0,
         armors: [],
-        attacks: [], //    { "bonus": 0,"damage": "string","name": "string","type": "string"
+        attacks: [],
         currency: {
           cp: 0,
           ep: 0,
@@ -674,56 +486,23 @@ export default {
           pp: 0,
           sp: 0
         },
-        gear:[],
+        gear: [],
         tools: [],
-        vehicles:[],
+        vehicles: [],
         weapons: []
       },
       characterName: "general"
     };
   },
   mounted() {
-    var char = this.getCharacterByName(this.$route.params.charName);
+    this.getCharacterByName(this.$route.params.charName);
   },
   methods: {
     onSubmit() {
-      this.$store.dispatch("updateCharacterGeneralInfo", {
-        general: this.general,
+      this.$store.dispatch("updateCharacterEquipment", {
+        equipment: this.equipment,
         scenarioKey: this.$store.getters.getScenarioKey
       });
-    },
-    onReset() {
-      this.general = {
-        name: "",
-        race: "",
-        class: "",
-        level: 1,
-        background: "",
-        experience: 0,
-        alignment: "",
-        attributes: {
-          strength: 0,
-          dexterity: 0,
-          constitution: 0,
-          intelligence: 0,
-          wisdom: 0,
-          charisma: 0
-        },
-        proficiency: "",
-        passivePerception: 0,
-        inspiration: 0,
-        hitPoints: {
-          current: 0,
-          max: 1,
-          temporary: 0
-        },
-        hitDice: {
-          total: 0,
-          used: 0
-        },
-        initiative: 0,
-        speed: ""
-      };
     },
     getCharacterByName(characterName) {
       var char = null;
@@ -734,38 +513,16 @@ export default {
         }
       }
       if (char !== null) {
-        this.general = {
-          name: char.name,
-          race: char.race,
-          profession: char.profession,
-          level: char.level,
-          background: char.background,
-          experience: char.experience,
-          alignment: char.alignment,
-          attributes: {
-            strength: char.attributes.strength,
-            dexterity: char.attributes.dexterity,
-            constitution: char.attributes.constitution,
-            intelligence: char.attributes.intelligence,
-            wisdom: char.attributes.wisdom,
-            charisma: char.attributes.charisma
-          },
-          proficiency: char.proficiency,
-          passivePerception: char.passivePerception,
-          passiveInsight: char.passiveInsight,
-          inspiration: char.inspiration,
-          health: {
-            actualHealth: char.health.actualHealth,
-            maxHealth: char.health.maxHealth,
-            temporaryHealth: char.health.temporaryHealth
-          },
-          hitDices: {
-            dice: char.hitDices.dice,
-            total: char.hitDices.total,
-            used: char.hitDices.used
-          },
-          initiative: char.initiative,
-          speed: char.speed
+        this.equipment = {
+          name: characterName,
+          armorClass: char.equipment.armorClass,
+          armors: char.equipment.armors,
+          attacks: char.equipment.attacks, //    { "bonus": 0,"damage": "string","name": "string","type": "string"
+          currency: char.equipment.currency,
+          gear: char.equipment.gears,
+          tools: char.equipment.tools,
+          vehicles: char.equipment.vehicles,
+          weapons: char.equipment.weapons
         };
       } else {
         notifications.methods.sendErrorNotification(
@@ -774,30 +531,40 @@ export default {
       }
     },
 
+    checkIfArrayContainsItem(array, name) {
+      for (var i = 0; i < array.length; i++) {
+        if (array[i].name === name) {
+          return true;
+        }
+      }
+      return false;
+    },
     deleteArmor(index, armorName) {
       this.equipment.armors.splice(index, 1);
-      if(this.armorsFoundBase.includes(armorName)){
+      if (this.armorsFoundBase.includes(armorName)) {
         this.armorsFound.push(armorName);
       }
     },
-    deleteSearchedArmor(index){
+    deleteSearchedArmor(index) {
       this.armorsFound.splice(index, 1);
     },
     addArmor(index, armorName) {
-      if(this.equipment.armors.includes(armorName) === false){
-        this.equipment.armors.push(armorName);
+      if (
+        this.checkIfArrayContainsItem(this.equipment.armors, armorName) ===
+        false
+      ) {
+        this.equipment.armors.push({ name: armorName, amount: 1 });
         this.deleteSearchedArmor(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate armor");
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Cannot add duplicate armor"
+        );
       }
-
     },
     searchArmor(armorName) {
       notifications.methods.sendSuccessNotification(armorName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/armor";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -807,14 +574,16 @@ export default {
         })
         .then(response => {
           this.armorsFound = [];
-          this.armorsFoundBase = [];
           var resp = response.data;
-          if(resp.length === 0){
+          this.armorsFoundBase = [];
+          if (resp.length === 0) {
             notifications.methods.sendErrorNotification("No armors found");
           }
           for (var i = 0; i < resp.length; i++) {
-            this.armorsFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.equipment.armors.includes(resp[i].name) === false && resp[i].visible === true){
+            this.armorsFoundBase.push(
+              stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+            );
+            if (!this.checkIfArrayContainsItem(this.equipment.armors, resp[i].name) && resp[i].visible === true) {
               this.armorsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -831,29 +600,31 @@ export default {
     },
 
     deleteVehicle(index, vehicleName) {
-      this.equipment.vehicle.splice(index, 1);
-      if(this.vehiclesFoundBase.includes(vehicleName)){
+      this.equipment.vehicles.splice(index, 1);
+      if (this.vehiclesFoundBase.includes(vehicleName)) {
         this.vehiclesFound.push(vehicleName);
       }
     },
-    deleteSearchedVehicle(index){
+    deleteSearchedVehicle(index) {
       this.vehiclesFound.splice(index, 1);
     },
     addVehicle(index, vehicleName) {
-      if(this.equipment.vehicles.includes(vehicleName) === false){
-        this.equipment.vehicles.push(vehicleName);
+      if (
+        this.checkIfArrayContainsItem(this.equipment.vehicles, vehicleName) ===
+        false
+      ) {
+        this.equipment.vehicles.push({ name: vehicleName, amount: 1 });
         this.deleteSearchedVehicle(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate vehicle");
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Cannot add duplicate vehicle"
+        );
       }
-
     },
     searchVehicle(vehicleName) {
       notifications.methods.sendSuccessNotification(vehicleName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/vehicle";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/vehicle";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -863,14 +634,16 @@ export default {
         })
         .then(response => {
           this.vehiclesFound = [];
-          this.vehiclesFoundBase = [];
           var resp = response.data;
-          if(resp.length === 0){
+          this.vehiclesFoundBase = [];
+          if (resp.length === 0) {
             notifications.methods.sendErrorNotification("No vehicles found");
           }
           for (var i = 0; i < resp.length; i++) {
-            this.vehiclesFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.equipment.vehicles.includes(resp[i].name) === false && resp[i].visible === true){
+            this.vehiclesFoundBase.push(
+              stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+            );
+            if (!this.checkIfArrayContainsItem(this.equipment.vehicles, resp[i].name) && resp[i].visible === true) {
               this.vehiclesFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -887,29 +660,31 @@ export default {
     },
 
     deleteGear(index, gearName) {
-      this.equipment.features.splice(index, 1);
-      if(this.gearsFoundBase.includes(gearName)){
+      this.equipment.gear.splice(index, 1);
+      if (this.gearsFoundBase.includes(gearName)) {
         this.gearsFound.push(gearName);
       }
     },
-    deleteSearchedGear(index){
+    deleteSearchedGear(index) {
       this.gearsFound.splice(index, 1);
     },
     addGear(index, gearName) {
-      if(this.equipment.gear.includes(gearName) === false){
-        this.equipment.gear.push(gearName);
+      if (
+        this.checkIfArrayContainsItem(this.equipment.gear, gearName) ===
+        false
+      ) {
+        this.equipment.gear.push({ name: gearName, amount: 1 });
         this.deleteSearchedGear(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate gear");
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Cannot add duplicate gear"
+        );
       }
-
     },
     searchGear(gearName) {
       notifications.methods.sendSuccessNotification(gearName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/gear";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/gear";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -921,12 +696,14 @@ export default {
           this.gearsFound = [];
           var resp = response.data;
           this.gearsFoundBase = [];
-          if(resp.length === 0){
-            notifications.methods.sendErrorNotification("No gear found");
+          if (resp.length === 0) {
+            notifications.methods.sendErrorNotification("No armors found");
           }
           for (var i = 0; i < resp.length; i++) {
-            this.gearsFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.equipment.gear.includes(resp[i].name) === false && resp[i].visible === true){
+            this.gearsFoundBase.push(
+              stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+            );
+            if (!this.checkIfArrayContainsItem(this.equipment.gear, resp[i].name) && resp[i].visible === true) {
               this.gearsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -942,48 +719,52 @@ export default {
         });
     },
 
-    deleteSpell(index, featureName) {
-      this.abilities.features.splice(index, 1);
-      if(this.spellsFoundBase.includes(featureName)){
-        this.spellsFound.push(featureName);
+    deleteTool(index, toolName) {
+      this.equipment.tools.splice(index, 1);
+      if (this.toolsFoundBase.includes(toolName)) {
+        this.toolsFound.push(toolName);
       }
     },
-    deleteSearchedSpell(index){
-      this.spellsFound.splice(index, 1);
+    deleteSearchTool(index) {
+      this.toolsFound.splice(index, 1);
     },
-    addSpell(index, featureName) {
-      if(this.abilities.features.includes(featureName) === false){
-        this.abilities.features.push(featureName);
-        this.deleteSearchedSpell(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate feature");
+    addTool(index, toolName) {
+      if (
+        this.checkIfArrayContainsItem(this.equipment.tools, toolName) ===
+        false
+      ) {
+        this.equipment.tools.push({ name: toolName, amount: 1 });
+        this.deleteSearchTool(index);
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Cannot add duplicate tool"
+        );
       }
-
     },
-    searchSpell(featureName) {
-      notifications.methods.sendSuccessNotification(featureName);
+    searchTool(toolName) {
+      notifications.methods.sendSuccessNotification(toolName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/feature";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: featureName
+            name: toolName
           }
         })
         .then(response => {
-          this.featuresFound = [];
+          this.toolsFound = [];
           var resp = response.data;
-          this.featuresFoundBase = [];
-          if(resp.length === 0){
-            notifications.methods.sendErrorNotification("No features found");
+          this.toolsFoundBase = [];
+          if (resp.length === 0) {
+            notifications.methods.sendErrorNotification("No tools found");
           }
           for (var i = 0; i < resp.length; i++) {
-            this.spellsFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.abilities.features.includes(resp[i].name) === false && resp[i].visible === true){
-              this.spellsFound.push(
+            this.toolsFoundBase.push(
+              stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+            );
+            if (!this.checkIfArrayContainsItem(this.equipment.tools, resp[i].name) && resp[i].visible === true) {
+              this.toolsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
             }
@@ -998,48 +779,52 @@ export default {
         });
     },
 
-    deleteSpell(index, featureName) {
-      this.abilities.features.splice(index, 1);
-      if(this.spellsFoundBase.includes(featureName)){
-        this.spellsFound.push(featureName);
+    deleteWeapon(index, weaponName) {
+      this.equipment.weapons.splice(index, 1);
+      if (this.weaponsFoundBase.includes(weaponName)) {
+        this.weaponsFound.push(weaponName);
       }
     },
-    deleteSearchedSpell(index){
-      this.spellsFound.splice(index, 1);
+    deleteSearchedWeapon(index) {
+      this.weaponsFound.splice(index, 1);
     },
-    addSpell(index, featureName) {
-      if(this.abilities.features.includes(featureName) === false){
-        this.abilities.features.push(featureName);
-        this.deleteSearchedSpell(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate feature");
+    addWeapon(index, weaponName) {
+      if (
+        this.checkIfArrayContainsItem(this.equipment.weapons, weaponName) ===
+        false
+      ) {
+        this.equipment.weapons.push({ name: weaponName, amount: 1 });
+        this.deleteSearchedWeapon(index);
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Cannot add duplicate weapon"
+        );
       }
-
     },
-    searchSpell(featureName) {
-      notifications.methods.sendSuccessNotification(featureName);
+    searchWeapon(weaponName) {
+      notifications.methods.sendSuccessNotification(weaponName);
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/feature";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/weapon";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
           params: {
-            name: featureName
+            name: weaponName
           }
         })
         .then(response => {
-          this.featuresFound = [];
+          this.weaponsFound = [];
           var resp = response.data;
-          this.featuresFoundBase = [];
-          if(resp.length === 0){
-            notifications.methods.sendErrorNotification("No features found");
+          this.weaponsFoundBase = [];
+          if (resp.length === 0) {
+            notifications.methods.sendErrorNotification("No weapons found");
           }
           for (var i = 0; i < resp.length; i++) {
-            this.spellsFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.abilities.features.includes(resp[i].name) === false && resp[i].visible === true){
-              this.spellsFound.push(
+            this.weaponsFoundBase.push(
+              stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+            );
+            if (!this.checkIfArrayContainsItem(this.equipment.weapons, resp[i].name) && resp[i].visible === true) {
+              this.weaponsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
             }
@@ -1054,61 +839,18 @@ export default {
         });
     },
 
-    deleteSpell(index, featureName) {
-      this.abilities.features.splice(index, 1);
-      if(this.spellsFoundBase.includes(featureName)){
-        this.spellsFound.push(featureName);
-      }
+    addAttack() {
+      this.equipment.attacks.push({
+        name: "",
+        type: "",
+        damage: "",
+        bonus: 0
+      });
     },
-    deleteSearchedSpell(index){
-      this.spellsFound.splice(index, 1);
-    },
-    addSpell(index, featureName) {
-      if(this.abilities.features.includes(featureName) === false){
-        this.abilities.features.push(featureName);
-        this.deleteSearchedSpell(index);
-      }else{
-        notifications.methods.sendErrorNotification("Cannot add duplicate feature");
-      }
+    deleteAttack(index) {
+      this.equipment.attacks.splice(index, 1);
+    }
 
-    },
-    searchSpell(featureName) {
-      notifications.methods.sendSuccessNotification(featureName);
-      var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/feature";
-      axios
-        .get(targetURL, {
-          headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
-          params: {
-            name: featureName
-          }
-        })
-        .then(response => {
-          this.featuresFound = [];
-          var resp = response.data;
-          this.featuresFoundBase = [];
-          if(resp.length === 0){
-            notifications.methods.sendErrorNotification("No features found");
-          }
-          for (var i = 0; i < resp.length; i++) {
-            this.spellsFoundBase.push(stringFunc.methods.capitalizeFirstLetter(resp[i].name));
-            if(this.abilities.features.includes(resp[i].name) === false && resp[i].visible === true){
-              this.spellsFound.push(
-                stringFunc.methods.capitalizeFirstLetter(resp[i].name)
-              );
-            }
-          }
-        })
-        .catch(error => {
-          if (error.response.status === 401) {
-            notifications.methods.sendErrorNotification("Unauthorized");
-          } else {
-            notifications.methods.sendErrorNotification(error.response.data);
-          }
-        });
-    },
   }
 };
 </script>

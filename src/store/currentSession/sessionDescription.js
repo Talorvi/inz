@@ -376,6 +376,24 @@ export default {
           }
         });
     },
+    updateCharacterEquipment(context, payload) {
+      var targetURL =
+        "api/action/update/characterEquipment/scenario/" + payload.scenarioKey;
+      axios
+        .patch(targetURL, payload.equipment, {
+          headers: { Authorization: "bearer " + context.getters.loggedIn }
+        })
+        .then(() => {
+          notifications.methods.sendSuccessNotification("Updated character");
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
     getNotes(context, payload) {
       var targetURL = "api/api/v1/scenario/" + payload.scenarioKey + "/note";
       axios
