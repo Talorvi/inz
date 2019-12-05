@@ -8,11 +8,11 @@
               <q-form @submit="onSubmit" class="q-gutter-md">
                 <h4>Character: {{ equipment.name }}</h4>
                 <q-input
-                filled
-                v-model="equipment.armorClass"
-                label="Armor Class"
-                type="number"
-              />
+                  filled
+                  v-model="equipment.armorClass"
+                  label="Armor Class"
+                  type="number"
+                />
                 <h4>Currency:</h4>
                 <div class="row no-wrap">
                   <q-input
@@ -392,7 +392,7 @@
                   </q-card-section>
                 </q-card>
                 <div>
-                  <h4>Attack list: </h4>
+                  <h4>Attack list:</h4>
                   <q-list bordered separator class="q-mt-md">
                     <q-item
                       v-ripple
@@ -401,16 +401,8 @@
                     >
                       <q-item-section>
                         <div class="row no-wrap">
-                          <q-input
-                            filled
-                            v-model="attack.name"
-                            label="Name"
-                          />
-                          <q-input
-                            filled
-                            v-model="attack.type"
-                            label="Type"
-                          />
+                          <q-input filled v-model="attack.name" label="Name" />
+                          <q-input filled v-model="attack.type" label="Type" />
                           <q-input
                             filled
                             v-model="attack.damage"
@@ -458,9 +450,9 @@ export default {
       armorsFound: [],
       armorsFoundBase: [],
 
-      newVehicle: "",
-      vehiclesFound: [],
-      vehiclesFoundBase: [],
+      newWeapon: "",
+      weaponsFound: [],
+      weaponsFoundBase: [],
 
       newGear: "",
       gearsFound: [],
@@ -470,10 +462,9 @@ export default {
       toolsFound: [],
       toolsFoundBase: [],
 
-      newWeapon: "",
-      weaponsFound: [],
-      weaponsFoundBase: [],
-
+      newVehicle: "",
+      vehiclesFound: [],
+      vehiclesFoundBase: [],
       equipment: {
         name: "",
         armorClass: 0,
@@ -491,7 +482,8 @@ export default {
         vehicles: [],
         weapons: []
       },
-      characterName: "general"
+      characterName: "general",
+      featuresToDisplay: [{}, {}, {}, {}, {}]
     };
   },
   mounted() {
@@ -530,7 +522,7 @@ export default {
         );
       }
     },
-
+    //
     checkIfArrayContainsItem(array, name) {
       for (var i = 0; i < array.length; i++) {
         if (array[i].name === name) {
@@ -583,7 +575,13 @@ export default {
             this.armorsFoundBase.push(
               stringFunc.methods.capitalizeFirstLetter(resp[i].name)
             );
-            if (!this.checkIfArrayContainsItem(this.equipment.armors, resp[i].name) && resp[i].visible === true) {
+            if (
+              !this.checkIfArrayContainsItem(
+                this.equipment.armors,
+                resp[i].name
+              ) &&
+              resp[i].visible === true
+            ) {
               this.armorsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -624,7 +622,9 @@ export default {
     searchVehicle(vehicleName) {
       notifications.methods.sendSuccessNotification(vehicleName);
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/vehicle";
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/vehicle";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -643,7 +643,13 @@ export default {
             this.vehiclesFoundBase.push(
               stringFunc.methods.capitalizeFirstLetter(resp[i].name)
             );
-            if (!this.checkIfArrayContainsItem(this.equipment.vehicles, resp[i].name) && resp[i].visible === true) {
+            if (
+              !this.checkIfArrayContainsItem(
+                this.equipment.vehicles,
+                resp[i].name
+              ) &&
+              resp[i].visible === true
+            ) {
               this.vehiclesFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -670,8 +676,7 @@ export default {
     },
     addGear(index, gearName) {
       if (
-        this.checkIfArrayContainsItem(this.equipment.gear, gearName) ===
-        false
+        this.checkIfArrayContainsItem(this.equipment.gear, gearName) === false
       ) {
         this.equipment.gear.push({ name: gearName, amount: 1 });
         this.deleteSearchedGear(index);
@@ -703,7 +708,13 @@ export default {
             this.gearsFoundBase.push(
               stringFunc.methods.capitalizeFirstLetter(resp[i].name)
             );
-            if (!this.checkIfArrayContainsItem(this.equipment.gear, resp[i].name) && resp[i].visible === true) {
+            if (
+              !this.checkIfArrayContainsItem(
+                this.equipment.gear,
+                resp[i].name
+              ) &&
+              resp[i].visible === true
+            ) {
               this.gearsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -730,8 +741,7 @@ export default {
     },
     addTool(index, toolName) {
       if (
-        this.checkIfArrayContainsItem(this.equipment.tools, toolName) ===
-        false
+        this.checkIfArrayContainsItem(this.equipment.tools, toolName) === false
       ) {
         this.equipment.tools.push({ name: toolName, amount: 1 });
         this.deleteSearchTool(index);
@@ -763,7 +773,13 @@ export default {
             this.toolsFoundBase.push(
               stringFunc.methods.capitalizeFirstLetter(resp[i].name)
             );
-            if (!this.checkIfArrayContainsItem(this.equipment.tools, resp[i].name) && resp[i].visible === true) {
+            if (
+              !this.checkIfArrayContainsItem(
+                this.equipment.tools,
+                resp[i].name
+              ) &&
+              resp[i].visible === true
+            ) {
               this.toolsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -823,7 +839,13 @@ export default {
             this.weaponsFoundBase.push(
               stringFunc.methods.capitalizeFirstLetter(resp[i].name)
             );
-            if (!this.checkIfArrayContainsItem(this.equipment.weapons, resp[i].name) && resp[i].visible === true) {
+            if (
+              !this.checkIfArrayContainsItem(
+                this.equipment.weapons,
+                resp[i].name
+              ) &&
+              resp[i].visible === true
+            ) {
               this.weaponsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
               );
@@ -849,8 +871,40 @@ export default {
     },
     deleteAttack(index) {
       this.equipment.attacks.splice(index, 1);
+    },
+    getExactFeatureByName(featureName, type, index) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/" +
+        type;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
+          params: {
+            name: featureName
+          }
+        })
+        .then(response => {
+          console.log("This is mounted method");
+          var resp = response.data;
+          console.log("This is returned feature", resp);
+          for (var i = 0; i < resp.length; i++) {
+            if (resp[i].name.toLowerCase() === featureName.toLowerCase()) {
+              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
+              this.featuresToDisplay[index] = resp[i];
+              break;
+            }
+          }
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
     }
-
   }
 };
 </script>
