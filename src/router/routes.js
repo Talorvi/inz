@@ -233,7 +233,14 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
-          }
+          },
+          {
+            path: "noteForm/:noteName",
+            component: () => import("components/forms/features/noteForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
         ]
       }
     ]
