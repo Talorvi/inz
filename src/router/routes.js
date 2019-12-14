@@ -41,7 +41,6 @@ const routes = [
           loggedRequired(to, from, next);
         }
       },
-      //testing routes to delete
       {
         path: "new-scenario",
         component: () => import("pages/Scenario/NewScenario.vue"),
@@ -90,6 +89,48 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
+          },
+          {
+            path: "new-character",
+            component: () => import("pages/Game/Character/NewCharacter.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "abilities",
+            component: () => import("pages/Game/Character/Abilities.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "equipment",
+            component: () => import("pages/Game/Character/Equipment.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "spells",
+            component: () => import("pages/Game/Character/Spells.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "statistics",
+            component: () => import("pages/Game/Character/Statistics.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "notes",
+            component: () => import("pages/Game/Character/Notes.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
           }
         ]
       },
@@ -103,21 +144,24 @@ const routes = [
         children: [
           {
             path: "featureForm/:featureName",
-            component: () => import("components/forms/features/featureForm.vue"),
+            component: () =>
+              import("components/forms/features/featureForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "languageForm/:languageName",
-            component: () => import("components/forms/features/languageForm.vue"),
+            component: () =>
+              import("components/forms/features/languageForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "proficiencyForm/:proficiencyName",
-            component: () => import("components/forms/features/proficiencyForm.vue"),
+            component: () =>
+              import("components/forms/features/proficiencyForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
@@ -166,7 +210,8 @@ const routes = [
           },
           {
             path: "vehicleForm/:vehicleName",
-            component: () => import("components/forms/features/vehicleForm.vue"),
+            component: () =>
+              import("components/forms/features/vehicleForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
@@ -180,56 +225,66 @@ const routes = [
           },
           {
             path: "conditionForm/:conditionName",
-            component: () => import("components/forms/features/conditionForm.vue"),
+            component: () =>
+              import("components/forms/features/conditionForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "damageTypeForm/:damageTypeName",
-            component: () => import("components/forms/features/damageTypeForm.vue"),
+            component: () =>
+              import("components/forms/features/damageTypeForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "magicSchoolForm/:magicSchoolName",
-            component: () => import("components/forms/features/magicSchoolForm.vue"),
+            component: () =>
+              import("components/forms/features/magicSchoolForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "weaponPropertyForm/:weaponPropertyName",
-            component: () => import("components/forms/features/weaponPropertyForm.vue"),
+            component: () =>
+              import("components/forms/features/weaponPropertyForm.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "updateCharacter/generalInfo/:charName",
-            component: () => import("components/forms/character/updateCharacterGeneralInfo.vue"),
+            component: () =>
+              import(
+                "components/forms/character/updateCharacterGeneralInfo.vue"
+              ),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "updateCharacter/abilities/:charName",
-            component: () => import("components/forms/character/updateCharacterAbilities.vue"),
+            component: () =>
+              import("components/forms/character/updateCharacterAbilities.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "updateCharacter/equipment/:charName",
-            component: () => import("components/forms/character/updateCharacterEquipment.vue"),
+            component: () =>
+              import("components/forms/character/updateCharacterEquipment.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
             path: "updateCharacter/spells/:charName",
-            component: () => import("components/forms/character/updateCharacterSpells.vue"),
+            component: () =>
+              import("components/forms/character/updateCharacterSpells.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
@@ -240,7 +295,7 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
-          },
+          }
         ]
       }
     ]

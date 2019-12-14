@@ -113,7 +113,14 @@
                         active-class="bg-teal-1"
                         v-for="(spellFound, index) in spellsFound"
                       >
-                        <q-item-section>
+                        <q-item-section
+                          @click="
+                            showDialog(
+                              spellsFound[index],
+                              spellsFoundDescription[index]
+                            )
+                          "
+                        >
                           <q-item-label>{{ spellFound }}</q-item-label>
                         </q-item-section>
                         <q-btn
@@ -128,12 +135,25 @@
                     </q-list>
                   </q-card-section>
                 </q-card>
-                <q-btn label="Submit" type="submit" color="primary" />
+                <q-btn label="Submit" size="lg" type="submit" color="accent" />
               </q-form>
             </div>
           </q-card>
         </div>
       </div>
+
+      <q-dialog v-model="dialog">
+        <q-card>
+          <q-card-section class="row items-center">
+            <div class="text-h6">{{ tempSpellName }}</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+          <q-card-section>
+            {{ tempSpellDescription }}
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </template>
   </div>
 </template>
@@ -145,8 +165,12 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dialog: false,
+      tempSpellName: "",
+      tempSpellDescription: "",
       spellsFound: [],
       spellsFoundBase: [],
+      spellsFoundDescription: [],
       newSpell: "",
       charSpells: {
         name: "",
@@ -154,7 +178,7 @@ export default {
         spellAttackBonus: 0,
         spellSaveDc: 0,
         spellSlots: [],
-        spells: []
+        spells: [],
       },
       characterName: "general"
     };
@@ -163,6 +187,11 @@ export default {
     this.getCharacterByName(this.$route.params.charName);
   },
   methods: {
+    showDialog(spellName, spellDescription) {
+      this.tempSpellName = spellName;
+      this.tempSpellDescription = spellDescription;
+      this.dialog = true;
+    },
     onSubmit() {
       this.$store.dispatch("updateCharacterSpells", {
         spells: this.charSpells,
@@ -185,7 +214,7 @@ export default {
           spellSaveDc: char.spells.spellSaveDc,
           spellSlots: char.spells.spellSlots,
           spells: char.spells.spells
-        }
+        };
         notifications.methods.sendSuccessNotification(
           "Spell number: " + char.spells.length
         );
@@ -230,6 +259,7 @@ export default {
           this.spellsFound = [];
           var resp = response.data;
           this.spellsFoundBase = [];
+          this.spellsFoundDescription = [];
           if (resp.length === 0) {
             notifications.methods.sendErrorNotification("No spells found");
           }
@@ -243,6 +273,9 @@ export default {
             ) {
               this.spellsFound.push(
                 stringFunc.methods.capitalizeFirstLetter(resp[i].name)
+              );
+              this.spellsFoundDescription.push(
+                stringFunc.methods.capitalizeFirstLetter(resp[i].description)
               );
             }
           }

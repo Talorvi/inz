@@ -6,248 +6,293 @@
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
               <q-form @submit="onSubmit" class="q-gutter-md">
-                <h4>Character: {{ abilities.name }}</h4>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Features</h4>
-                    <div v-if="abilities.features.length === 0">
-                      <h4>No features added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(feature, index) in abilities.features"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ feature }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteFeature(index, feature)"
+                <h5>Character: {{ abilities.name }}</h5>
+                <q-tabs
+                  v-model="tab"
+                  dense
+                  class="text-grey"
+                  active-color="primary"
+                  indicator-color="primary"
+                  align="justify"
+                  narrow-indicator
+                >
+                  <q-tab
+                    name="features"
+                    icon="fas fa-khanda"
+                    label="Features"
+                  />
+                  <q-tab
+                    name="languages"
+                    icon="fas fa-shield-alt"
+                    label="Languages"
+                  />
+                  <q-tab name="traits" icon="fas fa-cog" label="Traits" />
+                  <q-tab
+                    name="proficiencies"
+                    icon="fas fa-hammer"
+                    label="Proficiencies"
+                  />
+                </q-tabs>
+
+                <q-separator />
+
+                <q-tab-panels v-model="tab" animated>
+                  <q-tab-panel name="features">
+                    <q-card class="col-xs-12 q-mb-md">
+                      <q-card-section>
+                        <h5>Selected Features</h5>
+                        <div v-if="abilities.features.length === 0">
+                          <h5>No features added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(feature, index) in abilities.features"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ feature }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteFeature(index, feature)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Feature"
+                          :rules="[]"
+                          v-model="newFeature"
                         />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Feature"
-                      :rules="[]"
-                      v-model="newFeature"
-                    />
-                    <q-btn v-on:click="searchFeature(newFeature)">
-                      Search spell
-                    </q-btn>
-                    <div v-if="featuresFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(featureFound, index) in featuresFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ featureFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addFeature(index, featureFound)"
+                        <q-btn v-on:click="searchFeature(newFeature)">
+                          Search spell
+                        </q-btn>
+                        <div v-if="featuresFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(featureFound, index) in featuresFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ featureFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addFeature(index, featureFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="languages">
+                    <q-card class="col-xs-12 q-mb-md">
+                      <q-card-section>
+                        <h5>Selected Languages</h5>
+                        <div v-if="abilities.languages.length === 0">
+                          <h5>No languages added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(language, index) in abilities.languages"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ language }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteLanguage(index, language)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Language"
+                          :rules="[]"
+                          v-model="newLanguage"
                         />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Languages</h4>
-                    <div v-if="abilities.languages.length === 0">
-                      <h4>No languages added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(language, index) in abilities.languages"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ language }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteLanguage(index, language)"
+                        <q-btn v-on:click="searchLanguage(newLanguage)">
+                          Search language
+                        </q-btn>
+                        <div v-if="languagesFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(languageFound, index) in languagesFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ languageFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addLanguage(index, languageFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="traits">
+                    <q-card class="col-xs-12 q-mb-md">
+                      <q-card-section>
+                        <h5>Selected Traits</h5>
+                        <div v-if="abilities.traits.length === 0">
+                          <h5>No traits added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(trait, index) in abilities.traits"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ trait }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteTrait(index, trait)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Trait"
+                          :rules="[]"
+                          v-model="newTrait"
                         />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Language"
-                      :rules="[]"
-                      v-model="newLanguage"
-                    />
-                    <q-btn v-on:click="searchLanguage(newLanguage)">
-                      Search language
-                    </q-btn>
-                    <div v-if="languagesFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(languageFound, index) in languagesFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ languageFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addLanguage(index, languageFound)"
+                        <q-btn v-on:click="searchTrait(newTrait)">
+                          Search Trait
+                        </q-btn>
+                        <div v-if="traitsFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(traitFound, index) in traitsFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ traitFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addTrait(index, traitFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="proficiencies">
+                    <q-card class="col-xs-12">
+                      <q-card-section>
+                        <h5>Selected Proficiencies</h5>
+                        <div v-if="abilities.proficiencies.length === 0">
+                          <h5>No proficiencies added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(proficiency,
+                            index) in abilities.proficiencies"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ proficiency }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteProficiency(index, proficiency)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Proficiency"
+                          :rules="[]"
+                          v-model="newProficiency"
                         />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Traits</h4>
-                    <div v-if="abilities.traits.length === 0">
-                      <h4>No traits added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(trait, index) in abilities.traits"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ trait }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteTrait(index, trait)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Trait"
-                      :rules="[]"
-                      v-model="newTrait"
-                    />
-                    <q-btn v-on:click="searchTrait(newTrait)">
-                      Search Trait
-                    </q-btn>
-                    <div v-if="traitsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(traitFound, index) in traitsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ traitFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addTrait(index, traitFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Proficiencies</h4>
-                    <div v-if="abilities.proficiencies.length === 0">
-                      <h4>No proficiencies added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(proficiency, index) in abilities.proficiencies"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ proficiency }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteProficiency(index, proficiency)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Proficiency"
-                      :rules="[]"
-                      v-model="newProficiency"
-                    />
-                    <q-btn v-on:click="searchProficiency(newProficiency)">
-                      Search Proficiency
-                    </q-btn>
-                    <div v-if="proficienciesFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(proficiencyFound, index) in proficienciesFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ proficiencyFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addProficiency(index, proficiencyFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-btn label="Submit" type="submit" color="primary" />
+                        <q-btn v-on:click="searchProficiency(newProficiency)">
+                          Search Proficiency
+                        </q-btn>
+                        <div v-if="proficienciesFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(proficiencyFound,
+                            index) in proficienciesFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{
+                                proficiencyFound
+                              }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="
+                                addProficiency(index, proficiencyFound)
+                              "
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                </q-tab-panels>
+                <q-btn size="lg" label="Submit" type="submit" color="accent" />
               </q-form>
             </div>
           </q-card>
@@ -264,6 +309,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      tab: "features",
+
       featuresFound: [],
       featuresFoundBase: [],
       newFeature: "",
@@ -570,7 +617,7 @@ export default {
             notifications.methods.sendErrorNotification(error.response.data);
           }
         });
-    },
+    }
   }
 };
 </script>

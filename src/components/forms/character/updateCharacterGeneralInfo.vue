@@ -6,207 +6,251 @@
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
               <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <h2>{{general.name}}</h2>
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    v-model="general.race"
-                    label="Race"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    v-model="general.profession"
-                    label="Profession"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.level"
-                    label="Level"
-                    :rules="[val => val > 0 || 'Level have to be positive']"
-                  />
-                </div>
+                <h2>{{ general.name }}</h2>
 
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    v-model="general.background"
+                <q-tabs
+                  v-model="tab"
+                  dense
+                  class="text-grey"
+                  active-color="primary"
+                  indicator-color="primary"
+                  align="justify"
+                  narrow-indicator
+                >
+                  <q-tab
+                    name="base"
+                    icon="fas fa-user"
+                    label="Base info"
+                  />
+                  <q-tab
+                    name="background"
+                    icon="fas fa-history"
                     label="Background"
-                    :rules="[]"
                   />
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.experience"
-                    label="Experience "
-                    :rules="[
-                      val => val > 0 || 'Experience have to be positive'
-                    ]"
+                  <q-tab name="stats" icon="fas fa-scroll" label="Stats" />
+                  <q-tab name="health" icon="fas fa-heart" label="Health" />
+                  <q-tab
+                    name="proficiencies"
+                    icon="fas fa-lightbulb"
+                    label="Proficiencies"
                   />
-                  <q-input
-                    filled
-                    v-model="general.alignment"
-                    label="Alignment"
-                    :rules="[]"
-                  />
-                </div>
+                </q-tabs>
 
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.strength"
-                    label="Strength"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.dexterity"
-                    label="Dexterity *"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.constitution"
-                    label="Constitution"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.intelligence"
-                    label="Intelligence"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.wisdom"
-                    label="Wisdom"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.attributes.charisma"
-                    label="Charisma"
-                    :rules="[]"
-                  />
-                </div>
+                <q-separator />
 
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.proficiency"
-                    label="Proficiency"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.passivePerception"
-                    label="Passive perception"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.passiveInsight"
-                    label="Passive insight"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    type="number"
-                    v-model="general.inspiration"
-                    label="Inspiration"
-                    :rules="[]"
-                  />
-                </div>
+                <q-tab-panels v-model="tab" animated>
+                  <q-tab-panel name="base">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          v-model="general.race"
+                          label="Race"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          v-model="general.alignment"
+                          label="Alignment"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          v-model="general.speed"
+                          label="Speed"
+                          :rules="[]"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
 
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.health.maxHealth"
-                    label="Max Hit Points"
-                    :rules="[
-                      val => val > 0 || 'Max HP must be greater than 0!'
-                    ]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.health.actualHealth"
-                    label="Current Hit Points"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.health.temporaryHealth"
-                    label="Temporary Hit Points"
-                    :rules="[]"
-                  />
-                </div>
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    v-model="general.hitDices.dice"
-                    label="Hit Dice Type"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.hitDices.total"
-                    label="Total Hit Dice"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.hitDices.used"
-                    label="Used Hit Dice"
-                    :rules="[]"
-                  />
-                </div>
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    type="number"
-                    v-model="general.initiative"
-                    label="Initiative"
-                    :rules="[]"
-                  />
-                  <q-input
-                    filled
-                    style="width: 100px"
-                    v-model="general.speed"
-                    label="Speed"
-                    :rules="[]"
-                  />
-                </div>
+                  <q-tab-panel name="background">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          v-model="general.profession"
+                          label="Profession"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          v-model="general.background"
+                          label="Background"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.level"
+                          label="Level"
+                          :rules="[
+                            val => val > 0 || 'Level have to be positive'
+                          ]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.experience"
+                          label="Experience "
+                          :rules="[
+                            val => val > 0 || 'Experience have to be positive'
+                          ]"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+
+                  <q-tab-panel name="stats">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.strength"
+                          label="Strength"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.dexterity"
+                          label="Dexterity *"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.constitution"
+                          label="Constitution"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.intelligence"
+                          label="Intelligence"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.wisdom"
+                          label="Wisdom"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.attributes.charisma"
+                          label="Charisma"
+                          :rules="[]"
+                        />
+                        <q-separator></q-separator>
+                        <q-card-section>
+                          <q-input
+                            filled
+                            type="number"
+                            v-model="general.initiative"
+                            label="Initiative"
+                            :rules="[]"
+                          />
+                        </q-card-section>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+
+                  <q-tab-panel name="health">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.health.maxHealth"
+                          label="Max Hit Points"
+                          :rules="[
+                            val => val > 0 || 'Max HP must be greater than 0!'
+                          ]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.health.actualHealth"
+                          label="Current Hit Points"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.health.temporaryHealth"
+                          label="Temporary Hit Points"
+                          :rules="[]"
+                        />
+                      </q-card-section>
+                      <q-separator></q-separator>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          v-model="general.hitDices.dice"
+                          label="Hit Dice Type"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.hitDices.total"
+                          label="Total Hit Dice"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.hitDices.used"
+                          label="Used Hit Dice"
+                          :rules="[]"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+
+                  <q-tab-panel name="proficiencies">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.proficiency"
+                          label="Proficiency"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.passivePerception"
+                          label="Passive perception"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.passiveInsight"
+                          label="Passive insight"
+                          :rules="[]"
+                        />
+                        <q-input
+                          filled
+                          type="number"
+                          v-model="general.inspiration"
+                          label="Inspiration"
+                          :rules="[]"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                </q-tab-panels>
+
                 <div>
-                  <q-btn label="Submit" type="submit" color="primary" />
+                  <q-btn label="Submit" size="lg" type="submit" color="accent" />
                   <q-btn
                     label="Reset"
                     type="reset"
@@ -230,6 +274,7 @@ import notifications from "../../../functions/notifications";
 export default {
   data() {
     return {
+      tab: "base",
       general: {
         name: "",
         race: "",
@@ -319,15 +364,15 @@ export default {
         speed: ""
       };
     },
-    getCharacterByName(characterName){
+    getCharacterByName(characterName) {
       var char = null;
       var characters = this.$store.getters.getCharacters;
-      for(var i = 0 ; i < characters.length; i++){
-        if(characters[i].name === characterName){
+      for (var i = 0; i < characters.length; i++) {
+        if (characters[i].name === characterName) {
           char = characters[i];
         }
       }
-      if(char !== null){
+      if (char !== null) {
         this.general = {
           name: char.name,
           race: char.race,
@@ -360,10 +405,11 @@ export default {
           },
           initiative: char.initiative,
           speed: char.speed
-        }
-      }
-      else{
-        notifications.methods.sendErrorNotification("Haven't found character " + characterName);
+        };
+      } else {
+        notifications.methods.sendErrorNotification(
+          "Haven't found character " + characterName
+        );
       }
     }
   }

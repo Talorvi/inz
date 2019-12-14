@@ -11,6 +11,17 @@
       <div class="col-xs-12 col-sm-8 offset-xs-0 offset-sm-2">
         <div class="row justify-center q-pt-md">
           <div class="col-xs-0 col-sm-4 center-image" style="height: 20rem">
+            <q-btn
+              color="accent"
+              class="q-mb-md"
+              @click="
+                $router.push(
+                  '/game/' + $route.params.scenarioKey + '/new-character',
+                  () => {}
+                )
+              "
+              >New Character</q-btn
+            ><br />
             <span class="helper"></span>
             <img
               src="~src/assets/characters.svg"
@@ -20,7 +31,10 @@
           </div>
           <div class="col-xs-12 col-sm-8">
             <div class="row">
-              <div class="col-auto q-pa-xs-md q-pa-sm-md q-pb-md" style="width: 100%;">
+              <div
+                class="col-auto q-pa-xs-md q-pa-sm-md q-pb-md"
+                style="width: 100%;"
+              >
                 <character-picker></character-picker>
               </div>
             </div>
@@ -40,18 +54,18 @@ export default {
 </script>
 
 <style scoped>
-  .completed-image {
-    width: 100%;
-    vertical-align: middle;
-  }
-  .center-image {
-    white-space: nowrap;
-    text-align: center;
-    margin: 1em 0;
-  }
-  .helper {
-    display: inline-block;
-    height: 100%;
-    vertical-align: middle;
-  }
+.completed-image {
+  width: 100%;
+  vertical-align: middle;
+}
+.center-image {
+  white-space: nowrap;
+  text-align: center;
+  margin: 1em 0;
+}
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
 </style>

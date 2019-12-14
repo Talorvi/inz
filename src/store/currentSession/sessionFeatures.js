@@ -21,19 +21,21 @@ export default {
     },
     updateSingleFeature(context, payload) {
       context.feature = null;
-     console.log("Before loop" +  payload.results[0].name.toLowerCase());
+      console.log("Before loop" + payload.results[0].name.toLowerCase());
       for (var i = 0; i < payload.results.length; i++) {
         if (
           payload.results[i].name.toLowerCase() ===
           payload.searchPhrase.toLowerCase()
         ) {
-          console.log("Condition fulfilled" + payload.results[i].name.toLowerCase());
+          console.log(
+            "Condition fulfilled" + payload.results[i].name.toLowerCase()
+          );
           context.feature = payload.results[i];
           break;
         }
       }
     },
-    clearFeature(context){
+    clearFeature(context) {
       context.feature = {
         name: "",
         description: "",
@@ -118,7 +120,7 @@ export default {
           }
         });
     },
-    deleteSpell(context, payload) {
+    deleteFeature(context, payload) {
       var targetURL =
         "api/api/v1/scenario/" +
         payload.scenarioKey +

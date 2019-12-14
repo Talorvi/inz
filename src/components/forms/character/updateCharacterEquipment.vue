@@ -6,429 +6,481 @@
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
               <q-form @submit="onSubmit" class="q-gutter-md">
-                <h4>Character: {{ equipment.name }}</h4>
-                <q-input
-                  filled
-                  v-model="equipment.armorClass"
-                  label="Armor Class"
-                  type="number"
-                />
-                <h4>Currency:</h4>
-                <div class="row no-wrap">
-                  <q-input
-                    filled
-                    v-model="equipment.currency.cp"
-                    label="Copper Piece"
-                    type="number"
+                <h5>Character: {{ equipment.name }}</h5>
+                <q-tabs
+                  v-model="tab"
+                  dense
+                  class="text-grey"
+                  active-color="primary"
+                  indicator-color="primary"
+                  align="justify"
+                  narrow-indicator
+                >
+                  <q-tab name="weapons" icon="fas fa-khanda" label="Weapons" />
+                  <q-tab
+                    name="armors"
+                    icon="fas fa-shield-alt"
+                    label="Armors"
                   />
-                  <q-input
-                    filled
-                    v-model="equipment.currency.sp"
-                    label="Silver Piece"
-                    type="number"
-                  />
-                  <q-input
-                    filled
-                    v-model="equipment.currency.ep"
-                    label="Electrum Piece"
-                    type="number"
-                  />
-                  <q-input
-                    filled
-                    v-model="equipment.currency.gp"
-                    label="Gold Piece"
-                    type="number"
-                  />
-                  <q-input
-                    filled
-                    v-model="equipment.currency.pp"
-                    label="Platinium Piece"
-                    type="number"
-                  />
-                </div>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Armors</h4>
-                    <div v-if="equipment.armors.length === 0">
-                      <h4>No armors added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(armor, index) in equipment.armors"
-                      >
-                        <q-item-section>
-                          <div class="row no-wrap">
-                            <q-item-label>{{ armor.name }}</q-item-label>
-                            <q-input
-                              filled
-                              label="Amount"
-                              :rules="[]"
-                              v-model="armor.amount"
-                              type="number"
-                            />
-                          </div>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteArmor(index, armor.name)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Armor"
-                      :rules="[]"
-                      v-model="newArmor"
-                    />
-                    <q-btn v-on:click="searchArmor(newArmor)">
-                      Search spell
-                    </q-btn>
-                    <div v-if="armorsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(armorFound, index) in armorsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ armorFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addArmor(index, armorFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Weapons</h4>
-                    <div v-if="equipment.weapons.length === 0">
-                      <h4>No weapons added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(weapon, index) in equipment.weapons"
-                      >
-                        <q-item-section>
-                          <div class="row no-wrap">
-                            <q-item-label>{{ weapon.name }}</q-item-label>
-                            <q-input
-                              filled
-                              label="Amount"
-                              :rules="[]"
-                              v-model="weapon.amount"
-                              type="number"
-                            />
-                          </div>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteWeapon(index, weapon.name)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Weapon"
-                      :rules="[]"
-                      v-model="newWeapon"
-                    />
-                    <q-btn v-on:click="searchWeapon(newWeapon)">
-                      Search weapon
-                    </q-btn>
-                    <div v-if="weaponsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(weaponFound, index) in weaponsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ weaponFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addWeapon(index, weaponFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Gears</h4>
-                    <div v-if="equipment.gear.length === 0">
-                      <h4>No gears added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(gear, index) in equipment.gear"
-                      >
-                        <q-item-section>
-                          <div class="row no-wrap">
-                            <q-item-label>{{ gear.name }}</q-item-label>
-                            <q-input
-                              filled
-                              label="Amount"
-                              :rules="[]"
-                              v-model="gear.amount"
-                              type="number"
-                            />
-                          </div>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteGear(index, gear.name)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Gear"
-                      :rules="[]"
-                      v-model="newGear"
-                    />
-                    <q-btn v-on:click="searchGear(newGear)">
-                      Search gear
-                    </q-btn>
-                    <div v-if="gearsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(gearFound, index) in gearsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ gearFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addGear(index, gearFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Tools</h4>
-                    <div v-if="equipment.tools.length === 0">
-                      <h4>No tools added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(tool, index) in equipment.tools"
-                      >
-                        <q-item-section>
-                          <div class="row no-wrap">
-                            <q-item-label>{{ tool.name }}</q-item-label>
-                            <q-input
-                              filled
-                              label="Amount"
-                              :rules="[]"
-                              v-model="tool.amount"
-                              type="number"
-                            />
-                          </div>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteTool(index, tool.name)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Tool"
-                      :rules="[]"
-                      v-model="newTool"
-                    />
-                    <q-btn v-on:click="searchTool(newTool)">
-                      Search tool
-                    </q-btn>
-                    <div v-if="toolsFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(toolFound, index) in toolsFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ toolFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addTool(index, toolFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <q-card>
-                  <q-card-section>
-                    <h4>Selected Vehicles</h4>
-                    <div v-if="equipment.vehicles.length === 0">
-                      <h4>No vehicles added yet</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(vehicle, index) in equipment.vehicles"
-                      >
-                        <q-item-section>
-                          <div class="row no-wrap">
-                            <q-item-label>{{ vehicle.name }}</q-item-label>
-                            <q-input
-                              filled
-                              label="Amount"
-                              :rules="[]"
-                              v-model="vehicle.amount"
-                              type="number"
-                            />
-                          </div>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="delete"
-                          v-on:click="deleteVehicle(index, vehicle.name)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                  <q-card-section>
-                    <q-input
-                      filled
-                      label="Vehicle"
-                      :rules="[]"
-                      v-model="newVehicle"
-                    />
-                    <q-btn v-on:click="searchVehicle(newVehicle)">
-                      Search vehicle
-                    </q-btn>
-                    <div v-if="vehiclesFound.length === 0">
-                      <h4>No Results Found</h4>
-                    </div>
-                    <q-list bordered separator class="q-mt-md" v-else>
-                      <q-item
-                        v-ripple
-                        active-class="bg-teal-1"
-                        v-for="(vehicleFound, index) in vehiclesFound"
-                      >
-                        <q-item-section>
-                          <q-item-label>{{ vehicleFound }}</q-item-label>
-                        </q-item-section>
-                        <q-btn
-                          size="12px"
-                          flat
-                          dense
-                          round
-                          icon="add"
-                          v-on:click="addVehicle(index, vehicleFound)"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-card-section>
-                </q-card>
-                <div>
-                  <h4>Attack list:</h4>
-                  <q-list bordered separator class="q-mt-md">
-                    <q-item
-                      v-ripple
-                      active-class="bg-teal-1"
-                      v-for="(attack, index) in equipment.attacks"
-                    >
-                      <q-item-section>
-                        <div class="row no-wrap">
-                          <q-input filled v-model="attack.name" label="Name" />
-                          <q-input filled v-model="attack.type" label="Type" />
-                          <q-input
-                            filled
-                            v-model="attack.damage"
-                            label="Damage"
-                          />
-                          <q-input
-                            filled
-                            v-model="attack.bonus"
-                            label="Bonus"
-                            type="number"
-                          />
+                  <q-tab name="gears" icon="fas fa-cog" label="Gears" />
+                  <q-tab name="tools" icon="fas fa-hammer" label="Tools" />
+                  <q-tab name="vehicles" icon="fas fa-horse" label="Vehicles" />
+                  <q-tab name="money" icon="fas fa-coins" label="Money" />
+                </q-tabs>
+
+                <q-separator />
+
+                <q-tab-panels v-model="tab" animated>
+                  <q-tab-panel name="weapons">
+                    <q-card>
+                      <q-card-section>
+                        <div>
+                          <h5>Attack list:</h5>
+                          <q-list bordered separator class="q-mt-md">
+                            <q-item
+                              v-ripple
+                              active-class="bg-teal-1"
+                              v-for="(attack, index) in equipment.attacks"
+                            >
+                              <q-item-section>
+                                <div class="row no-wrap">
+                                  <q-input
+                                    filled
+                                    v-model="attack.name"
+                                    label="Name"
+                                  />
+                                  <q-input
+                                    filled
+                                    v-model="attack.type"
+                                    label="Type"
+                                  />
+                                  <q-input
+                                    filled
+                                    v-model="attack.damage"
+                                    label="Damage"
+                                  />
+                                  <q-input
+                                    filled
+                                    v-model="attack.bonus"
+                                    label="Bonus"
+                                    type="number"
+                                  />
+                                </div>
+                              </q-item-section>
+                              <q-btn
+                                size="12px"
+                                flat
+                                dense
+                                round
+                                icon="delete"
+                                v-on:click="deleteAttack(index)"
+                              />
+                            </q-item>
+                          </q-list>
+                          <q-btn v-on:click="addAttack()"> Add Attack</q-btn>
                         </div>
-                      </q-item-section>
-                      <q-btn
-                        size="12px"
-                        flat
-                        dense
-                        round
-                        icon="delete"
-                        v-on:click="deleteAttack(index)"
-                      />
-                    </q-item>
-                  </q-list>
-                  <q-btn v-on:click="addAttack()"> Add Attack</q-btn>
-                </div>
-                <q-btn label="Submit" type="submit" color="primary" />
+                      </q-card-section>
+                      <q-separator />
+                      <q-card-section>
+                        <h5>Selected Weapons</h5>
+                        <div v-if="equipment.weapons.length === 0">
+                          <h5>No weapons added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(weapon, index) in equipment.weapons"
+                          >
+                            <q-item-section>
+                              <div class="row no-wrap">
+                                <q-item-label>{{ weapon.name }}</q-item-label>
+                                <q-input
+                                  filled
+                                  label="Amount"
+                                  :rules="[]"
+                                  v-model="weapon.amount"
+                                  type="number"
+                                />
+                              </div>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteWeapon(index, weapon.name)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Weapon"
+                          :rules="[]"
+                          v-model="newWeapon"
+                        />
+                        <q-btn v-on:click="searchWeapon(newWeapon)">
+                          Search weapon
+                        </q-btn>
+                        <div v-if="weaponsFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(weaponFound, index) in weaponsFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ weaponFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addWeapon(index, weaponFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="armors">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          v-model="equipment.armorClass"
+                          label="Armor Class"
+                          type="number"
+                        />
+                      </q-card-section>
+                      <q-separator></q-separator>
+                      <q-card-section>
+                        <h5>Selected Armors</h5>
+                        <div v-if="equipment.armors.length === 0">
+                          <h5>No armors added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(armor, index) in equipment.armors"
+                          >
+                            <q-item-section>
+                              <div class="row no-wrap">
+                                <q-item-label>{{ armor.name }}</q-item-label>
+                                <q-input
+                                  filled
+                                  label="Amount"
+                                  :rules="[]"
+                                  v-model="armor.amount"
+                                  type="number"
+                                />
+                              </div>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteArmor(index, armor.name)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Armor"
+                          :rules="[]"
+                          v-model="newArmor"
+                        />
+                        <q-btn v-on:click="searchArmor(newArmor)">
+                          Search spell
+                        </q-btn>
+                        <div v-if="armorsFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(armorFound, index) in armorsFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ armorFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addArmor(index, armorFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="gears">
+                    <q-card>
+                      <q-card-section>
+                        <h5>Selected Gears</h5>
+                        <div v-if="equipment.gear.length === 0">
+                          <h5>No gears added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(gear, index) in equipment.gear"
+                          >
+                            <q-item-section>
+                              <div class="row no-wrap">
+                                <q-item-label>{{ gear.name }}</q-item-label>
+                                <q-input
+                                  filled
+                                  label="Amount"
+                                  :rules="[]"
+                                  v-model="gear.amount"
+                                  type="number"
+                                />
+                              </div>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteGear(index, gear.name)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Gear"
+                          :rules="[]"
+                          v-model="newGear"
+                        />
+                        <q-btn v-on:click="searchGear(newGear)">
+                          Search gear
+                        </q-btn>
+                        <div v-if="gearsFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(gearFound, index) in gearsFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ gearFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addGear(index, gearFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="tools">
+                    <q-card>
+                      <q-card-section>
+                        <h5>Selected Tools</h5>
+                        <div v-if="equipment.tools.length === 0">
+                          <h5>No tools added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(tool, index) in equipment.tools"
+                          >
+                            <q-item-section>
+                              <div class="row no-wrap">
+                                <q-item-label>{{ tool.name }}</q-item-label>
+                                <q-input
+                                  filled
+                                  label="Amount"
+                                  :rules="[]"
+                                  v-model="tool.amount"
+                                  type="number"
+                                />
+                              </div>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteTool(index, tool.name)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Tool"
+                          :rules="[]"
+                          v-model="newTool"
+                        />
+                        <q-btn v-on:click="searchTool(newTool)">
+                          Search tool
+                        </q-btn>
+                        <div v-if="toolsFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(toolFound, index) in toolsFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ toolFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addTool(index, toolFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="vehicles">
+                    <q-card>
+                      <q-card-section>
+                        <h5>Selected Vehicles</h5>
+                        <div v-if="equipment.vehicles.length === 0">
+                          <h5>No vehicles added yet</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(vehicle, index) in equipment.vehicles"
+                          >
+                            <q-item-section>
+                              <div class="row no-wrap">
+                                <q-item-label>{{ vehicle.name }}</q-item-label>
+                                <q-input
+                                  filled
+                                  label="Amount"
+                                  :rules="[]"
+                                  v-model="vehicle.amount"
+                                  type="number"
+                                />
+                              </div>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="delete"
+                              v-on:click="deleteVehicle(index, vehicle.name)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          label="Vehicle"
+                          :rules="[]"
+                          v-model="newVehicle"
+                        />
+                        <q-btn v-on:click="searchVehicle(newVehicle)">
+                          Search vehicle
+                        </q-btn>
+                        <div v-if="vehiclesFound.length === 0">
+                          <h5>No Results Found</h5>
+                        </div>
+                        <q-list bordered separator class="q-mt-md" v-else>
+                          <q-item
+                            v-ripple
+                            active-class="bg-teal-1"
+                            v-for="(vehicleFound, index) in vehiclesFound"
+                          >
+                            <q-item-section>
+                              <q-item-label>{{ vehicleFound }}</q-item-label>
+                            </q-item-section>
+                            <q-btn
+                              size="12px"
+                              flat
+                              dense
+                              round
+                              icon="add"
+                              v-on:click="addVehicle(index, vehicleFound)"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                  <q-tab-panel name="money">
+                    <q-card>
+                      <q-card-section>
+                        <q-input
+                          filled
+                          v-model="equipment.currency.cp"
+                          label="Copper Piece"
+                          type="number"
+                        />
+                        <q-input
+                          filled
+                          v-model="equipment.currency.sp"
+                          label="Silver Piece"
+                          type="number"
+                        />
+                        <q-input
+                          filled
+                          v-model="equipment.currency.ep"
+                          label="Electrum Piece"
+                          type="number"
+                        />
+                        <q-input
+                          filled
+                          v-model="equipment.currency.gp"
+                          label="Gold Piece"
+                          type="number"
+                        />
+                        <q-input
+                          filled
+                          v-model="equipment.currency.pp"
+                          label="Platinium Piece"
+                          type="number"
+                        />
+                      </q-card-section>
+                    </q-card>
+                  </q-tab-panel>
+                </q-tab-panels>
+                <q-btn label="Submit" size="lg" type="submit" color="accent" />
               </q-form>
             </div>
           </q-card>
@@ -446,6 +498,8 @@ import axios from "axios";
 export default {
   data() {
     return {
+      tab: "weapons",
+
       newArmor: "",
       armorsFound: [],
       armorsFoundBase: [],

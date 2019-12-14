@@ -2,6 +2,12 @@
   <q-layout view="lHh lpr fFf">
     <q-header reveal elevated class="bg-primary text-white q-pt-md">
       <q-toolbar inset>
+        <q-icon
+          name="keyboard_arrow_left"
+          size="lg"
+          @click="$router.go(-1)"
+        ></q-icon>
+
         <q-toolbar-title class="title" @click="$router.push('/', () => {})">
           WAS <strong>RPG</strong>
         </q-toolbar-title>
@@ -104,25 +110,76 @@
             </q-item-section>
             <q-item-section>Roll</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/statistics',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-scroll" />
             </q-item-section>
             <q-item-section>Statistics</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/abilities',
+                () => {}
+              )
+            "
+          >
+            <q-item-section avatar>
+              <q-icon name="fas fa-book" />
+            </q-item-section>
+            <q-item-section>Abilities</q-item-section>
+          </q-item>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/equipment',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-box" />
             </q-item-section>
             <q-item-section>Equipment</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/spells',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-hat-wizard" />
             </q-item-section>
             <q-item-section>Magic</q-item-section>
           </q-item>
-          <q-item clickable v-ripple>
+          <q-item
+            clickable
+            v-ripple
+            @click="
+              $router.push(
+                '/game/' + $route.params.scenarioKey + '/notes',
+                () => {}
+              )
+            "
+          >
             <q-item-section avatar>
               <q-icon name="fas fa-clipboard" />
             </q-item-section>
