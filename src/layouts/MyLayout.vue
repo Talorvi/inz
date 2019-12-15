@@ -115,7 +115,10 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/statistics/' + $store.getters.getSelectedCharacter.name,
+                '/game/' +
+                  $route.params.scenarioKey +
+                  '/statistics/' +
+                  $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -130,7 +133,10 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/abilities/' + $store.getters.getSelectedCharacter.name,
+                '/game/' +
+                  $route.params.scenarioKey +
+                  '/abilities/' +
+                  $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -145,7 +151,10 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/equipment/' + $store.getters.getSelectedCharacter.name,
+                '/game/' +
+                  $route.params.scenarioKey +
+                  '/equipment/' +
+                  $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -160,7 +169,10 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/spells/' + $store.getters.getSelectedCharacter.name,
+                '/game/' +
+                  $route.params.scenarioKey +
+                  '/spells/' +
+                  $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -200,6 +212,21 @@
             </q-item-section>
             <q-item-section>Characters</q-item-section>
           </q-item>
+
+          <div
+            v-if="$store.getters.getUserName === $store.getters.getGameMaster"
+          >
+            <q-separator />
+            <q-item-section>
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="fas fa-cogs" />
+                </q-item-section>
+                <q-item-section>Game Management</q-item-section>
+              </q-item>
+            </q-item-section>
+          </div>
+
           <q-separator />
           <q-expansion-item
             clickable

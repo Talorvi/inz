@@ -81,7 +81,6 @@ export default {
       context.gameMaster = payload.gameMaster;
       if (context.gameMaster === payload.userName) {
         context.isGameMaster = true;
-        console.log(context.isGameMaster);
       }
     },
     updateOnlinePlayerList(context, onlinePlayerList) {
