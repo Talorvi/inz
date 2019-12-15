@@ -134,7 +134,9 @@
                             active-class="bg-teal-1"
                             v-for="(weaponFound, index) in weaponsFound"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showWeaponDialog(weaponFound)"
+                            >
                               <q-item-label>{{ weaponFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -174,7 +176,7 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label>{{ armor.name }}</q-item-label>
+                                <q-item-label @click="showArmorDialog(armor.name)">{{ armor.name }}</q-item-label>
                                 <q-input
                                   filled
                                   label="Amount"
@@ -203,7 +205,7 @@
                           v-model="newArmor"
                         />
                         <q-btn v-on:click="searchArmor(newArmor)">
-                          Search spell
+                          Search armor
                         </q-btn>
                         <div v-if="armorsFound.length === 0">
                           <h5>No Results Found</h5>
@@ -214,7 +216,9 @@
                             active-class="bg-teal-1"
                             v-for="(armorFound, index) in armorsFound"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showArmorDialog(armorFound)"
+                            >
                               <q-item-label>{{ armorFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -245,7 +249,7 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label>{{ gear.name }}</q-item-label>
+                                <q-item-label @click="showGearDialog(gear.name)">{{ gear.name }}</q-item-label>
                                 <q-input
                                   filled
                                   label="Amount"
@@ -285,7 +289,7 @@
                             active-class="bg-teal-1"
                             v-for="(gearFound, index) in gearsFound"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showGearDialog(gearFound)">
                               <q-item-label>{{ gearFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -316,7 +320,7 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label>{{ tool.name }}</q-item-label>
+                                <q-item-label @click="showToolDialog(tool.name)">{{ tool.name }}</q-item-label>
                                 <q-input
                                   filled
                                   label="Amount"
@@ -356,7 +360,7 @@
                             active-class="bg-teal-1"
                             v-for="(toolFound, index) in toolsFound"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showToolDialog(toolFound)">
                               <q-item-label>{{ toolFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -387,7 +391,7 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label>{{ vehicle.name }}</q-item-label>
+                                <q-item-label @click="showVehicleDialog(vehicle.name)">{{ vehicle.name }}</q-item-label>
                                 <q-input
                                   filled
                                   label="Amount"
@@ -427,7 +431,7 @@
                             active-class="bg-teal-1"
                             v-for="(vehicleFound, index) in vehiclesFound"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showVehicleDialog(vehicleFound)">
                               <q-item-label>{{ vehicleFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -486,6 +490,18 @@
           </q-card>
         </div>
       </div>
+      <q-dialog v-model="dialog">
+        <q-card>
+          <q-card-section class="row items-center">
+            <div class="text-h6">{{ name }}</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+          <q-card-section>
+            {{ description }}
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </template>
   </div>
 </template>
@@ -498,6 +514,10 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dialog: false,
+      name: "",
+      description: "",
+
       tab: "weapons",
 
       newArmor: "",
@@ -545,6 +565,150 @@ export default {
     this.getCharacterByName(this.characterName);
   },
   methods: {
+    showWeaponDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/weapon?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name =
+            response.data[0].name +
+            " - " +
+            response.data[0].normalRange +
+            "|" +
+            response.data[0].longRange +
+            "ft";
+          this.description =
+            response.data[0].category +
+            " " +
+            response.data[0].weaponRange +
+            " weapon. \n" +
+            response.data[0].damageDice +
+            " " +
+            response.data[0].damageType +
+            " damage.\n Cost: " +
+            response.data[0].cost;
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showArmorDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/armor?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name =
+            response.data[0].name +
+            " - " +
+            response.data[0].armorClass.base +
+            "AC";
+          this.description = response.data[0].cost;
+
+          if (response.data[0].stealthDisadvantage) {
+            this.description += ". Has stealth disadvantage.";
+          }
+
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showGearDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/gear?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name + " - " + response.data[0].cost;
+          this.description = response.data[0].description;
+
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showToolDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/tool?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name + " - " + response.data[0].cost;
+          this.description = response.data[0].description;
+
+          this.dialog = true;
+        })
+        .catch(error => {
+          console.log(error);
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showVehicleDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/vehicle?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name + " - " + response.data[0].cost;
+          this.description = response.data[0].description;
+
+          this.dialog = true;
+        })
+        .catch(error => {
+          console.log(error);
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
     onSubmit() {
       this.$store.dispatch("updateCharacterEquipment", {
         equipment: this.equipment,

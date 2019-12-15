@@ -80,7 +80,7 @@
                         active-class="bg-teal-1"
                         v-for="(spell, index) in charSpells.spells"
                       >
-                        <q-item-section>
+                        <q-item-section @click="showDialog(spell)">
                           <q-item-label>{{ spell }}</q-item-label>
                         </q-item-section>
                         <q-btn
@@ -113,14 +113,7 @@
                         active-class="bg-teal-1"
                         v-for="(spellFound, index) in spellsFound"
                       >
-                        <q-item-section
-                          @click="
-                            showDialog(
-                              spellsFound[index],
-                              spellsFoundDescription[index]
-                            )
-                          "
-                        >
+                        <q-item-section @click="showDialog(spellFound)">
                           <q-item-label>{{ spellFound }}</q-item-label>
                         </q-item-section>
                         <q-btn
@@ -178,7 +171,7 @@ export default {
         spellAttackBonus: 0,
         spellSaveDc: 0,
         spellSlots: [],
-        spells: [],
+        spells: []
       },
       characterName: "general"
     };
@@ -188,9 +181,42 @@ export default {
     this.getCharacterByName(this.characterName);
   },
   methods: {
-    showDialog(spellName, spellDescription) {
-      this.tempSpellName = spellName;
-      this.tempSpellDescription = spellDescription;
+    showDialog(spellName) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/spell?name=" +
+        spellName;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.tempSpellName =
+            response.data[0].name +
+            " - " +
+            response.data[0].range +
+            " " +
+            response.data[0].castingTime +
+            " - Level " +
+            response.data[0].level;
+          this.tempSpellDescription =
+            response.data[0].description +
+            " " +
+            response.data[0].higherLevels +
+            " " +
+            response.data[0].magicSchool +
+            " - " +
+            response.data[0].components;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+
       this.dialog = true;
     },
     onSubmit() {

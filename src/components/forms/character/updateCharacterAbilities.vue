@@ -50,7 +50,7 @@
                             active-class="bg-teal-1"
                             v-for="(feature, index) in abilities.features"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showFeatureDialog(feature)">
                               <q-item-label>{{ feature }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -72,7 +72,7 @@
                           v-model="newFeature"
                         />
                         <q-btn v-on:click="searchFeature(newFeature)">
-                          Search spell
+                          Search feature
                         </q-btn>
                         <div v-if="featuresFound.length === 0">
                           <h5>No Results Found</h5>
@@ -83,7 +83,9 @@
                             active-class="bg-teal-1"
                             v-for="(featureFound, index) in featuresFound"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showFeatureDialog(featureFound)"
+                            >
                               <q-item-label>{{ featureFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -112,7 +114,9 @@
                             active-class="bg-teal-1"
                             v-for="(language, index) in abilities.languages"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showLanguageDialog(language)"
+                            >
                               <q-item-label>{{ language }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -145,7 +149,9 @@
                             active-class="bg-teal-1"
                             v-for="(languageFound, index) in languagesFound"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showLanguageDialog(languageFound)"
+                            >
                               <q-item-label>{{ languageFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -174,7 +180,7 @@
                             active-class="bg-teal-1"
                             v-for="(trait, index) in abilities.traits"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showTraitDialog(trait)">
                               <q-item-label>{{ trait }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -207,7 +213,9 @@
                             active-class="bg-teal-1"
                             v-for="(traitFound, index) in traitsFound"
                           >
-                            <q-item-section>
+                            <q-item-section
+                              @click="showTraitDialog(traitFound)"
+                            >
                               <q-item-label>{{ traitFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -237,7 +245,7 @@
                             v-for="(proficiency,
                             index) in abilities.proficiencies"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showProficiencyDialog(proficiency)">
                               <q-item-label>{{ proficiency }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -271,7 +279,7 @@
                             v-for="(proficiencyFound,
                             index) in proficienciesFound"
                           >
-                            <q-item-section>
+                            <q-item-section @click="showProficiencyDialog(proficiencyFound)">
                               <q-item-label>{{
                                 proficiencyFound
                               }}</q-item-label>
@@ -298,6 +306,19 @@
           </q-card>
         </div>
       </div>
+
+      <q-dialog v-model="dialog">
+        <q-card>
+          <q-card-section class="row items-center">
+            <div class="text-h6">{{ name }}</div>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup />
+          </q-card-section>
+          <q-card-section>
+            {{ description }}
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </template>
   </div>
 </template>
@@ -309,6 +330,9 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dialog: false,
+      name: "",
+      description: "",
       tab: "features",
 
       featuresFound: [],
@@ -341,6 +365,99 @@ export default {
     this.getCharacterByName(this.characterName);
   },
   methods: {
+    showFeatureDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/feature?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name;
+          this.description = response.data[0].description;
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showLanguageDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/language?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name;
+          this.description =
+            response.data[0].type + " | Script: " + response.data[0].script;
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showTraitDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/trait?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name;
+          this.description = response.data[0].description;
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
+    showProficiencyDialog(name) {
+      var targetURL =
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/proficiency?name=" +
+        name;
+      axios
+        .get(targetURL, {
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
+        .then(response => {
+          this.name = response.data[0].name;
+          this.description = response.data[0].type;
+          this.dialog = true;
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
+    },
     onSubmit() {
       this.$store.dispatch("updateCharacterAbilities", {
         abilities: this.abilities,
