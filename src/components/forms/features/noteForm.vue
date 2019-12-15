@@ -22,7 +22,7 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="noteNAme !== 'new' && searchResultFound === true"
+      v-else-if="noteName !== 'new' && searchResultFound === true"
     >
       <h3>{{ note.name }}</h3>
       <q-input filled label="Content" :rules="[]" v-model="note.content" />
@@ -31,7 +31,7 @@
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found skill with name: {{ note.name }}.</h5>
+      <h5>Haven't found note with name: {{ note.name }}.</h5>
     </div>
   </div>
 </template>
@@ -118,7 +118,7 @@ export default {
         });
     },
     deleteNote(noteID) {
-      if (confirm("Are you sure you want to delete this character?")) {
+      if (confirm("Are you sure you want to delete this note?")) {
         var targetURL =
           "api/api/v1/scenario/" + this.$store.state.scenarioKey + "/note" + noteID;
         axios

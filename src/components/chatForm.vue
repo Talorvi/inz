@@ -82,11 +82,14 @@ import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
 import axios from "axios";
 import { Notify } from "quasar";
+import { Howl } from "howler";
 Vue.use(VueChatScroll);
 import notifications from "../functions/notifications";
 export default {
   data() {
     return {
+      newMessageSound: null,
+      playerJoinedSound: null,
       messages: [],
       stompClient: null,
       text: ""
@@ -95,10 +98,20 @@ export default {
   //Disconnecting socket on leaving component
   beforeDestroy() {
     this.stompClient.disconnect(console.log("disconnect"));
+    this.$store.commit("resetNewMessages");
   },
   mounted() {
     this.loadOldMessages();
+    this.$store.commit("resetNewMessages");
     this.connect();
+
+    this.newMessageSound = new Howl({
+      src: ["statics/sounds/newmessage.mp3"]
+    });
+
+    this.playerJoinedSound = new Howl({
+      src: ["statics/sounds/playerjoined.mp3"]
+    });
   },
   methods: {
     //Web socket functionality
@@ -116,6 +129,9 @@ export default {
       var objectResponse = JSON.parse(resp.body);
       if (objectResponse.action === "message") {
         this.displayMessage(objectResponse.body);
+        if (!this.$store.getters.getChatOpen) {
+          this.newMessageSound.play();
+        }
       } else if (objectResponse.action === "reload") {
         if (objectResponse.target === "characters") {
           this.$store.dispatch("reloadCharacters", {
@@ -123,7 +139,7 @@ export default {
           });
         } else if (objectResponse.target === "players") {
           this.$store.dispatch("reloadPlayers");
-          console.log("Tutaj reload");
+          console.log(objectResponse);
         }
         //do some stuff here
       }
@@ -200,7 +216,6 @@ export default {
       }
       if (!this.$store.getters.getChatOpen) {
         this.$store.dispatch("addMessage");
-        console.log("test test test");
       }
     },
     //Loading old messages functionality
@@ -219,6 +234,7 @@ export default {
           for (let i = 0; i < msg.length; i++) {
             this.displayMessage(msg[i]);
           }
+          this.$store.commit("resetNewMessages");
         })
         .catch(error => {
           if (error.response.status === 401) {

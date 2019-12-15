@@ -115,7 +115,7 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/statistics',
+                '/game/' + $route.params.scenarioKey + '/statistics/' + $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -130,7 +130,7 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/abilities',
+                '/game/' + $route.params.scenarioKey + '/abilities/' + $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -145,7 +145,7 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/equipment',
+                '/game/' + $route.params.scenarioKey + '/equipment/' + $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "
@@ -160,7 +160,7 @@
             v-ripple
             @click="
               $router.push(
-                '/game/' + $route.params.scenarioKey + '/spells',
+                '/game/' + $route.params.scenarioKey + '/spells/' + $store.getters.getSelectedCharacter.name,
                 () => {}
               )
             "

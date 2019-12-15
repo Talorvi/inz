@@ -6,7 +6,7 @@
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
               <q-form @submit="onSubmit" class="q-gutter-md">
-                <h4>Character: {{ charSpells.name }}</h4>
+                <h5>Character: {{ charSpells.name }}</h5>
                 <div class="row no-wrap">
                   <q-input
                     filled
@@ -70,9 +70,9 @@
 
                 <q-card>
                   <q-card-section>
-                    <h4>Selected Spells</h4>
+                    <h5>Selected Spells</h5>
                     <div v-if="charSpells.spells.length === 0">
-                      <h4>No spells added yet</h4>
+                      <h5>No spells added yet</h5>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
                       <q-item
@@ -105,7 +105,7 @@
                       Search spell
                     </q-btn>
                     <div v-if="spellsFound.length === 0">
-                      <h4>No Results Found</h4>
+                      <h5>No Results Found</h5>
                     </div>
                     <q-list bordered separator class="q-mt-md" v-else>
                       <q-item

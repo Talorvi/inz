@@ -22,9 +22,21 @@
           flat
           dense
           round
-          icon="delete"
-          v-on:click="deleteCharacter(character, index)"
+          icon="edit"
+          color="black"
+          v-on:click="editCharacter(character)"
         />
+        <q-item-section side>
+          <q-btn
+            size="12px"
+            flat
+            dense
+            round
+            icon="delete"
+            color="black"
+            v-on:click="deleteCharacter(character, index)"
+          />
+        </q-item-section>
       </q-item>
     </q-list>
 
@@ -47,7 +59,7 @@
           dense
           round
           icon="delete"
-          color="black"
+          color="accent"
           v-on:click="deleteCharacter(character, index)"
         />
       </q-item>
@@ -57,7 +69,6 @@
 
 <script>
 export default {
-
   beforeCreate() {
     // this.$store.dispatch("reloadCharacters");
     // this.$store.dispatch("reloadPlayers");
@@ -109,6 +120,13 @@ export default {
           index: index
         });
       }
+    },
+
+    editCharacter(character) {
+      this.$router.push(
+        "/game/" + this.$route.params.scenarioKey + "/edit-character/" + character.name,
+        () => {}
+      );
     }
   }
 };

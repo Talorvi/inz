@@ -6,7 +6,7 @@
           <q-card>
             <div class="q-pa-md" style="max-width: 16000px">
               <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-                <h2>{{ general.name }}</h2>
+                <h5>Character: {{ general.name }}</h5>
 
                 <q-tabs
                   v-model="tab"

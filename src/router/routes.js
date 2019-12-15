@@ -98,28 +98,28 @@ const routes = [
             }
           },
           {
-            path: "abilities",
+            path: "abilities/:charName",
             component: () => import("pages/Game/Character/Abilities.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
-            path: "equipment",
+            path: "equipment/:charName",
             component: () => import("pages/Game/Character/Equipment.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
-            path: "spells",
+            path: "spells/:charName",
             component: () => import("pages/Game/Character/Spells.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
           },
           {
-            path: "statistics",
+            path: "statistics/:charName",
             component: () => import("pages/Game/Character/Statistics.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
@@ -128,6 +128,13 @@ const routes = [
           {
             path: "notes",
             component: () => import("pages/Game/Character/Notes.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "edit-character/:charName",
+            component: () => import("pages/Game/Character/EditCharacter.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }

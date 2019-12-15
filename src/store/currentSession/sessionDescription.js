@@ -112,6 +112,9 @@ export default {
     },
     pushNewMessage(context) {
       context.unreadMessages++;
+    },
+    resetNewMessages(context) {
+      context.unreadMessages = 0;
     }
   },
   getters: {
