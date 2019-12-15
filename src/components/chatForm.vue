@@ -121,7 +121,7 @@ export default {
           this.$store.dispatch("reloadCharacters", {
             data: this.$q
           });
-        } else if (objectResponse.action === "players") {
+        } else if (objectResponse.target === "players") {
           this.$store.dispatch("reloadPlayers");
           console.log("Tutaj reload");
         }

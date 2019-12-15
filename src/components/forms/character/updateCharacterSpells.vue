@@ -184,7 +184,8 @@ export default {
     };
   },
   mounted() {
-    this.getCharacterByName(this.$route.params.charName);
+    this.characterName = this.$route.params.charName;
+    this.getCharacterByName(this.characterName);
   },
   methods: {
     showDialog(spellName, spellDescription) {

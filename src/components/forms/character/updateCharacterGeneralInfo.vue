@@ -320,9 +320,9 @@ export default {
     };
   },
   mounted() {
-    var char = this.getCharacterByName(this.$route.params.charName);
-    console.log("Chara" + char);
-    console.log("lol");
+    this.characterName = this.$route.params.charName;
+    this.getCharacterByName(this.characterName);
+    console.log("Chara" + this.characterName);
   },
   methods: {
     onSubmit() {
