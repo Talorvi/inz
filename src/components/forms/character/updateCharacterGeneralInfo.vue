@@ -322,7 +322,6 @@ export default {
   mounted() {
     this.characterName = this.$route.params.charName;
     this.getCharacterByName(this.characterName);
-    console.log("Chara" + this.characterName);
   },
   methods: {
     onSubmit() {

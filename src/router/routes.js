@@ -297,8 +297,16 @@ const routes = [
             }
           },
           {
-            path: "noteForm/:noteName",
+            path: "noteForm/:noteId",
             component: () => import("components/forms/features/noteForm.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "notes",
+            component: () =>
+              import("components/NoteList.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }

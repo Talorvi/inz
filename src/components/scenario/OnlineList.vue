@@ -30,7 +30,6 @@
 export default {
   name: "OnlineList",
   created() {
-    console.log("Online players: " + this.onlinePlayers);
   },
   computed: {
     onlinePlayers() {

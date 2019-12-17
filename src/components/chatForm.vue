@@ -145,7 +145,7 @@ export default {
       }
     },
     connect() {
-      var socket = new SockJS("http://localhost:8080/rpg-server");
+      var socket = new SockJS("http://192.168.99.100:8080/rpg-server");
       var header = { "X-Authorization": this.$store.getters.loggedIn };
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(header, this.onConnected, this.onError);
@@ -158,7 +158,6 @@ export default {
       );
     },
     onError() {
-      console.log("Connection Error x");
     },
     //PostMessage Functionality
     submit() {
@@ -175,7 +174,6 @@ export default {
       }
     },
     postMessage(text) {
-      console.log("Sending message");
       var targetURL =
         "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
       axios
@@ -220,7 +218,6 @@ export default {
     },
     //Loading old messages functionality
     loadOldMessages() {
-      console.log("Klucz scenariusza: " + this.$store.getters.getScenarioKey);
       var targetURL =
         "/api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +

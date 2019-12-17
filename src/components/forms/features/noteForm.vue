@@ -4,7 +4,7 @@
       @submit="createFeature"
       @reset="onReset"
       class="q-gutter-md"
-      v-if="noteName === 'new'"
+      v-if="noteID === 'new'"
     >
       <q-input filled label="Name" :rules="[]" v-model="note.name" />
       <q-input filled label="Content" :rules="[]" v-model="note.content" />
@@ -22,16 +22,16 @@
     <q-form
       @submit="updateFeature"
       class="q-gutter-md"
-      v-else-if="noteName !== 'new' && searchResultFound === true"
+      v-else-if="noteID !== 'new' && searchResultFound === true"
     >
-      <h3>{{ note.name }}</h3>
+      <q-input filled label="Name" :rules="[]" v-model="note.name" />
       <q-input filled label="Content" :rules="[]" v-model="note.content" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
       </div>
     </q-form>
     <div v-else>
-      <h5>Haven't found note with name: {{ note.name }}.</h5>
+      <h5>Haven't found note.</h5>
     </div>
   </div>
 </template>
@@ -52,9 +52,9 @@ export default {
     };
   },
   mounted() {
-    this.noteName = this.$route.params.noteName;
-    if (this.noteName !== "new") {
-      this.getExactFeatureByName(this.noteName);
+    this.noteID = this.$route.params.noteId;
+    if (this.noteID !== "new") {
+      this.getExactFeatureByName(this.noteID);
     }
     //new -> no fill to fields, submit creates a new one
     //existing -> fill fields, name cannot be changed , submit patch existing one
@@ -92,7 +92,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note/" + this.noteID;
       axios
         .patch(
           targetURL,
@@ -145,27 +145,19 @@ export default {
       this.note.content = "";
       this.note.name = "";
     },
-    getExactFeatureByName(noteName) {
+    getExactFeatureByName(noteId) {
       var targetURL =
         "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
       axios
         .get(targetURL, {
-          headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
-          params: {
-            name: noteName
-          }
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
         })
         .then(response => {
-          console.log("This is mounted method");
           var resp = response.data;
-          console.log("This is returned feature", resp);
-          for (var i = 0; i < resp.length; i++) {
-            if (resp[i].name.toLowerCase() === noteName.toLowerCase()) {
-              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
+          for(var i = 0; i < resp.length; i++){
+            if(resp[i].id == noteId){
               this.note = resp[i];
-              this.noteID = i;
               this.searchResultFound = true;
-              break;
             }
           }
         })

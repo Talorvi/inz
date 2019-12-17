@@ -83,7 +83,6 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log("sent");
       // eslint-disable-next-line no-undef
       // this.$root.$emit("noAuth");
 

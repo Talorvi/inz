@@ -167,12 +167,9 @@ export default {
           }
         })
         .then(response => {
-          console.log("This is mounted method");
           var resp = response.data;
-          console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
             if (resp[i].name.toLowerCase() === skillName.toLowerCase()) {
-              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
               this.skill = resp[i];
               this.searchResultFound = true;
               break;

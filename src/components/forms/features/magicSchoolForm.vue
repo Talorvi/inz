@@ -159,12 +159,9 @@ export default {
           }
         })
         .then(response => {
-          console.log("This is mounted method");
           var resp = response.data;
-          console.log("This is returned feature", resp);
           for (var i = 0; i < resp.length; i++) {
             if (resp[i].name.toLowerCase() === magicSchoolName.toLowerCase()) {
-              console.log("Condition fulfilled" + resp[i].name.toLowerCase());
               this.magicSchool = resp[i];
               this.searchResultFound = true;
               break;

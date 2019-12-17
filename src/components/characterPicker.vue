@@ -85,7 +85,6 @@ export default {
   },
   methods: {
     clickedOnItem(character, index) {
-      console.log("before:" + this.$store.getters.getSelectedCharacter.name);
       if (character.name === this.$store.getters.getSelectedCharacter.name) {
         console.log("You cannot unselect character");
       } else {
@@ -107,11 +106,9 @@ export default {
           prevIndex: prevIndex
         });
       }
-      console.log("after:" + this.$store.getters.getSelectedCharacter.name);
     },
 
     deleteCharacter(character, index) {
-      console.log(character.name);
       if (confirm("Are you sure you want to delete this character?")) {
         this.$store.dispatch("requestDeleteCharacter", {
           data: this.$q,

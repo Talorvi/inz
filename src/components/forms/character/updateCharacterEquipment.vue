@@ -22,7 +22,7 @@
                     icon="fas fa-shield-alt"
                     label="Armors"
                   />
-                  <q-tab name="gears" icon="fas fa-cog" label="Gears" />
+                  <q-tab name="gears" icon="fas fa-cog" label="Gear" />
                   <q-tab name="tools" icon="fas fa-hammer" label="Tools" />
                   <q-tab name="vehicles" icon="fas fa-horse" label="Vehicles" />
                   <q-tab name="money" icon="fas fa-coins" label="Money" />
@@ -701,7 +701,6 @@ export default {
           this.dialog = true;
         })
         .catch(error => {
-          console.log(error);
           if (error.response.status === 401) {
             notifications.methods.sendErrorNotification("Unauthorized");
           } else {
@@ -1105,9 +1104,7 @@ export default {
           }
         })
         .then(response => {
-          console.log("This is mounted method");
-          var resp = response.data;
-          console.log("This is returned feature", resp);
+          var resp = response.data;s
           for (var i = 0; i < resp.length; i++) {
             if (resp[i].name.toLowerCase() === featureName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());
