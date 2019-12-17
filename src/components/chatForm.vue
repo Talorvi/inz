@@ -124,7 +124,6 @@ export default {
       this.stompClient.subscribe(targetUrl, this.checkWebSocketResponseType);
     },
     checkWebSocketResponseType: function(response) {
-      console.log("Object response");
       let resp = response;
       var objectResponse = JSON.parse(resp.body);
       if (objectResponse.action === "message") {
@@ -139,7 +138,6 @@ export default {
           });
         } else if (objectResponse.target === "players") {
           this.$store.dispatch("reloadPlayers");
-          console.log(objectResponse);
         }
         //do some stuff here
       }

@@ -242,9 +242,6 @@ export default {
           spellSlots: char.spells.spellSlots,
           spells: char.spells.spells
         };
-        notifications.methods.sendSuccessNotification(
-          "Spell number: " + char.spells.length
-        );
       } else {
         notifications.methods.sendErrorNotification(
           "Haven't found character " + characterName
@@ -272,7 +269,6 @@ export default {
       }
     },
     searchSpell(spellName) {
-      notifications.methods.sendSuccessNotification(spellName);
       var targetURL =
         "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
       axios

@@ -135,7 +135,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created spell"
+            "Successfully created Spell"
           );
           this.spell.castingTime = "";
           this.spell.components = "";
@@ -188,7 +188,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated feature"
+            "Successfully updated Spell"
           );
         })
         .catch(error => {

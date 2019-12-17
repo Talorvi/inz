@@ -473,10 +473,6 @@ export default {
         }
       }
       if (char !== null) {
-        notifications.methods.sendSuccessNotification(char.name);
-        notifications.methods.sendSuccessNotification(
-          char.features === undefined ? "dupa" : char.features
-        );
         this.abilities = {
           name: char.name,
           features: char.abilities.features,
@@ -511,7 +507,6 @@ export default {
       }
     },
     searchFeature(featureName) {
-      notifications.methods.sendSuccessNotification(featureName);
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
@@ -573,7 +568,6 @@ export default {
       }
     },
     searchLanguage(languageName) {
-      notifications.methods.sendSuccessNotification(languageName);
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
@@ -635,7 +629,6 @@ export default {
       }
     },
     searchTrait(traitName) {
-      notifications.methods.sendSuccessNotification(traitName);
       var targetURL =
         "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/trait";
       axios
@@ -695,7 +688,6 @@ export default {
       }
     },
     searchProficiency(proficiencyName) {
-      notifications.methods.sendSuccessNotification(proficiencyName);
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +

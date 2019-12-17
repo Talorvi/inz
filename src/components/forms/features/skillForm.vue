@@ -102,7 +102,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully created feature"
+            "Successfully created Skill"
           );
           this.skill.description = "";
           this.skill.abilityScore = "";
@@ -137,7 +137,7 @@ export default {
         )
         .then(() => {
           notifications.methods.sendSuccessNotification(
-            "Successfully updated feature"
+            "Successfully updated Skill"
           );
         })
         .catch(error => {

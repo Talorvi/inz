@@ -395,6 +395,22 @@ export default {
             notifications.methods.sendErrorNotification(error.response.data);
           }
         });
+    },
+    startScenario(context, payload){
+      var targetURL =
+        "api/v1/scenario/" + payload.scenarioKey + "/start";
+      axios
+        .post(targetURL,{ Authorization: "bearer " + context.getters.loggedIn })
+        .then(() => {
+          notifications.methods.sendSuccessNotification("Started scenario");
+        })
+        .catch(error => {
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(error.response.data);
+          }
+        });
     }
   }
 };
