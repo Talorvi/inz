@@ -22,16 +22,13 @@ export default {
     updateCharacterList(context, characterList) {
       context.characterSelectionList = [];
       var isSelectedCharacter = false;
-      console.log(characterList.length);
       //if there are no characters for player
       if (characterList.length < 1) {
-        console.log("Removing last chara");
         context.selectedCharacter = "No character";
         context.characters = [];
       }
       //if there are characters for player
       else {
-        console.log("This shouldn't show");
         //Check if selected character wasn't deleted
         if (context.selectedCharacter !== null) {
           for (var i = 0; i < characterList.length; i++) {
@@ -74,7 +71,6 @@ export default {
       }
     },
     updatePlayerList(context, playerList) {
-      console.log(playerList);
       context.players = playerList;
     },
     updateGameMaster(context, payload) {
@@ -87,18 +83,15 @@ export default {
       context.onlinePlayers = onlinePlayerList;
     },
     updateScenarioStatus(context, scenarioStatus) {
-      console.log(scenarioStatus);
       context.scenarioStatus = scenarioStatus;
     },
     updateScenarioKey(context, scenarioKey) {
-      console.log(scenarioKey);
       context.scenarioKey = scenarioKey;
     },
     changeSelectedCharacter(state, payload) {
       state.characterSelectionList[payload.prevIndex].selected = false;
       state.selectedCharacter = state.characters[payload.index];
       state.characterSelectionList[payload.index].selected = true;
-      console.log("Commit clicked on " + state.characters[payload.index]);
     },
     changeIsInGame(context, state) {
       context.isInGame = state;
@@ -204,8 +197,8 @@ export default {
           payload.data.loading.hide();
         });
     },
-    reloadPlayers(context) {
-      var targetURL = "api/api/v1/scenario/" + "TESTSCEN" + "/player";
+    reloadPlayers(context, scenarioKey) {
+      var targetURL = "api/api/v1/scenario/" + scenarioKey + "/player";
       axios
         .get(targetURL, {
           headers: {
@@ -213,7 +206,9 @@ export default {
           }
         })
         .then(response => {
-          context.commit("updateGameMaster", response.data.gameMaster);
+          context.commit("updateGameMaster", {
+            gameMaster: response.data.gameMaster
+          });
           context.commit("updatePlayerList", response.data.players);
           context.commit("updateOnlinePlayerList", response.data.onlinePlayers);
         })
@@ -248,12 +243,10 @@ export default {
             gameMaster: response.data.scenarioInfo.gameMaster,
             userName: context.getters.getUserName
           });
-          console.log("Is here");
           context.commit(
             "updatePlayerList",
             response.data.scenarioInfo.players
           );
-          console.log("Is here not");
           context.commit(
             "updateOnlinePlayerList",
             response.data.scenarioInfo.onlinePlayers
@@ -283,7 +276,6 @@ export default {
         dices: payload.dices,
         value: payload.sides
       };
-      console.log(postData);
       var config = {
         headers: {
           Authorization: "Bearer " + VueCookies.get("token")
