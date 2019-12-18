@@ -3,24 +3,17 @@
     <div class="row bg-secondary justify-center">
       <div class="col-xs-12 col-sm-8">
         <h4 class="text-accent q-pl-lg text-weight-bold text-uppercase">
-          Notes
+          Create Note
         </h4>
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-4 col-lg-2">
-        <div class="row justify-center q-pa-lg">
-          <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/game/' + $route.params.scenarioKey + '/show-note' ,() => {})">
-            Create
-          </q-btn>
-        </div>
-      </div>
-      <div class="col-xs-12 col-sm-8 col-lg-10">
+      <div class="col-xs-12 col-sm-8 offset-xs-0 offset-sm-2">
         <div class="row justify-center q-pt-md">
           <div class="col-xs-12 self-center">
             <div class="row justify-center">
               <div class="col-12 text-center q-pa-xs-md q-pa-sm-md">
-                <NoteList />
+                <note-form />
               </div>
             </div>
           </div>
@@ -48,9 +41,10 @@
 </style>
 
 <script>
-import NoteList from "../../../components/NoteList";
+import noteForm from "../../../components/forms/features/noteForm";
+
 export default {
   name: "JoinSuccess",
-  components: { NoteList }
+  components: { noteForm }
 };
 </script>

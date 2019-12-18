@@ -61,8 +61,14 @@
             </div>
             <q-space></q-space>
             <div v-if="game.gameMaster === username">
-              <q-btn size="12px" color="accent" round class="q-mr-xs">
-                <q-icon name="settings" color="white" />
+              <q-btn
+                size="12px"
+                color="accent"
+                round
+                class="q-mr-xs"
+                @click="showScenarioKey(game)"
+              >
+                <q-icon name="visibility" color="white" />
               </q-btn>
             </div>
             <q-btn size="12px" color="accent" round>
@@ -76,12 +82,33 @@
         </q-card>
       </div>
     </div>
+    <q-dialog v-model="dialog">
+      <q-card>
+        <q-toolbar class="q-pt-lg">
+          <q-toolbar-title><span class="text-h4 q-ma-md">{{ scenarioName }}</span></q-toolbar-title>
+          <q-btn flat round icon="close" v-close-popup />
+        </q-toolbar>
+
+        <q-card-section>
+          <h4 class="text-accent text-center q-ml-md q-mr-md">
+            {{ scenarioKey }}
+          </h4>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 export default {
   name: "GameList",
+  data() {
+    return {
+      dialog: false,
+      scenarioKey: "",
+      scenarioName: ""
+    };
+  },
   beforeCreate() {
     this.$store.dispatch("retrieveGameList", {
       data: this.$q
@@ -90,6 +117,11 @@ export default {
   methods: {
     joinGame(scenarioKey) {
       this.$router.push(/game/ + scenarioKey);
+    },
+    showScenarioKey(game) {
+      this.scenarioKey = game.scenarioKey;
+      this.scenarioName = game.name;
+      this.dialog = true;
     }
   },
   computed: {

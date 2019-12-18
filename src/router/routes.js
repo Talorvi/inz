@@ -133,8 +133,23 @@ const routes = [
             }
           },
           {
+            path: "show-note/:noteId",
+            component: () => import("pages/Game/Character/Note.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
             path: "edit-character/:charName",
             component: () => import("pages/Game/Character/EditCharacter.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "gameManagement",
+            component: () =>
+              import("pages/Game/GameManagement.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }

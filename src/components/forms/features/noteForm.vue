@@ -92,7 +92,10 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note/" + this.noteID;
+        "api/api/v1/scenario/" +
+        this.$store.getters.getScenarioKey +
+        "/note/" +
+        this.noteID;
       axios
         .patch(
           targetURL,
@@ -120,7 +123,10 @@ export default {
     deleteNote(noteID) {
       if (confirm("Are you sure you want to delete this note?")) {
         var targetURL =
-          "api/api/v1/scenario/" + this.$store.state.scenarioKey + "/note" + noteID;
+          "api/api/v1/scenario/" +
+          this.$store.state.scenarioKey +
+          "/note" +
+          noteID;
         axios
           .delete(targetURL, {
             headers: { Authorization: "bearer " + this.$store.state.loggedIn }
@@ -136,10 +142,7 @@ export default {
               notifications.methods.sendErrorNotification(error.response.data);
             }
           });
-
       }
-
-
     },
     onReset() {
       this.note.content = "";
@@ -154,8 +157,8 @@ export default {
         })
         .then(response => {
           var resp = response.data;
-          for(var i = 0; i < resp.length; i++){
-            if(resp[i].id == noteId){
+          for (var i = 0; i < resp.length; i++) {
+            if (resp[i].id == noteId) {
               this.note = resp[i];
               this.searchResultFound = true;
             }

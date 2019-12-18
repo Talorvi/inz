@@ -218,7 +218,16 @@
           >
             <q-separator />
             <q-item-section>
-              <q-item clickable v-ripple>
+              <q-item
+                clickable
+                v-ripple
+                @click="
+                  $router.push(
+                    '/game/' + $route.params.scenarioKey + '/gameManagement',
+                    () => {}
+                  )
+                "
+              >
                 <q-item-section avatar>
                   <q-icon name="fas fa-cogs" />
                 </q-item-section>
@@ -288,14 +297,13 @@ export default {
       this.$store.dispatch("logout", {});
     },
     goToProfile() {
-      this.$router.push("profile", () => {});
+      //this.$router.push("profile", () => {});
     },
     toggleChatOpen() {
       this.$store
         .dispatch("toggleChatOpen", this.$refs.drawer.value)
         .then(() => {
           this.$refs.drawer.toggle();
-          console.log("Chat: " + this.$store.getters.getChatOpen);
         });
     }
   },

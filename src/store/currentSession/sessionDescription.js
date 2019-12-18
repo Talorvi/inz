@@ -114,7 +114,8 @@ export default {
       return state.characters;
     },
     getPlayer: state => {
-      return state.players;
+      state.players.push(state.gameMaster);
+      return state.players.sort();
     },
     getScenarioKey(state) {
       return state.scenarioKey;
@@ -133,7 +134,15 @@ export default {
       return context.isGameMaster;
     },
     getOnlinePlayers: state => {
-      return state.onlinePlayers;
+      return state.onlinePlayers.sort();
+    },
+    getOfflinePlayers: state => {
+      state.players.push(state.gameMaster);
+      return state.players
+        .filter(function(el) {
+          return state.onlinePlayers.indexOf(el) < 0;
+        })
+        .sort();
     },
     getIsInGame: state => {
       return state.isInGame;
@@ -147,7 +156,8 @@ export default {
   },
   actions: {
     reloadCharacters(context) {
-      var targetURL = "api/api/v1/scenario/" + context.getters.getScenarioKey + "/character";
+      var targetURL =
+        "api/api/v1/scenario/" + context.getters.getScenarioKey + "/character";
       axios
         .get(targetURL, {
           headers: {
@@ -192,6 +202,37 @@ export default {
           } else {
             notifications.methods.sendErrorNotification(
               "Couldn't delete character"
+            );
+          }
+          payload.data.loading.hide();
+        });
+    },
+    requestDeletePlayer(context, payload) {
+      payload.data.loading.show();
+      var targetURL =
+        "api/action/remove/player/scenario/" + payload.scenarioKey;
+      axios
+        .delete(targetURL, {
+          params: {
+            player: payload.name
+          },
+          headers: {
+            Authorization: "Bearer " + VueCookies.get("token")
+          }
+        })
+        .then(response => {
+          if (response.status === 200) {
+            console.log(" delete request");
+          }
+          payload.data.loading.hide();
+        })
+        .catch(error => {
+          console.log(error);
+          if (error.response.status === 401) {
+            notifications.methods.sendErrorNotification("Unauthorized");
+          } else {
+            notifications.methods.sendErrorNotification(
+              "Couldn't delete player"
             );
           }
           payload.data.loading.hide();
@@ -274,7 +315,8 @@ export default {
       var postData = {
         characterName: payload.characterName.name,
         dices: payload.dices,
-        value: payload.sides
+        value: payload.sides,
+        visible: payload.visible
       };
       var config = {
         headers: {
@@ -282,21 +324,16 @@ export default {
         }
       };
       var targetURL = "api/action/roll/scenario/" + payload.scenarioKey;
-      axios
-        .post(targetURL, postData, config)
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.log(error);
-          if (error.response.status === 401) {
-            notifications.methods.sendErrorNotification("Unauthorized");
-          } else {
-            notifications.methods.sendErrorNotification(
-              "Couldn't load scenario correctly"
-            );
-          }
-        });
+      axios.post(targetURL, postData, config).catch(error => {
+        console.log(error);
+        if (error.response.status === 401) {
+          notifications.methods.sendErrorNotification("Unauthorized");
+        } else {
+          notifications.methods.sendErrorNotification(
+            "Couldn't load scenario correctly"
+          );
+        }
+      });
     },
     createCharacter(context, payload) {
       var targetURL =
@@ -305,7 +342,7 @@ export default {
         .post(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
         })
-        .then(() =>{
+        .then(() => {
           notifications.methods.sendSuccessNotification("Created character");
         })
         .catch(error => {
@@ -388,11 +425,12 @@ export default {
           }
         });
     },
-    startScenario(context, payload){
-      var targetURL =
-        "api/v1/scenario/" + payload.scenarioKey + "/start";
+    startScenario(context, payload) {
+      var targetURL = "api/v1/scenario/" + payload.scenarioKey + "/start";
       axios
-        .post(targetURL,{ Authorization: "bearer " + context.getters.loggedIn })
+        .post(targetURL, {
+          Authorization: "bearer " + context.getters.loggedIn
+        })
         .then(() => {
           notifications.methods.sendSuccessNotification("Started scenario");
         })

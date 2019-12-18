@@ -45,6 +45,14 @@
                         filled
                         label="Number of dice sides"
                       />
+                      <q-toggle
+                        v-model="visible"
+                        checked-icon="check"
+                        color="accent"
+                        unchecked-icon="clear"
+                        label="Is this roll public?"
+                        keep-color
+                      />
                     </q-card-section>
                     <q-card-actions align="center" class="q-pa-sm">
                       <q-btn
@@ -73,7 +81,8 @@ export default {
   data() {
     return {
       dices: 1,
-      sides: 20
+      sides: 20,
+      visible: true
     };
   },
   methods: {
@@ -82,6 +91,7 @@ export default {
         characterName: this.$store.getters.getSelectedCharacter,
         dices: this.dices,
         sides: this.sides,
+        visible: this.visible,
         scenarioKey: this.$store.getters.getScenarioKey
       });
     }

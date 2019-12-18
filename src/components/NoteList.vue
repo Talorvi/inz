@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-if="this.noteList.length < 1">
-      You have no notes!
-      <button>Create note</button>
+      You have no notes
     </div>
 
     <q-list bordered separator v-else>
