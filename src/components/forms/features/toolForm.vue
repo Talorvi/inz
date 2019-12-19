@@ -118,7 +118,7 @@ export default {
           this.tool.name = "";
           this.tool.category = "";
           this.tool.cost = "";
-          this.tool.wight = 0;
+          this.tool.weight = 0;
           this.tool.visible = false;
         })
         .catch(error => {
@@ -167,7 +167,7 @@ export default {
       this.tool.name = "";
       this.tool.category = "";
       this.tool.cost = "";
-      this.tool.wight = 0;
+      this.tool.weight = 0;
       this.tool.visible = false;
     },
     getExactFeatureByName(toolName) {
