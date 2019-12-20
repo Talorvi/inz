@@ -5,7 +5,6 @@ import VueCookies from "vue-cookies";
 import user from "./user";
 import game from "./game";
 import currentSession from "./currentSession/sessionDescription";
-import sessionFeatures from "./currentSession/sessionFeatures";
 
 Vue.use(Vuex);
 Vue.use(VueCookies);
@@ -14,7 +13,6 @@ export default new Vuex.Store({
   modules: {
     user: user,
     game: game,
-    currentSession: currentSession,
-    sessionFeatures: sessionFeatures
+    currentSession: currentSession
   }
 });

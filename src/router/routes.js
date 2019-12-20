@@ -342,7 +342,127 @@ const routes = [
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }
-          }
+          },
+          {
+            path: "featureList",
+            component: () =>
+              import("components/lists/featureList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "languageList",
+            component: () =>
+              import("components/lists/languageList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "proficiencyList",
+            component: () =>
+              import("components/lists/proficiencyList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "skillList",
+            component: () =>
+              import("components/lists/skillList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "spellList",
+            component: () =>
+              import("components/lists/spellList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "traitList",
+            component: () =>
+              import("components/lists/traitList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "armorList",
+            component: () =>
+              import("components/lists/armorList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "gearList",
+            component: () =>
+              import("components/lists/gearList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "toolList",
+            component: () =>
+              import("components/lists/toolList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "vehicleList",
+            component: () =>
+              import("components/lists/vehicleList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "weaponList",
+            component: () =>
+              import("components/lists/weaponList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "conditionList",
+            component: () =>
+              import("components/lists/conditionList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "damageTypeList",
+            component: () =>
+              import("components/lists/damageTypeList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "magicSchoolList",
+            component: () =>
+              import("components/lists/magicSchoolList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
+          {
+            path: "weaponPropertyList",
+            component: () =>
+              import("components/lists/weaponPropertyList.vue"),
+            beforeEnter: (to, from, next) => {
+              loggedRequired(to, from, next);
+            }
+          },
         ]
       }
     ]
