@@ -148,11 +148,29 @@ const routes = [
           },
           {
             path: "gameManagement",
-            component: () =>
-              import("pages/Game/GameManagement.vue"),
+            component: () => import("pages/Game/GM/GameManagement.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
-            }
+            },
+            children: [
+              {
+                path: "abilities",
+                component: () => import("pages/Game/GM/Abilities.vue"),
+                beforeEnter: (to, from, next) => {
+                  loggedRequired(to, from, next);
+                },
+                children: [
+                  {
+                    path: "features/:featureName",
+                    component: () =>
+                      import("components/forms/features/featureForm.vue"),
+                    beforeEnter: (to, from, next) => {
+                      loggedRequired(to, from, next);
+                    }
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -320,8 +338,7 @@ const routes = [
           },
           {
             path: "notes",
-            component: () =>
-              import("components/NoteList.vue"),
+            component: () => import("components/NoteList.vue"),
             beforeEnter: (to, from, next) => {
               loggedRequired(to, from, next);
             }

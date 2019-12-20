@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md row" style="height: 100vh">
+  <div class="q-pa-md row" style="height: 100vh;">
     <div
       v-chat-scroll="{ always: true, smooth: true }"
       id="chat-messages-form"

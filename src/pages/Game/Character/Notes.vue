@@ -10,13 +10,13 @@
     <div class="row">
       <div class="col-xs-12 col-sm-4 col-lg-2">
         <div class="row justify-center q-pa-lg">
-          <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/game/' + $route.params.scenarioKey + '/show-note' ,() => {})">
+          <q-btn style="width: 100%" size="lg" color="accent" @click="$router.push('/game/' + $route.params.scenarioKey + '/show-note/new' ,() => {})">
             Create
           </q-btn>
         </div>
       </div>
       <div class="col-xs-12 col-sm-8 col-lg-10">
-        <div class="row justify-center q-pt-md">
+        <div class="row justify-center q-pt-md q-pr-md q-pl-md">
           <div class="col-xs-12 self-center">
             <div class="row justify-center">
               <div class="col-12 text-center q-pa-xs-md q-pa-sm-md">

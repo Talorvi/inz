@@ -223,7 +223,9 @@
                 v-ripple
                 @click="
                   $router.push(
-                    '/game/' + $route.params.scenarioKey + '/gameManagement',
+                    '/game/' +
+                      $route.params.scenarioKey +
+                      '/gameManagement/abilities/features/new',
                     () => {}
                   )
                 "

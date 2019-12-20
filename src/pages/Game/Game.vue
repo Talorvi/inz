@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="row justify-center">
+    <div class="row">
       <div class="col-xs-12">
         <transition name="fade" mode="out-in">
           <router-view />

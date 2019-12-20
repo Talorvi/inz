@@ -3,7 +3,7 @@
     <div class="row bg-secondary justify-center">
       <div class="col-xs-12 col-sm-8">
         <h4 class="text-accent q-pl-lg text-weight-bold text-uppercase">
-          Create Note
+          Note
         </h4>
       </div>
     </div>

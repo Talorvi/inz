@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     clickedOnItem(index) {
-      this.$router.push("/" + "test" + "/noteForm/" + index);
+      this.$router.push('/game/' + this.$route.params.scenarioKey + '/show-note/' + index);
     },
     deleteNote(noteID, index) {
       var targetURL =
