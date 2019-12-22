@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="spell.scenarioKey === null">
       <h5>This spell cannot be edited</h5>
       <h5>Name: {{ spell.name }}</h5>
@@ -50,7 +50,7 @@
       class="q-gutter-md"
       v-else-if="spellName !== 'new' && searchResultFound === true"
     >
-      <h3>Spell: {{ spell.name }}</h3>
+      <h5>Spell: {{ spell.name }}</h5>
       <q-input filled label="Level" type="number" :rules="[]" v-model="spell.level" />
       <q-input filled label="Magic School" :rules="[]" v-model="spell.magicSchool" />
       <q-input filled label="Range" :rules="[]" v-model="spell.range" />

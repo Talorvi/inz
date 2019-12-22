@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="magicSchool.scenarioKey === null">
       <h5>This Magic School cannot be edited</h5>
       <h5>Name: {{ magicSchool.name }}</h5>
@@ -35,7 +35,7 @@
       class="q-gutter-md"
       v-else-if="magicSchoolName !== 'new' && searchResultFound === true"
     >
-      <h3>Magic School: {{ magicSchool.name }}</h3>
+      <h5>Magic School: {{ magicSchool.name }}</h5>
       <q-input
         filled
         label="Description"

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="tool.scenarioKey === null">
       <h5>This tool cannot be edited</h5>
       <h5>Name: {{ tool.name }}</h5>
@@ -41,7 +41,7 @@
       class="q-gutter-md"
       v-else-if="toolName !== 'new' && searchResultFound === true"
     >
-      <h3>Tool: {{ tool.name }}</h3>
+      <h5>Tool: {{ tool.name }}</h5>
       <q-input filled label="Category" :rules="[]" v-model="tool.category" />
       <q-input filled label="Cost" :rules="[]" v-model="tool.cost" />
       <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="tool.weight" />

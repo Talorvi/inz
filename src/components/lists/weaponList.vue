@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Weapon
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -38,39 +43,27 @@
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-        <q-card-section>
-         <b>Category: </b> {{ category }}
-        </q-card-section>
-        <q-card-section>
-          <b>Damage Type: </b> {{ damageType }}
-        </q-card-section>
-        <q-card-section>
-          <b>Damage Dice: </b> {{ damageDice }}
-        </q-card-section>
+        <q-card-section> <b>Category: </b> {{ category }} </q-card-section>
+        <q-card-section> <b>Damage Type: </b> {{ damageType }} </q-card-section>
+        <q-card-section> <b>Damage Dice: </b> {{ damageDice }} </q-card-section>
         <q-card-section>
           <b>Damage Bonus: </b> {{ damageBonus }}
         </q-card-section>
-        <q-card-section>
-          <b>Cost: </b> {{ cost }}
-        </q-card-section>
+        <q-card-section> <b>Cost: </b> {{ cost }} </q-card-section>
         <q-card-section>
           <b>Weapon Range: </b> {{ weaponRange }}
         </q-card-section>
         <q-card-section>
           <b>Normal Range: </b> {{ normalRange }}
         </q-card-section>
-        <q-card-section>
-          <b>Long Range: </b> {{ longRange }}
-        </q-card-section>
+        <q-card-section> <b>Long Range: </b> {{ longRange }} </q-card-section>
         <q-card-section>
           <b>Normal Throw Range: </b> {{ normalThrowRange }}
         </q-card-section>
         <q-card-section>
           <b>Long Throw Range: </b>{{ longThrowRange }}
         </q-card-section>
-        <q-card-section>
-          <b>Weight: </b>{{ weight }}
-        </q-card-section>
+        <q-card-section> <b>Weight: </b>{{ weight }} </q-card-section>
         <q-card-section>
           <b>Properties: </b>{{ properties.toString() }}
         </q-card-section>
@@ -137,11 +130,17 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/weapons/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/weapon";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/weapon";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -167,9 +166,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/weapon";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/weapon";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -230,8 +227,13 @@ export default {
       notifications.methods.sendSuccessNotification("Deleted feature");
     },
     editFeature(feature) {
-      console.log(feature);
-      //tutaj router push
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/weapons/" +
+          feature,
+        () => {}
+      );
     },
     closeDialog() {
       this.indexToDelete = 0;

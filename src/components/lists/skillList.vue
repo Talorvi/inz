@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Skill
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -41,9 +46,7 @@
         <q-card-section>
           <b>Ability score:</b> {{ abilityScore }}
         </q-card-section>
-        <q-card-section>
-          <b>Description:</b> {{ description }}
-        </q-card-section>
+        <q-card-section> <b>Description:</b> {{ description }} </q-card-section>
       </q-card>
     </q-dialog>
 
@@ -97,11 +100,17 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/abilities/skills/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/skill";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/skill";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -127,9 +136,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/skill";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/skill";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },

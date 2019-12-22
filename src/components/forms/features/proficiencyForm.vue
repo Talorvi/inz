@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="proficiency.scenarioKey === null">
       <h5>This feature cannot be edited</h5>
       <h5>Name: {{ proficiency.name }}</h5>
@@ -30,7 +30,7 @@
       class="q-gutter-md"
       v-else-if="proficiencyName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ proficiency.name }}</h3>
+      <h5>Proficiency: {{ proficiency.name }}</h5>
       <q-input filled label="Type" :rules="[]" v-model="proficiency.type" />
       <q-toggle color="green" label="Visible" v-model="proficiency.visible" />
       <div>

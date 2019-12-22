@@ -11,8 +11,8 @@
                   v-model="tab"
                   dense
                   class="text-grey"
-                  active-color="primary"
-                  indicator-color="primary"
+                  active-color="accent"
+                  indicator-color="accent"
                   align="justify"
                   narrow-indicator
                 >

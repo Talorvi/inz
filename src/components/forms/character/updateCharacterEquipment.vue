@@ -11,8 +11,8 @@
                   v-model="tab"
                   dense
                   class="text-grey"
-                  active-color="primary"
-                  indicator-color="primary"
+                  active-color="accent"
+                  indicator-color="accent"
                   align="justify"
                   narrow-indicator
                 >
@@ -176,7 +176,10 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label @click="showArmorDialog(armor.name)">{{ armor.name }}</q-item-label>
+                                <q-item-label
+                                  @click="showArmorDialog(armor.name)"
+                                  >{{ armor.name }}</q-item-label
+                                >
                                 <q-input
                                   filled
                                   label="Amount"
@@ -249,7 +252,10 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label @click="showGearDialog(gear.name)">{{ gear.name }}</q-item-label>
+                                <q-item-label
+                                  @click="showGearDialog(gear.name)"
+                                  >{{ gear.name }}</q-item-label
+                                >
                                 <q-input
                                   filled
                                   label="Amount"
@@ -320,7 +326,10 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label @click="showToolDialog(tool.name)">{{ tool.name }}</q-item-label>
+                                <q-item-label
+                                  @click="showToolDialog(tool.name)"
+                                  >{{ tool.name }}</q-item-label
+                                >
                                 <q-input
                                   filled
                                   label="Amount"
@@ -391,7 +400,10 @@
                           >
                             <q-item-section>
                               <div class="row no-wrap">
-                                <q-item-label @click="showVehicleDialog(vehicle.name)">{{ vehicle.name }}</q-item-label>
+                                <q-item-label
+                                  @click="showVehicleDialog(vehicle.name)"
+                                  >{{ vehicle.name }}</q-item-label
+                                >
                                 <q-input
                                   filled
                                   label="Amount"
@@ -431,7 +443,9 @@
                             active-class="bg-teal-1"
                             v-for="(vehicleFound, index) in vehiclesFound"
                           >
-                            <q-item-section @click="showVehicleDialog(vehicleFound)">
+                            <q-item-section
+                              @click="showVehicleDialog(vehicleFound)"
+                            >
                               <q-item-label>{{ vehicleFound }}</q-item-label>
                             </q-item-section>
                             <q-btn
@@ -1104,7 +1118,8 @@ export default {
           }
         })
         .then(response => {
-          var resp = response.data;s
+          var resp = response.data;
+          s;
           for (var i = 0; i < resp.length; i++) {
             if (resp[i].name.toLowerCase() === featureName.toLowerCase()) {
               console.log("Condition fulfilled" + resp[i].name.toLowerCase());

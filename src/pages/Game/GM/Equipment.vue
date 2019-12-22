@@ -11,28 +11,29 @@
         narrow-indicator
       >
         <q-tab
-          name="features"
+          name="weapons"
           icon="fas fa-khanda"
-          label="Features"
-          @click="goToFeatures"
+          label="Weapons"
+          @click="goToWeapons"
         />
         <q-tab
-          name="languages"
+          name="armors"
           icon="fas fa-shield-alt"
-          label="Languages"
-          @click="goToLanguages"
+          label="Armors"
+          @click="goToArmors"
         />
+        <q-tab name="gears" icon="fas fa-cog" label="Gear" @click="goToGears" />
         <q-tab
-          name="traits"
-          icon="fas fa-cog"
-          label="Traits"
-          @click="goToTraits"
-        />
-        <q-tab
-          name="proficiencies"
+          name="tools"
           icon="fas fa-hammer"
-          label="Proficiencies"
-          @click="goToProficiencies"
+          label="Tools"
+          @click="goToTools"
+        />
+        <q-tab
+          name="vehicles"
+          icon="fas fa-horse"
+          label="Vehicles"
+          @click="goToVehicles"
         />
       </q-tabs>
       <q-separator></q-separator>
@@ -68,42 +69,50 @@
 
 <script>
 export default {
-  name: "JoinSuccess",
+  name: "Equipment",
   data() {
     return {
-      tab: "features"
+      tab: "weapons"
     };
   },
   methods: {
-    goToFeatures() {
+    goToWeapons() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/features",
+          "/gameManagement/equipment/weapons",
         () => {}
       );
     },
-    goToLanguages() {
+    goToArmors() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/languages",
+          "/gameManagement/equipment/armors",
         () => {}
       );
     },
-    goToTraits() {
+    goToGears() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/traits",
+          "/gameManagement/equipment/gear",
         () => {}
       );
     },
-    goToProficiencies() {
+    goToTools() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/proficiencies",
+          "/gameManagement/equipment/tools",
+        () => {}
+      );
+    },
+    goToVehicles() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/vehicles",
         () => {}
       );
     }

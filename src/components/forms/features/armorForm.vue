@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="armor.scenarioKey === null">
       <h5>This armor cannot be edited</h5>
       <h5>Name: {{ armor.name }}</h5>
@@ -68,7 +68,7 @@
       class="q-gutter-md"
       v-else-if="armorName !== 'new' && searchResultFound === true"
     >
-      <h3>Armor: {{ armor.name }}</h3>
+      <h5>Armor: {{ armor.name }}</h5>
       <q-input
         filled
         label="Armor Class base"

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="trait.scenarioKey === null">
       <h5>This trait cannot be edited</h5>
       <h5>Name: {{ trait.name }}</h5>
@@ -35,7 +35,7 @@
       class="q-gutter-md"
       v-else-if="traitName !== 'new' && searchResultFound === true"
     >
-      <h3>Trait: {{ trait.name }}</h3>
+      <h5>Trait: {{ trait.name }}</h5>
       <q-input
         filled
         label="Description"

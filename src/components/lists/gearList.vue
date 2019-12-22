@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Gear
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -38,14 +43,10 @@
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
+        <q-card-section> <b>Cost: </b> {{ cost }} </q-card-section>
+        <q-card-section> <b>Weight: </b> {{ weight }} </q-card-section>
         <q-card-section>
-         <b>Cost: </b> {{ cost }}
-        </q-card-section>
-        <q-card-section>
-          <b>Weight: </b> {{ weight }}
-        </q-card-section>
-        <q-card-section>
-          <b>Description: </b>  {{ description }}
+          <b>Description: </b> {{ description }}
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -101,11 +102,17 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/gear/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/gear";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/gear";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -131,9 +138,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/gear";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/gear";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -185,8 +190,13 @@ export default {
       notifications.methods.sendSuccessNotification("Deleted feature");
     },
     editFeature(feature) {
-      console.log(feature);
-      //tutaj router push
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/gear/" +
+          feature,
+        () => {}
+      );
     },
     closeDialog() {
       this.indexToDelete = 0;

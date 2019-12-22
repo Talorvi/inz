@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="feature.scenarioKey === null">
       <h5>This feature cannot be edited</h5>
       <h5>Name: {{ feature.name }}</h5>
@@ -35,7 +35,7 @@
       class="q-gutter-md"
       v-else-if="featureName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ feature.name }}</h3>
+      <h5>Feature: {{ feature.name }}</h5>
       <q-input
         filled
         label="Description"

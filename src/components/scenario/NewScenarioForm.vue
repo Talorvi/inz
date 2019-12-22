@@ -45,32 +45,22 @@
                           <q-icon name="text_format" />
                         </template>
                       </q-input>
-                      <q-input
-                        v-model="password"
-                        filled
-                        label="Password"
-                        :rules="[
-                          val => (val && val.length > 0) || 'Enter password',
-                          val =>
-                            val.length > 5 ||
-                            'Password should contain more than 5 letters'
-                        ]"
-                      >
+                      <q-input v-model="password" filled label="Password">
                         <template v-slot:prepend>
                           <q-icon name="lock" />
                         </template>
                       </q-input>
-<!--                      <q-input-->
-<!--                        v-model.number="maxPlayers"-->
-<!--                        type="number"-->
-<!--                        label="Max Players"-->
-<!--                        filled-->
-<!--                        :rules="[val => val > 0 || 'Enter valid player number']"-->
-<!--                      >-->
-<!--                        <template v-slot:prepend>-->
-<!--                          <q-icon name="people" />-->
-<!--                        </template>-->
-<!--                      </q-input>-->
+                      <!--                      <q-input-->
+                      <!--                        v-model.number="maxPlayers"-->
+                      <!--                        type="number"-->
+                      <!--                        label="Max Players"-->
+                      <!--                        filled-->
+                      <!--                        :rules="[val => val > 0 || 'Enter valid player number']"-->
+                      <!--                      >-->
+                      <!--                        <template v-slot:prepend>-->
+                      <!--                          <q-icon name="people" />-->
+                      <!--                        </template>-->
+                      <!--                      </q-input>-->
                     </q-card-section>
                     <q-card-actions align="center">
                       <q-btn
@@ -99,7 +89,7 @@ export default {
   data() {
     return {
       name: null,
-      password: null,
+      password: "",
       maxPlayers: 5
     };
   },

@@ -93,6 +93,12 @@
           </q-item-section>
           <q-item-section>Logout</q-item-section>
         </q-item>
+        <q-item clickable v-ripple @click="toggleDarkMode">
+          <q-item-section avatar>
+            <q-icon name="brightness_medium" />
+          </q-item-section>
+          <q-item-section>Toggle Dark Mode</q-item-section>
+        </q-item>
         <div v-if="isInGame">
           <q-separator />
           <q-item
@@ -225,7 +231,7 @@
                   $router.push(
                     '/game/' +
                       $route.params.scenarioKey +
-                      '/gameManagement/abilities/features/new',
+                      '/gameManagement/abilities/features',
                     () => {}
                   )
                 "
@@ -270,12 +276,18 @@ export default {
 
   mounted() {
     //this.$q.addressbarColor.set("#027BE3");
+    console.log(
+      "Allooooooooo " +
+        this.$store.getters.getUserName +
+        " " +
+        this.$store.getters.getGameMaster
+    );
   },
 
   data() {
     return {
       chatOpen: this.$store.getters.getChatOpen,
-      right: true,
+      right: false,
       appName: process.env.APP_NAME,
       expanded: true
     };
@@ -307,6 +319,9 @@ export default {
         .then(() => {
           this.$refs.drawer.toggle();
         });
+    },
+    toggleDarkMode() {
+      this.$q.dark.toggle();
     }
   },
   created() {

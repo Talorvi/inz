@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Armor
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -38,27 +43,23 @@
           <q-space />
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
-        <q-card-section>
-          <b>Cost: </b>{{ cost }}
-        </q-card-section>
+        <q-card-section> <b>Cost: </b>{{ cost }} </q-card-section>
         <q-card-section>
           <b>Minimum Strength: </b> {{ strMinimum }}
         </q-card-section>
         <q-card-section>
-          <b>Base Armor:</b>  {{ armorClass.base }}
+          <b>Base Armor:</b> {{ armorClass.base }}
         </q-card-section>
         <q-card-section>
-          <b>Dexterity Bonus:</b>  {{ armorClass.dexBonus  ? "Yes" : "No" }}
+          <b>Dexterity Bonus:</b> {{ armorClass.dexBonus ? "Yes" : "No" }}
         </q-card-section>
         <q-card-section>
-          <b>Max bonus:</b>  {{ armorClass.maxBonus }}
+          <b>Max bonus:</b> {{ armorClass.maxBonus }}
         </q-card-section>
         <q-card-section>
-          <b>Stealth Disadvantage: </b>{{ stealthDisadvantage ? "Yes" : "No"}}
+          <b>Stealth Disadvantage: </b>{{ stealthDisadvantage ? "Yes" : "No" }}
         </q-card-section>
-        <q-card-section>
-          <b>Weight: </b>{{ weight }}
-        </q-card-section>
+        <q-card-section> <b>Weight: </b>{{ weight }} </q-card-section>
       </q-card>
     </q-dialog>
 
@@ -119,11 +120,17 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/armors/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/armor";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -149,9 +156,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
-        this.$store.getters.getScenarioKey +
-        "/armor";
+        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -207,8 +212,13 @@ export default {
       notifications.methods.sendSuccessNotification("Deleted feature");
     },
     editFeature(feature) {
-      console.log(feature);
-      //tutaj router push
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/equipment/armors/" +
+          feature,
+        () => {}
+      );
     },
     closeDialog() {
       this.indexToDelete = 0;

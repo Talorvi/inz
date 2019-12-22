@@ -20,7 +20,7 @@
           dense
           round
           icon="delete"
-          color="black"
+          color="accent"
           v-on:click="deleteNote(note.id, index)"
         />
       </q-item>

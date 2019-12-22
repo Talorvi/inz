@@ -1,5 +1,18 @@
 <template>
   <div>
+    <div class="text-center">
+      <q-btn
+        color="accent"
+        class="q-mb-md"
+        @click="
+          $router.push(
+            '/game/' + $route.params.scenarioKey + '/new-character',
+            () => {}
+          )
+        "
+        >New Character</q-btn
+      >
+    </div>
     <div v-if="this.$store.getters.getCharacters.length < 1">
       You have no characters!
     </div>
@@ -121,7 +134,10 @@ export default {
 
     editCharacter(character) {
       this.$router.push(
-        "/game/" + this.$route.params.scenarioKey + "/edit-character/" + character.name,
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/edit-character/" +
+          character.name,
         () => {}
       );
     }

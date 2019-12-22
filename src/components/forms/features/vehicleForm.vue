@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="vehicle.scenarioKey === null">
       <h5>This vehicle cannot be edited</h5>
       <h5>Name: {{ vehicle.name }}</h5>
@@ -39,7 +39,7 @@
       class="q-gutter-md"
       v-else-if="vehicleName !== 'new' && searchResultFound === true"
     >
-      <h3>Vehicle: {{ vehicle.name }}</h3>
+      <h5>Vehicle: {{ vehicle.name }}</h5>
       <q-input filled label="Cost" :rules="[]" v-model="vehicle.cost" />
       <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="vehicle.weight" />
       <q-input

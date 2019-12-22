@@ -99,7 +99,7 @@ module.exports = function(ctx) {
           }
         },
         "/ms": {
-          //target: "http://192.168.99.100:8080",
+          //target: "http://192.168.137.201:8080",
           target: "http://localhost:8080",
           changeOrigin: true,
           pathRewrite: {

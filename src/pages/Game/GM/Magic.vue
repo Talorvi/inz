@@ -11,28 +11,16 @@
         narrow-indicator
       >
         <q-tab
-          name="features"
-          icon="fas fa-khanda"
-          label="Features"
-          @click="goToFeatures"
+          name="spells"
+          icon="fas fa-scroll"
+          label="Spells"
+          @click="goToSpells"
         />
         <q-tab
-          name="languages"
-          icon="fas fa-shield-alt"
-          label="Languages"
-          @click="goToLanguages"
-        />
-        <q-tab
-          name="traits"
-          icon="fas fa-cog"
-          label="Traits"
-          @click="goToTraits"
-        />
-        <q-tab
-          name="proficiencies"
-          icon="fas fa-hammer"
-          label="Proficiencies"
-          @click="goToProficiencies"
+          name="schools"
+          icon="fas fa-school"
+          label="Magic Schools"
+          @click="goToSchools"
         />
       </q-tabs>
       <q-separator></q-separator>
@@ -71,39 +59,23 @@ export default {
   name: "JoinSuccess",
   data() {
     return {
-      tab: "features"
+      tab: "spells"
     };
   },
   methods: {
-    goToFeatures() {
+    goToSpells() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/features",
+          "/gameManagement/magic/spells",
         () => {}
       );
     },
-    goToLanguages() {
+    goToSchools() {
       this.$router.push(
         "/game/" +
           this.$route.params.scenarioKey +
-          "/gameManagement/abilities/languages",
-        () => {}
-      );
-    },
-    goToTraits() {
-      this.$router.push(
-        "/game/" +
-          this.$route.params.scenarioKey +
-          "/gameManagement/abilities/traits",
-        () => {}
-      );
-    },
-    goToProficiencies() {
-      this.$router.push(
-        "/game/" +
-          this.$route.params.scenarioKey +
-          "/gameManagement/abilities/proficiencies",
+          "/gameManagement/magic/magic-schools",
         () => {}
       );
     }

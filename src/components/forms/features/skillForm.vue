@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="skill.scenarioKey === null">
       <h5>This skill cannot be edited</h5>
       <h5>Name: {{ skill.name }}</h5>
@@ -37,7 +37,7 @@
       class="q-gutter-md"
       v-else-if="skillName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ skill.name }}</h3>
+      <h5>Skill: {{ skill.name }}</h5>
       <q-input filled label="Ability Score" :rules="[]" v-model="skill.abilityScore" />
       <q-input
         filled

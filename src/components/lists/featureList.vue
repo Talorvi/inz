@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Feature
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -48,12 +53,26 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-avatar icon="delete" color="primary" text-color="white" />
-          <span class="q-ml-sm">Are you sure you want to remove this element?</span>
+          <span class="q-ml-sm"
+            >Are you sure you want to remove this element?</span
+          >
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Cancel" color="primary" @click="closeDialog()" v-close-popup />
-          <q-btn flat label="Delete" color="primary" @click="deleteFeature(nameToDelete, indexToDelete)" v-close-popup />
+          <q-btn
+            flat
+            label="Cancel"
+            color="primary"
+            @click="closeDialog()"
+            v-close-popup
+          />
+          <q-btn
+            flat
+            label="Delete"
+            color="primary"
+            @click="deleteFeature(nameToDelete, indexToDelete)"
+            v-close-popup
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -79,6 +98,14 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/abilities/features/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
         "api/api/v1/scenario/" +
@@ -137,16 +164,18 @@ export default {
       this.nameToDelete = featureName;
       this.confirm = true;
     },
-    deleteFeature(featureName, index){
+    deleteFeature(featureName, index) {
       var targetURL =
         "api/api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
-        "/feature/" + featureName;
+        "/feature/" +
+        featureName;
       axios
         .delete(targetURL, {
-          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }})
+          headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
+        })
         .then(() => {
-          this.featureList.splice(index,1);
+          this.featureList.splice(index, 1);
         })
         .catch(error => {
           if (error.response.status === 401) {
@@ -158,11 +187,16 @@ export default {
       this.closeDialog();
       notifications.methods.sendSuccessNotification("Deleted feature");
     },
-    editFeature(feature){
-      console.log(feature);
-      //tutaj router push
+    editFeature(feature) {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/abilities/features/" +
+          feature,
+        () => {}
+      );
     },
-    closeDialog(){
+    closeDialog() {
       this.indexToDelete = 0;
       this.nameToDelete = "";
     }

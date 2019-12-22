@@ -50,10 +50,12 @@ export default {
           Authorization: "Bearer " + VueCookies.get("token")
         }
       };
+
       var postData = {
         name: data.name,
         password: data.password
       };
+
       axios
         .post("api/api/v1/scenario", postData, config)
         // eslint-disable-next-line no-unused-vars
@@ -78,15 +80,16 @@ export default {
           Authorization: "Bearer " + VueCookies.get("token")
         }
       };
+
+      if (data.password === null) {
+        data.password = "";
+      }
+
       var postData = {
         password: data.password
       };
       axios
-        .post(
-          "api/action/join/scenario/" + data.scenarioKey,
-          postData,
-          config
-        )
+        .post("api/action/join/scenario/" + data.scenarioKey, postData, config)
         // eslint-disable-next-line no-unused-vars
         .then(response => {
           data.quasar.loading.hide();

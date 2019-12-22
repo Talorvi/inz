@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="language.scenarioKey === null">
       <h5>This language cannot be edited</h5>
       <h5>Name: {{ language.name }}</h5>
@@ -32,7 +32,7 @@
       class="q-gutter-md"
       v-else-if="languageName !== 'new' && searchResultFound === true"
     >
-      <h3>Feature: {{ language.name }}</h3>
+      <h5>Language: {{ language.name }}</h5>
       <q-input filled label="Type" :rules="[]" v-model="language.type" />
       <q-input filled label="Script" :rules="[]" v-model="language.script" />
       <q-toggle color="green" label="Visible" v-model="language.visible" />

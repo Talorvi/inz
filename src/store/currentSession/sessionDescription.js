@@ -318,6 +318,7 @@ export default {
         value: payload.sides,
         visible: payload.visible
       };
+      console.log(postData);
       var config = {
         headers: {
           Authorization: "Bearer " + VueCookies.get("token")

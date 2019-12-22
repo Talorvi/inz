@@ -1,6 +1,11 @@
 <template>
   <div>
-    <q-list bordered separator class="q-mt-md">
+    <div class="text-center">
+      <q-btn color="primary" @click="goToNew">
+        Add new Spell
+      </q-btn>
+    </div>
+    <q-list bordered separator class="q-mt-md" v-if="featureList.length > 0">
       <q-item
         v-ripple
         active-class="bg-teal-1"
@@ -15,7 +20,7 @@
           dense
           round
           icon="edit"
-          color="black"
+          color="accent"
           v-on:click="editFeature(feature)"
         />
         <q-item-section side>
@@ -25,7 +30,7 @@
             dense
             round
             icon="delete"
-            color="black"
+            color="accent"
             v-on:click="showDeleteDialog(feature, index)"
           />
         </q-item-section>
@@ -39,16 +44,26 @@
           <q-btn icon="close" flat round dense v-close-popup />
         </q-card-section>
         <q-card-section> <b>Level: </b> {{ level }} </q-card-section>
-        <q-card-section> <b>Magic School: </b> {{ magicSchool }} </q-card-section>
+        <q-card-section>
+          <b>Magic School: </b> {{ magicSchool }}
+        </q-card-section>
         <q-card-section> <b>Material :</b> {{ material }} </q-card-section>
         <q-card-section> <b>Range: </b> {{ range }} </q-card-section>
-        <q-card-section> <b>Casting time: </b> {{ castingTime }} </q-card-section>
+        <q-card-section>
+          <b>Casting time: </b> {{ castingTime }}
+        </q-card-section>
         <q-card-section> <b>Duration:</b> {{ duration }} </q-card-section>
         <q-card-section> <b>Components :</b> {{ components }} </q-card-section>
-        <q-card-section> <b>Concentration: </b> {{ concentration ? "Yes" : "No" }} </q-card-section>
-        <q-card-section> <b>Ritual: </b> {{ ritual ? "Yes" : "No" }} </q-card-section>
+        <q-card-section>
+          <b>Concentration: </b> {{ concentration ? "Yes" : "No" }}
+        </q-card-section>
+        <q-card-section>
+          <b>Ritual: </b> {{ ritual ? "Yes" : "No" }}
+        </q-card-section>
         <q-card-section> <b>Description:</b> {{ description }} </q-card-section>
-        <q-card-section> <b>Higher Levels:</b> {{ higherLevels }} </q-card-section>
+        <q-card-section>
+          <b>Higher Levels:</b> {{ higherLevels }}
+        </q-card-section>
       </q-card>
     </q-dialog>
 
@@ -112,6 +127,14 @@ export default {
     this.getCustomFeatures();
   },
   methods: {
+    goToNew() {
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/magic/spells/new",
+        () => {}
+      );
+    },
     getCustomFeatures() {
       var targetURL =
         "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
@@ -200,8 +223,13 @@ export default {
       notifications.methods.sendSuccessNotification("Deleted feature");
     },
     editFeature(feature) {
-      console.log(feature);
-      //tutaj router push
+      this.$router.push(
+        "/game/" +
+          this.$route.params.scenarioKey +
+          "/gameManagement/magic/spells/" +
+          feature,
+        () => {}
+      );
     },
     closeDialog() {
       this.indexToDelete = 0;

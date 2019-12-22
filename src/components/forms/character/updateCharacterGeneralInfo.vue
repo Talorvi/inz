@@ -12,8 +12,8 @@
                   v-model="tab"
                   dense
                   class="text-grey"
-                  active-color="primary"
-                  indicator-color="primary"
+                  active-color="accent"
+                  indicator-color="accent"
                   align="justify"
                   narrow-indicator
                 >
@@ -254,7 +254,7 @@
                   <q-btn
                     label="Reset"
                     type="reset"
-                    color="primary"
+                    color="accent"
                     flat
                     class="q-ml-sm"
                   />

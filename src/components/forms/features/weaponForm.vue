@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="weapon.scenarioKey === null">
       <h5>This weapon cannot be edited</h5>
       <h5>Name: {{ weapon.name }}</h5>
@@ -82,7 +82,7 @@
       class="q-gutter-md"
       v-else-if="weaponName !== 'new' && searchResultFound === true"
     >
-      <h3>Weapon: {{ weapon.name }}</h3>
+      <h5>Weapon: {{ weapon.name }}</h5>
       <q-input filled label="Category" :rules="[]" v-model="weapon.category" />
       <q-input filled label="Damage Type" :rules="[]" v-model="weapon.damageType" />
       <q-input filled label="Damage Dice" :rules="[]" v-model="weapon.damageDice" />

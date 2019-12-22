@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <div v-if="weaponProperty.scenarioKey === null">
       <h5>This Weapon Property cannot be edited</h5>
       <h5>Name: {{ weaponProperty.name }}</h5>
@@ -35,7 +35,7 @@
       class="q-gutter-md"
       v-else-if="weaponPropertyName !== 'new' && searchResultFound === true"
     >
-      <h3>Weapon Property: {{ weaponProperty.name }}</h3>
+      <h5>Weapon Property: {{ weaponProperty.name }}</h5>
       <q-input
         filled
         label="Description"

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <q-form
       @submit="createFeature"
       @reset="onReset"
