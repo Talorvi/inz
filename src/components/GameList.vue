@@ -71,12 +71,13 @@
                 <q-icon name="visibility" color="white" />
               </q-btn>
             </div>
-            <q-btn size="12px" color="accent" round>
-              <q-icon
-                name="play_arrow"
-                color="white"
-                @click="joinGame(game.scenarioKey)"
-              />
+            <q-btn
+              size="12px"
+              color="accent"
+              round
+              @click="joinGame(game.scenarioKey)"
+            >
+              <q-icon name="play_arrow" color="white" />
             </q-btn>
           </q-card-actions>
         </q-card>
@@ -85,7 +86,11 @@
     <q-dialog v-model="dialog">
       <q-card>
         <q-toolbar class="q-pt-lg">
-          <q-toolbar-title><span class="text-h4 q-ma-md">{{ scenarioName }}</span></q-toolbar-title>
+          <q-toolbar-title
+            ><span class="text-h4 q-ma-md">{{
+              scenarioName
+            }}</span></q-toolbar-title
+          >
           <q-btn flat round icon="close" v-close-popup />
         </q-toolbar>
 
