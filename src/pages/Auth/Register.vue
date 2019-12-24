@@ -7,7 +7,7 @@
     </div>
     <div class="row justify-center">
       <div class="col-12 col-md-8 ">
-        <RegisterForm class="q-pl-lg q-pt-lg" />
+        <RegisterForm class="q-pl-lg q-pt-lg q-pr-lg" />
       </div>
     </div>
   </div>
