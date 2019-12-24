@@ -45,6 +45,7 @@
                         filled
                         type="password"
                         label="Password"
+                        hint="Optional"
                       >
                         <template v-slot:prepend>
                           <q-icon name="lock" />

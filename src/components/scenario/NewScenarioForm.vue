@@ -45,7 +45,7 @@
                           <q-icon name="text_format" />
                         </template>
                       </q-input>
-                      <q-input v-model="password" filled label="Password">
+                      <q-input v-model="password" filled label="Password" hint="Optional">
                         <template v-slot:prepend>
                           <q-icon name="lock" />
                         </template>
