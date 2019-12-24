@@ -7,7 +7,7 @@
       v-if="noteID === 'new'"
     >
       <q-input filled label="Name" :rules="[]" v-model="note.name" />
-      <q-input filled label="Content" :rules="[]" v-model="note.content" />
+      <q-input filled label="Content" :rules="[]" v-model="note.content" type="textarea" />
       <div>
         <q-btn label="Submit" type="submit" color="primary" />
         <q-btn
