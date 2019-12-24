@@ -2,7 +2,11 @@
   <div class="row" style="height: 35rem">
     <div class="col-xs-0 col-sm-4 center-image">
       <span class="helper"></span>
-      <img src="~src/assets/play.svg" alt="play image" class="play-image self-center" />
+      <img
+        src="~src/assets/play.svg"
+        alt="play image"
+        class="play-image self-center"
+      />
     </div>
     <div class="col-xs-12 col-sm-8">
       <div class="row justify-center" style="height: 100%">
@@ -143,7 +147,8 @@ export default {
 }
 .center-image {
   white-space: nowrap;
-  text-align: center; margin: 1em 0;
+  text-align: center;
+  margin: 1em 0;
 }
 .helper {
   display: inline-block;

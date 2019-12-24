@@ -29,4 +29,8 @@ body::-webkit-scrollbar {
 body {
   -ms-overflow-style: none;
 }
+
+.q-field__marginal {
+  color: inherit !important;
+}
 </style>
