@@ -16,12 +16,13 @@
             message.sender !== $store.getters.getGameMaster,
           'gm-background':
             message.type === 'ooc' &&
-            message.sender === $store.getters.getGameMaster
+            message.sender === $store.getters.getGameMaster,
+          'whisper-background': message.whisperTarget !== null
         }"
         style="padding-top: 0.5rem;"
       >
         <div style="padding-bottom: 0.5rem">
-          <span v-if="message.whisperTarget !== null" class="whisper-message"
+          <span v-if="message.whisperTarget !== null"
             >From {{ message.sender }} to {{ message.whisperTarget }}:
           </span>
           <span v-else-if="message.type === 'system'" class="system-message"
@@ -300,11 +301,14 @@ export default {
 }
 .ooc-background {
   background-color: rgba(0, 0, 255, 0.1);
+  border-radius: 5px;
 }
 .whisper-background {
-  background-color: rgba(250, 158, 114, 0.1);
+  background-color: rgba(250, 158, 114, 0.2);
+  border-radius: 5px;
 }
 .gm-background {
   background-color: rgba(0, 255, 0, 0.1);
+  border-radius: 5px;
 }
 </style>
