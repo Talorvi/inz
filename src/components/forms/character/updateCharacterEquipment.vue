@@ -743,7 +743,7 @@ export default {
           armors: char.equipment.armors,
           attacks: char.equipment.attacks, //    { "bonus": 0,"damage": "string","name": "string","type": "string"
           currency: char.equipment.currency,
-          gear: char.equipment.gears,
+          gear: char.equipment.gear,
           tools: char.equipment.tools,
           vehicles: char.equipment.vehicles,
           weapons: char.equipment.weapons
