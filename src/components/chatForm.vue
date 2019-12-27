@@ -19,7 +19,7 @@
             message.sender === $store.getters.getGameMaster,
           'whisper-background': message.whisperTarget !== null
         }"
-        style="padding-top: 0.5rem;"
+        style="padding-top: 0.5rem; overflow: hidden; word-break: break-all;"
       >
         <div style="padding-bottom: 0.5rem">
           <span v-if="message.whisperTarget !== null"
