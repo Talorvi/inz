@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import VueCookies from "vue-cookies";
+import createPersistedState from "vuex-persistedstate";
 
 import user from "./user";
 import game from "./game";
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     user: user,
     game: game,
     currentSession: currentSession
-  }
+  },
+  plugins: [createPersistedState()]
 });

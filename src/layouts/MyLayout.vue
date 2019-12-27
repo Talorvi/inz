@@ -77,10 +77,10 @@
               color="accent"
               text-color="white"
             >
-              {{ $store.getters.getUserName[0].toUpperCase() }}
+              {{ firstLoginLetter }}
             </q-avatar>
             <div class="text-weight-bold text-center">
-              {{ $store.getters.getUserName }}
+              {{ login }}
             </div>
           </q-btn>
         </div>
@@ -302,6 +302,12 @@ export default {
     },
     unreadMessages() {
       return this.$store.getters.getUnreadMessages;
+    },
+    firstLoginLetter() {
+      return this.$store.getters.getUserName[0].toUpperCase();
+    },
+    login() {
+      return this.$store.getters.getUserName;
     }
   },
 
