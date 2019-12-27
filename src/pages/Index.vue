@@ -4,9 +4,9 @@
       <div class="col-12 bg-secondary q-pa-sm">
         <div class="row justify-center">
           <div class="col-xs-12 col-sm-8">
-            <p class="text-accent text-h4 q-pl-lg q-pt-lg text-weight-bold text-uppercase">Test</p>
+            <p class="text-accent text-h4 q-pl-lg q-pt-lg text-weight-bold text-uppercase">WELCOME!</p>
             <p class="text-white q-pa-lg text-justify">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus cursus, urna et semper imperdiet, tortor tortor cursus odio, quis luctus turpis elit hendrerit lorem. Nulla accumsan purus a rhoncus varius. Aenean sapien augue, mattis faucibus rhoncus et, dapibus vitae dolor. Maecenas tincidunt nulla sed elit tempor, ac gravida ante posuere. Phasellus blandit ut sem et scelerisque. Cras eu nisl vehicula, imperdiet odio vel, tempor urna. Nulla facilisi. Maecenas ac nunc ac ligula fermentum lacinia. Quisque pulvinar massa sit amet lacus fringilla efficitur.
+              Welcome in web assistant to perform online RPG sessions!
             </p>
           </div>
         </div>
@@ -19,7 +19,7 @@
             <img src="~assets/together.svg" class="image" />
           </div>
           <div class="col-xs-12 col-sm-8 self-center">
-            <p>Duis at mollis diam. Morbi finibus nibh diam, nec fermentum neque facilisis ac. In hendrerit arcu ipsum, luctus faucibus dolor suscipit nec. Nunc a lorem a nunc ultricies consectetur non ac turpis. Ut cursus nisi urna, id pulvinar ligula luctus eget. Ut eget gravida ex. Nulla a justo eu diam aliquam eleifend. Donec pretium a lorem feugiat bibendum. Cras vitae fermentum mauris. Praesent dictum tellus sed purus semper lacinia. Cras arcu leo, porttitor eget odio in, convallis convallis elit. Curabitur a facilisis justo, luctus venenatis ante. Praesent a enim nibh.</p>
+            <p>To enjoy a joint game with friends, create an account in our application or if you already have one, log in!</p>
           </div>
         </div>
       </div>
