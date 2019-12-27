@@ -125,7 +125,7 @@ export default {
       if (confirm("Are you sure you want to delete this character?")) {
         this.$store.dispatch("requestDeleteCharacter", {
           data: this.$q,
-          scenarioKey: "TESTSCEN",
+          scenarioKey: this.$store.getters.getScenarioKey,
           characterName: character.name,
           index: index
         });
