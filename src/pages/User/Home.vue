@@ -6,6 +6,9 @@
 import GameList from "../../components/GameList";
 export default {
   name: "Home",
-  components: { GameList }
+  components: { GameList },
+  mounted() {
+    this.$store.commit("changeIsInGame", false);
+  }
 };
 </script>
