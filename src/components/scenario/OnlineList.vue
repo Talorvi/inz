@@ -44,7 +44,10 @@
         </div></q-item-section
       >
 
-      <q-item-section side v-if="$store.getters.getUserName === $store.getters.getGameMaster">
+      <q-item-section
+        side
+        v-if="$store.getters.getUserName === $store.getters.getGameMaster"
+      >
         <q-btn
           flat
           @click="removePlayerFromScenario(player)"
@@ -87,20 +90,23 @@
       </q-item-section>
 
       <q-item-section
-      ><div
-        v-bind:class="[
+        ><div
+          v-bind:class="[
             {
               'text-weight-bold': !$store.getters.getOfflinePlayers.includes(
                 player
               )
             }
           ]"
-      >
-        {{ player }}
-      </div></q-item-section
+        >
+          {{ player }}
+        </div></q-item-section
       >
 
-      <q-item-section side v-if="$store.getters.getUserName === $store.getters.getGameMaster">
+      <q-item-section
+        side
+        v-if="$store.getters.getUserName === $store.getters.getGameMaster"
+      >
         <q-btn
           flat
           @click="removePlayerFromScenario(player)"
@@ -126,7 +132,7 @@ export default {
       ) {
         this.$store.dispatch("requestDeletePlayer", {
           data: this.$q,
-          scenarioKey: "TESTSCEN",
+          scenarioKey: this.$store.getters.getScenarioKey,
           name: player
         });
       }
