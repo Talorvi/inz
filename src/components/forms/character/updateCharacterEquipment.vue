@@ -43,29 +43,27 @@
                               v-for="(attack, index) in equipment.attacks"
                             >
                               <q-item-section>
-                                <div class="row no-wrap">
-                                  <q-input
-                                    filled
-                                    v-model="attack.name"
-                                    label="Name"
-                                  />
-                                  <q-input
-                                    filled
-                                    v-model="attack.type"
-                                    label="Type"
-                                  />
-                                  <q-input
-                                    filled
-                                    v-model="attack.damage"
-                                    label="Damage"
-                                  />
-                                  <q-input
-                                    filled
-                                    v-model="attack.bonus"
-                                    label="Bonus"
-                                    type="number"
-                                  />
-                                </div>
+                                <q-input
+                                  filled
+                                  v-model="attack.name"
+                                  label="Name"
+                                />
+                                <q-input
+                                  filled
+                                  v-model="attack.type"
+                                  label="Type"
+                                />
+                                <q-input
+                                  filled
+                                  v-model="attack.damage"
+                                  label="Damage"
+                                />
+                                <q-input
+                                  filled
+                                  v-model="attack.bonus"
+                                  label="Bonus"
+                                  type="number"
+                                />
                               </q-item-section>
                               <q-btn
                                 size="12px"
@@ -73,6 +71,7 @@
                                 dense
                                 round
                                 icon="delete"
+                                class="self-center"
                                 v-on:click="deleteAttack(index)"
                               />
                             </q-item>
