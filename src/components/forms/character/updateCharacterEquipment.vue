@@ -92,17 +92,15 @@
                             active-class="bg-teal-1"
                             v-for="(weapon, index) in equipment.weapons"
                           >
-                            <q-item-section>
-                              <div class="row no-wrap">
-                                <q-item-label>{{ weapon.name }}</q-item-label>
-                                <q-input
-                                  filled
-                                  label="Amount"
-                                  :rules="[]"
-                                  v-model="weapon.amount"
-                                  type="number"
-                                />
-                              </div>
+                            <q-item-section class="q-pt-md">
+                              <q-item-label>{{ weapon.name }}</q-item-label>
+                              <q-input
+                                filled
+                                label="Amount"
+                                :rules="[]"
+                                v-model="weapon.amount"
+                                type="number"
+                              />
                             </q-item-section>
                             <q-btn
                               size="12px"
@@ -111,6 +109,7 @@
                               round
                               icon="delete"
                               v-on:click="deleteWeapon(index, weapon.name)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
@@ -136,6 +135,7 @@
                           >
                             <q-item-section
                               @click="showWeaponDialog(weaponFound)"
+                              class="row q-pt-sm"
                             >
                               <q-item-label>{{ weaponFound }}</q-item-label>
                             </q-item-section>
@@ -146,6 +146,7 @@
                               round
                               icon="add"
                               v-on:click="addWeapon(index, weaponFound)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
@@ -174,20 +175,18 @@
                             active-class="bg-teal-1"
                             v-for="(armor, index) in equipment.armors"
                           >
-                            <q-item-section>
-                              <div class="row no-wrap">
-                                <q-item-label
-                                  @click="showArmorDialog(armor.name)"
-                                  >{{ armor.name }}</q-item-label
-                                >
-                                <q-input
-                                  filled
-                                  label="Amount"
-                                  :rules="[]"
-                                  v-model="armor.amount"
-                                  type="number"
-                                />
-                              </div>
+                            <q-item-section class="q-pt-md">
+                              <q-item-label
+                                @click="showArmorDialog(armor.name)"
+                                >{{ armor.name }}</q-item-label
+                              >
+                              <q-input
+                                filled
+                                label="Amount"
+                                :rules="[]"
+                                v-model="armor.amount"
+                                type="number"
+                              />
                             </q-item-section>
                             <q-btn
                               size="12px"
@@ -196,6 +195,7 @@
                               round
                               icon="delete"
                               v-on:click="deleteArmor(index, armor.name)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
@@ -250,20 +250,18 @@
                             active-class="bg-teal-1"
                             v-for="(gear, index) in equipment.gear"
                           >
-                            <q-item-section>
-                              <div class="row no-wrap">
-                                <q-item-label
-                                  @click="showGearDialog(gear.name)"
-                                  >{{ gear.name }}</q-item-label
-                                >
-                                <q-input
-                                  filled
-                                  label="Amount"
-                                  :rules="[]"
-                                  v-model="gear.amount"
-                                  type="number"
-                                />
-                              </div>
+                            <q-item-section class="q-pt-md">
+                              <q-item-label
+                                @click="showGearDialog(gear.name)"
+                                >{{ gear.name }}</q-item-label
+                              >
+                              <q-input
+                                filled
+                                label="Amount"
+                                :rules="[]"
+                                v-model="gear.amount"
+                                type="number"
+                              />
                             </q-item-section>
                             <q-btn
                               size="12px"
@@ -272,6 +270,7 @@
                               round
                               icon="delete"
                               v-on:click="deleteGear(index, gear.name)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
@@ -325,19 +324,18 @@
                             v-for="(tool, index) in equipment.tools"
                           >
                             <q-item-section>
-                              <div class="row no-wrap">
-                                <q-item-label
-                                  @click="showToolDialog(tool.name)"
-                                  >{{ tool.name }}</q-item-label
-                                >
-                                <q-input
-                                  filled
-                                  label="Amount"
-                                  :rules="[]"
-                                  v-model="tool.amount"
-                                  type="number"
-                                />
-                              </div>
+                              <q-item-label
+                                @click="showToolDialog(tool.name)"
+                                class="q-pt-md"
+                                >{{ tool.name }}</q-item-label
+                              >
+                              <q-input
+                                filled
+                                label="Amount"
+                                :rules="[]"
+                                v-model="tool.amount"
+                                type="number"
+                              />
                             </q-item-section>
                             <q-btn
                               size="12px"
@@ -346,6 +344,7 @@
                               round
                               icon="delete"
                               v-on:click="deleteTool(index, tool.name)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
@@ -399,19 +398,18 @@
                             v-for="(vehicle, index) in equipment.vehicles"
                           >
                             <q-item-section>
-                              <div class="row no-wrap">
-                                <q-item-label
-                                  @click="showVehicleDialog(vehicle.name)"
-                                  >{{ vehicle.name }}</q-item-label
-                                >
-                                <q-input
-                                  filled
-                                  label="Amount"
-                                  :rules="[]"
-                                  v-model="vehicle.amount"
-                                  type="number"
-                                />
-                              </div>
+                              <q-item-label
+                                @click="showVehicleDialog(vehicle.name)"
+                                class="q-pt-md"
+                                >{{ vehicle.name }}</q-item-label
+                              >
+                              <q-input
+                                filled
+                                label="Amount"
+                                :rules="[]"
+                                v-model="vehicle.amount"
+                                type="number"
+                              />
                             </q-item-section>
                             <q-btn
                               size="12px"
@@ -420,6 +418,7 @@
                               round
                               icon="delete"
                               v-on:click="deleteVehicle(index, vehicle.name)"
+                              class="self-center"
                             />
                           </q-item>
                         </q-list>
