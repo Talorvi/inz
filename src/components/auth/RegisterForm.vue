@@ -83,10 +83,7 @@
 
               <q-card-section>
                 <div>
-                  <q-btn flat color="primary">
-                    Forgot password?
-                  </q-btn>
-                  <q-btn flat>
+                  <q-btn flat @click="$router.push('/login', () => {})">
                     Already have an account? Log in
                   </q-btn>
                 </div>

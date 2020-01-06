@@ -116,6 +116,7 @@
 <script>
 import axios from "axios";
 import notifications from "../../../functions/notifications";
+
 export default {
   data() {
     return {
@@ -148,7 +149,7 @@ export default {
   methods: {
     createFeature() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
       axios
         .post(
           targetURL,
@@ -193,7 +194,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/armor";
       axios
@@ -242,7 +243,7 @@ export default {
     },
     getExactFeatureByName(armorName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/armor";
       axios

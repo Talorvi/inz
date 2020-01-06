@@ -147,7 +147,7 @@ export default {
       }
     },
     connect() {
-      var socket = new SockJS("http://localhost:8080/rpg-server");
+      var socket = new SockJS("https://rpg.polarlooptheory.pl:8443/rpg-server");
       var header = { "X-Authorization": this.$store.getters.loggedIn };
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(header, this.onConnected, this.onError);
@@ -177,7 +177,7 @@ export default {
     },
     postMessage(text) {
       var targetURL =
-        "/api/action/message/scenario/" + this.$store.getters.getScenarioKey;
+        "/action/message/scenario/" + this.$store.getters.getScenarioKey;
       axios
         .post(
           targetURL,
@@ -221,7 +221,7 @@ export default {
     //Loading old messages functionality
     loadOldMessages() {
       var targetURL =
-        "/api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/message";
       axios

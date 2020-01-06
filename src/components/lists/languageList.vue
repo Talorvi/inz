@@ -108,7 +108,7 @@ export default {
     },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/language";
       axios
@@ -136,7 +136,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/language";
       axios
@@ -167,7 +167,7 @@ export default {
     },
     deleteFeature(featureName, index) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/language/" +
         featureName;

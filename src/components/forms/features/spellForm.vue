@@ -110,7 +110,7 @@ export default {
   methods: {
     createFeature() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
       axios
         .post(
           targetURL,
@@ -161,7 +161,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/spell";
       axios
@@ -216,7 +216,7 @@ export default {
     },
     getExactFeatureByName(spellName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/spell";
       axios

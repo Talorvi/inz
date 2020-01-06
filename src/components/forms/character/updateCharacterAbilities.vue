@@ -327,6 +327,7 @@
 import notifications from "../../../functions/notifications";
 import stringFunc from "../../../functions/stringFunctions";
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -367,7 +368,7 @@ export default {
   methods: {
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/feature?name=" +
         name;
@@ -390,7 +391,7 @@ export default {
     },
     showLanguageDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/language?name=" +
         name;
@@ -414,7 +415,7 @@ export default {
     },
     showTraitDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/trait?name=" +
         name;
@@ -437,7 +438,7 @@ export default {
     },
     showProficiencyDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/proficiency?name=" +
         name;
@@ -508,7 +509,7 @@ export default {
     },
     searchFeature(featureName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/feature";
       axios
@@ -569,7 +570,7 @@ export default {
     },
     searchLanguage(languageName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/language";
       axios
@@ -630,7 +631,7 @@ export default {
     },
     searchTrait(traitName) {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/trait";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/trait";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -689,7 +690,7 @@ export default {
     },
     searchProficiency(proficiencyName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/proficiency";
       axios

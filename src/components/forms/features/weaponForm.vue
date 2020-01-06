@@ -172,7 +172,7 @@ export default {
     addProperty(weaponPropertyName){
 
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/weaponProperty";
       axios
@@ -214,7 +214,7 @@ export default {
     },
     createFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/weapon";
       axios
@@ -269,7 +269,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/weapon";
       axios
@@ -326,7 +326,7 @@ export default {
     },
     getExactFeatureByName(weaponName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/weapon";
       axios

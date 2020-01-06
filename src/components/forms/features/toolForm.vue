@@ -92,7 +92,7 @@ export default {
   methods: {
     createFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/tool";
       axios
@@ -131,7 +131,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/tool";
       axios
@@ -172,7 +172,7 @@ export default {
     },
     getExactFeatureByName(toolName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/tool";
       axios

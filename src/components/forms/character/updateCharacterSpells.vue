@@ -155,6 +155,7 @@
 import notifications from "../../../functions/notifications";
 import stringFunc from "../../../functions/stringFunctions";
 import axios from "axios";
+
 export default {
   data() {
     return {
@@ -183,7 +184,7 @@ export default {
   methods: {
     showDialog(spellName) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/spell?name=" +
         spellName;
@@ -270,7 +271,7 @@ export default {
     },
     searchSpell(spellName) {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/spell";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },

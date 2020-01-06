@@ -581,7 +581,7 @@ export default {
   methods: {
     showWeaponDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/weapon?name=" +
         name;
@@ -619,7 +619,7 @@ export default {
     },
     showArmorDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/armor?name=" +
         name;
@@ -651,7 +651,7 @@ export default {
     },
     showGearDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/gear?name=" +
         name;
@@ -675,7 +675,7 @@ export default {
     },
     showToolDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/tool?name=" +
         name;
@@ -700,7 +700,7 @@ export default {
     },
     showVehicleDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/vehicle?name=" +
         name;
@@ -788,7 +788,7 @@ export default {
     searchArmor(armorName) {
       notifications.methods.sendSuccessNotification(armorName);
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/armor";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -854,7 +854,7 @@ export default {
     searchVehicle(vehicleName) {
       notifications.methods.sendSuccessNotification(vehicleName);
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/vehicle";
       axios
@@ -921,7 +921,7 @@ export default {
     searchGear(gearName) {
       notifications.methods.sendSuccessNotification(gearName);
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/gear";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/gear";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -986,7 +986,7 @@ export default {
     searchTool(toolName) {
       notifications.methods.sendSuccessNotification(toolName);
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -1052,7 +1052,7 @@ export default {
     searchWeapon(weaponName) {
       notifications.methods.sendSuccessNotification(weaponName);
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/weapon";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/weapon";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -1106,7 +1106,7 @@ export default {
     },
     getExactFeatureByName(featureName, type, index) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/" +
         type;

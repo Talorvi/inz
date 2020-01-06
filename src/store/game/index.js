@@ -27,7 +27,7 @@ export default {
       };
 
       axios
-        .get("api/api/v1/scenario", config)
+        .get("api/v1/scenario", config)
         .then(response => {
           console.log(response);
           this.commit("updateGameList", response.data);
@@ -57,7 +57,7 @@ export default {
       };
 
       axios
-        .post("api/api/v1/scenario", postData, config)
+        .post("api/v1/scenario", postData, config)
         // eslint-disable-next-line no-unused-vars
         .then(response => {
           data.quasar.loading.hide();
@@ -89,7 +89,7 @@ export default {
         password: data.password
       };
       axios
-        .post("api/action/join/scenario/" + data.scenarioKey, postData, config)
+        .post("action/join/scenario/" + data.scenarioKey, postData, config)
         // eslint-disable-next-line no-unused-vars
         .then(response => {
           data.quasar.loading.hide();

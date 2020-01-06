@@ -5,6 +5,8 @@ import notifications from "../../functions/notifications";
 // eslint-disable-next-line no-unused-vars
 import { addSeconds, differenceInMilliseconds } from "date-fns";
 
+axios.defaults.baseURL = "https://rpg.polarlooptheory.pl:8443";
+
 Vue.use(VueCookies);
 VueCookies.config("12h");
 
@@ -39,7 +41,7 @@ export default {
       credentials.quasar.loading.show();
 
       axios
-        .post("api/oauth/token", null, {
+        .post("oauth/token", null, {
           params: {
             grant_type: "password",
             username: credentials.username,
@@ -94,7 +96,7 @@ export default {
       credentials.quasar.loading.show();
 
       axios
-        .post("/api/register", {
+        .post("/register", {
           username: credentials.username,
           password: credentials.password,
           email: credentials.email
@@ -142,7 +144,7 @@ function refreshToken(context) {
     };
 
     axios
-      .post("api/oauth/token", null, {
+      .post("oauth/token", null, {
         params: {
           grant_type: "refresh_token",
           refresh_token: VueCookies.get("refreshToken")

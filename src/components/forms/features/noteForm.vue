@@ -63,7 +63,7 @@ export default {
   methods: {
     createFeature() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
       axios
         .post(
           targetURL,
@@ -92,7 +92,7 @@ export default {
     },
     updateFeature() {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/note/" +
         this.noteID;
@@ -123,7 +123,7 @@ export default {
     deleteNote(noteID) {
       if (confirm("Are you sure you want to delete this note?")) {
         var targetURL =
-          "api/api/v1/scenario/" +
+          "api/v1/scenario/" +
           this.$store.state.scenarioKey +
           "/note" +
           noteID;
@@ -150,7 +150,7 @@ export default {
     },
     getExactFeatureByName(noteId) {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }

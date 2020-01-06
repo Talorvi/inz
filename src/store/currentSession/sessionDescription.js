@@ -157,7 +157,7 @@ export default {
   actions: {
     reloadCharacters(context) {
       var targetURL =
-        "api/api/v1/scenario/" + context.getters.getScenarioKey + "/character";
+        "api/v1/scenario/" + context.getters.getScenarioKey + "/character";
       axios
         .get(targetURL, {
           headers: {
@@ -180,7 +180,7 @@ export default {
     requestDeleteCharacter(context, payload) {
       payload.data.loading.show();
       var targetURL =
-        "api/action/remove/character/scenario/" + payload.scenarioKey;
+        "action/remove/character/scenario/" + payload.scenarioKey;
       axios
         .delete(targetURL, {
           params: {
@@ -210,7 +210,7 @@ export default {
     requestDeletePlayer(context, payload) {
       payload.data.loading.show();
       var targetURL =
-        "api/action/remove/player/scenario/" + payload.scenarioKey;
+        "action/remove/player/scenario/" + payload.scenarioKey;
       axios
         .delete(targetURL, {
           params: {
@@ -239,7 +239,7 @@ export default {
         });
     },
     reloadPlayers(context, scenarioKey) {
-      var targetURL = "api/api/v1/scenario/" + scenarioKey + "/player";
+      var targetURL = "api/v1/scenario/" + scenarioKey + "/player";
       axios
         .get(targetURL, {
           headers: {
@@ -264,7 +264,7 @@ export default {
         });
     },
     connectToScenario(context, scenarioKey) {
-      var targetURL = "api/api/v1/scenario/" + scenarioKey + "/connect";
+      var targetURL = "api/v1/scenario/" + scenarioKey + "/connect";
       axios
         .get(targetURL, {
           headers: {
@@ -324,7 +324,7 @@ export default {
           Authorization: "Bearer " + VueCookies.get("token")
         }
       };
-      var targetURL = "api/action/roll/scenario/" + payload.scenarioKey;
+      var targetURL = "action/roll/scenario/" + payload.scenarioKey;
       axios.post(targetURL, postData, config).catch(error => {
         console.log(error);
         if (error.response.status === 401) {
@@ -338,7 +338,7 @@ export default {
     },
     createCharacter(context, payload) {
       var targetURL =
-        "api/action/create/character/scenario/" + payload.scenarioKey;
+        "action/create/character/scenario/" + payload.scenarioKey;
       axios
         .post(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
@@ -356,7 +356,7 @@ export default {
     },
     updateCharacterGeneralInfo(context, payload) {
       var targetURL =
-        "api/action/update/character/scenario/" + payload.scenarioKey;
+        "action/update/character/scenario/" + payload.scenarioKey;
       axios
         .patch(targetURL, payload.general, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
@@ -374,7 +374,7 @@ export default {
     },
     updateCharacterAbilities(context, payload) {
       var targetURL =
-        "api/action/update/characterAbilities/scenario/" + payload.scenarioKey;
+        "action/update/characterAbilities/scenario/" + payload.scenarioKey;
       axios
         .patch(targetURL, payload.abilities, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
@@ -392,7 +392,7 @@ export default {
     },
     updateCharacterSpells(context, payload) {
       var targetURL =
-        "api/action/update/characterSpells/scenario/" + payload.scenarioKey;
+        "action/update/characterSpells/scenario/" + payload.scenarioKey;
       axios
         .patch(targetURL, payload.spells, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }
@@ -410,7 +410,7 @@ export default {
     },
     updateCharacterEquipment(context, payload) {
       var targetURL =
-        "api/action/update/characterEquipment/scenario/" + payload.scenarioKey;
+        "action/update/characterEquipment/scenario/" + payload.scenarioKey;
       axios
         .patch(targetURL, payload.equipment, {
           headers: { Authorization: "bearer " + context.getters.loggedIn }

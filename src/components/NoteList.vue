@@ -51,7 +51,7 @@ export default {
     },
     deleteNote(noteID, index) {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note/" + noteID;
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note/" + noteID;
       axios
         .delete(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }
@@ -70,7 +70,7 @@ export default {
     },
     getNoteList() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/note";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn }

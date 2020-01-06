@@ -46,10 +46,7 @@
 
               <q-card-section>
                 <div>
-                  <q-btn flat>
-                    Forgot password?
-                  </q-btn>
-                  <q-btn flat>
+                  <q-btn flat @click="$router.push('/register', () => {})">
                     Doesn't have an account?
                   </q-btn>
                 </div>

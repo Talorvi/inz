@@ -114,7 +114,7 @@ export default {
     },
     getCustomFeatures() {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -140,7 +140,7 @@ export default {
     },
     showFeatureDialog(name) {
       var targetURL =
-        "api/api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
+        "api/v1/scenario/" + this.$store.getters.getScenarioKey + "/tool";
       axios
         .get(targetURL, {
           headers: { Authorization: "bearer " + this.$store.getters.loggedIn },
@@ -171,7 +171,7 @@ export default {
     },
     deleteFeature(featureName, index) {
       var targetURL =
-        "api/api/v1/scenario/" +
+        "api/v1/scenario/" +
         this.$store.getters.getScenarioKey +
         "/tool/" +
         featureName;
