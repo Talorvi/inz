@@ -17,7 +17,12 @@
       class="q-gutter-md"
       v-else-if="armorName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="armor.name" />
+      <q-input
+        filled
+        label="Name"
+        :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']"
+        v-model="armor.name" />
       <q-input
         filled
         label="Armor Class base"

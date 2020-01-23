@@ -21,7 +21,8 @@
       class="q-gutter-md"
       v-else-if="spellName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="spell.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="spell.name" />
       <q-input filled label="Level" type="number" :rules="[]" v-model="spell.level" />
       <q-input filled label="Magic School" :rules="[]" v-model="spell.magicSchool" />
       <q-input filled label="Range" :rules="[]" v-model="spell.range" />

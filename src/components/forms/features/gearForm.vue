@@ -13,7 +13,8 @@
       class="q-gutter-md"
       v-else-if="gearName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="gear.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="gear.name" />
       <q-input filled label="Cost" :rules="[]" v-model="gear.cost" />
       <q-input filled label="weight" type="number" :rules="[]" v-model="gear.weight" />
       <q-input

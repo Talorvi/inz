@@ -30,6 +30,7 @@
                       v-model="general.name"
                       label="Name"
                       lazy-rules
+                      required="true"
                       :rules="[
                         val =>
                           (val && val.length > 0) || 'Please type something'

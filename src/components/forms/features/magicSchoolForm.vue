@@ -11,7 +11,8 @@
       class="q-gutter-md"
       v-else-if="magicSchoolName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="magicSchool.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="magicSchool.name" />
       <q-input
         filled
         label="Description"

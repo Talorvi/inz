@@ -12,7 +12,8 @@
       class="q-gutter-md"
       v-else-if="languageName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="language.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="language.name" />
       <q-input filled label="Type" :rules="[]" v-model="language.type" />
       <q-input filled label="Script" :rules="[]" v-model="language.script" />
       <q-toggle color="green" label="Visible" v-model="language.visible" />

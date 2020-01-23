@@ -137,15 +137,7 @@
           <q-item
             clickable
             v-ripple
-            @click="
-              $router.push(
-                '/game/' +
-                  $route.params.scenarioKey +
-                  '/abilities/' +
-                  $store.getters.getSelectedCharacter.name,
-                () => {}
-              )
-            "
+            @click="$store.getters.getSelectedCharacter.name === undefined ? showNoCharacterError() : pushRoute('abilities')"
           >
             <q-item-section avatar>
               <q-icon name="fas fa-book" />
@@ -155,15 +147,7 @@
           <q-item
             clickable
             v-ripple
-            @click="
-              $router.push(
-                '/game/' +
-                  $route.params.scenarioKey +
-                  '/equipment/' +
-                  $store.getters.getSelectedCharacter.name,
-                () => {}
-              )
-            "
+            @click="$store.getters.getSelectedCharacter.name === undefined ? showNoCharacterError() : pushRoute('equipment')"
           >
             <q-item-section avatar>
               <q-icon name="fas fa-box" />
@@ -173,15 +157,7 @@
           <q-item
             clickable
             v-ripple
-            @click="
-              $router.push(
-                '/game/' +
-                  $route.params.scenarioKey +
-                  '/spells/' +
-                  $store.getters.getSelectedCharacter.name,
-                () => {}
-              )
-            "
+            @click="$store.getters.getSelectedCharacter.name === undefined ? showNoCharacterError() : pushRoute('spells')"
           >
             <q-item-section avatar>
               <q-icon name="fas fa-hat-wizard" />
@@ -269,6 +245,7 @@
 import { mapActions } from "vuex";
 import chatForm from "../components/chatForm";
 import OnlineList from "../components/scenario/OnlineList";
+import notifications from "../functions/notifications";
 
 export default {
   name: "MyLayout",
@@ -328,11 +305,18 @@ export default {
     },
     toggleDarkMode() {
       this.$q.dark.toggle();
+    },
+    pushRoute(route){
+      this.$router.push('/game/' + this.$route.params.scenarioKey +'/'+ route + '/' + this.$store.getters.getSelectedCharacter.name, () => {})
+    },
+    showNoCharacterError(){
+      console.log("Co jest kurwa");
+      notifications.methods.sendErrorNotification("You have no active character");
     }
   },
   created() {
     this.fetchAccessToken();
-  }
+  },
 };
 </script>
 

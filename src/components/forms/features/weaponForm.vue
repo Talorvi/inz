@@ -25,7 +25,8 @@
       class="q-gutter-md"
       v-else-if="weaponName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="weapon.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="weapon.name" />
       <q-input filled label="Category" :rules="[]" v-model="weapon.category" />
       <q-input filled label="Damage Type" :rules="[]" v-model="weapon.damageType" />
       <q-input filled label="Damage Dice" :rules="[]" v-model="weapon.damageDice" />

@@ -11,7 +11,8 @@
       class="q-gutter-md"
       v-else-if="proficiencyName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="proficiency.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="proficiency.name" />
       <q-input filled label="Type" :rules="[]" v-model="proficiency.type" />
       <q-toggle color="green" label="Visible" v-model="proficiency.visible" />
       <div>

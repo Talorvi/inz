@@ -14,7 +14,8 @@
       class="q-gutter-md"
       v-else-if="toolName === 'new'"
     >
-      <q-input filled label="Name" :rules="[]" v-model="tool.name" />
+      <q-input filled label="Name" :rules="[
+         val =>(val && val.length > 0) || 'Field cannot be empty']" v-model="tool.name" />
       <q-input filled label="Category" :rules="[]" v-model="tool.category" />
       <q-input filled label="Cost" :rules="[]" v-model="tool.cost" />
       <q-input filled label="Weight(pounds)" type="number" :rules="[]" v-model="tool.weight" />
